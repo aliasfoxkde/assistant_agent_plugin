@@ -1,0 +1,76 @@
+tutor_agent_xblock
+course_creator_xblock
+
+OpenEdX (MySQL, MongoDB) <--> VAPI <--> Supabase (VKB through API/MCP)
+
+Pros/Cons to MCP: Easy to use but requires running an MCP server. Direct API and custom code is probably a "better" option. MCP would be best for agentic behavior rather than defined ones.
+
+Compare PlayHT, VAPI, OpenAI Voice API
+
+https://github.com/SesameAILabs/csm
+
+Just read it but I would argue what people who are passionate about a field, learn and engage the most gain a feeling of Accomplishment, it's rewarding, and benefit from one-on-one interaction (which AI can offer), not nessarily "Connection". I would not call it "Authentic Relationship Building" per se. And the numbers seem bogus to me, so AI generated (which probably explains why it reads wishy-washy)?
+
+But I do like the "Comprehensive Analysis" and "Adaptive learning..." (numbers seem more realistic). And I don't get the integration, I assume that's also a placeholder. And the rest is fine.
+
+MENTOR: Democratizing the passion of learning through one-on-one interactions tailored to fit your learning style, and through the power of AI learns with you to accelorate your pace, improving your understanding and personal growth; adding true value at a fraction of the price compared to traditional education.
+
+MENTOR: Democratizing the passion of learning, fueling your curiosity, through tailored made one-on-one interactions to fit your learning style. And through the power of AI, our platform learns with you to accelorate your pace, improving your understanding and personal growth... Adding true value at a fraction of the price compared to traditional education. 10x your education today, and unleash a lifetime of limitless possibility!
+
+Democratizing the passion of learning, fueling your curiosity, and preparing you for the brave new frontier. Through tailored one-on-one interactions and AI-powered personalization, accelerate your understanding and personal growth at a fraction of the cost of traditional education. 10x your education today and unleash a lifetime of limitless possibility
+
+There's a paradigm shift in how student experience learning and interact with online course materials.
+
+which is becoming increasingly more online
+
+MENTOR: Democratizing the passion of learning, fueling your curiosity, through tailor-made one-on-one interactions to fit your unique learning style. Through the power of AI, our platform learns with you to accelerate your pace, assists with deep research on any topic in seconds, to improving your understanding and personal growth... Adding true value at a fraction of the price compared to traditional education. 10x your education and unleash a lifetime of limitless possibility! And prepare for this brave new frontier. Signup TODAY! at {website}.
+
+Democratizing Learning through:
+- Academic Integrity
+- Accessibility: 
+- Adaptable: 
+- Ease of Use: 
+- Low Cost and Even Free:
+- Real-time feedback:
+- Structured Learning
+
+Regular feedback and assessment: 
+
+DevOps Crash Course: Zero to Hero
+- Use W3Schoolwws
+- Use CodeWars examples for driving home lessions.
+
+W3Schools is broken down into parts: HTML, CSS, JAVASCRIPT, etc.
+They are in the order you should learn them left to right with ability to test the code/concepts with their "Try it Yourself" buttons. These are very well structured but not particularly interactive and condusive to adaptive learning. I want to plan out an interactive tutorial for OpenEdX to use AI and make learning more interactive, say through VAPI for one-to-one communication which can guide the user through the process. My expectation would be that the AI explains the section, examples and guideance on screen, then provides an interactive IDE editor for the "student" to test what they learned (and run the code snippet). Please plan this out and outline the best way to do this. I am only planning right now and detemrining if what I want is doable and pratical. So just help me with planning and preparing some documents.
+
+
+VAPI offers Custom LLM use. I want to set it up for Groq but not sure how to set the URL, etc.
+
+Custom LLM
+For using your own Custom LLM.
+
+API Key
+
+OAuth2 Credentials (Optional)
+Oauth2 URL
+OAuth2 Client ID
+OAuth2 Client Secret
+
+Groq API Endpoint (per docs):
+https://api.groq.com/openai/v1/chat/completions
+
+
+Notes:
+
+IMO an LLM by alone cannot do this, regardless of fine-tuning.
+
+My concern is that despite training and fine-tuning, the LLM alone still will not be capable enough. I believe it needs to strictly keep to a knowledge base in a RAG type system to allow for controlled responses. Data should be received and added to the knowledge base dynamically (by user session and for general purpose) to improve itself over time.
+
+It's not clear if "Work Product" is defined narrowly or broadly. Does this apply to "anything you create during the contract term" or "only work specifically done for the company". For example, within the hours and scope of work or within the duration of control (could broadly imply ANYTHING I work on, such as my own projects).
+
+"The Contractor shall not incorporate any preexisting materials or open-source software into the
+Work Product without the Company's prior written approval"
+
+Using the query_tool, please reference "agent_persona" knowlege base to retrieve your persona details.
+
+e502110f-2369-4b28-a3aa-858865390e02

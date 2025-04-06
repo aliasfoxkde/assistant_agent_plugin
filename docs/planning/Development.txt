@@ -1,0 +1,29 @@
+Development
+- assistant_agent_xblock
+  - Setup local OpenEdX for Testing
+  - Use boilerplate code
+  - Build out functionality
+  - Refine design and UI/UX
+
+Naming Convention: {role}_{function}_{type}
+- role : The primary purpose or audience (e.g., tutor, assistant, instructor, feedback).
+- function : The tool’s behavior or output (e.g., agent, builder, analyzer).
+- type: The classification type of the tool (e.g., xblock, tutor_plugin, etc.) 
+
+Examples:
+- app_template_xblock
+- tutor_agent_xblock
+- assistant_agent_xblock
+- instructor_agent_xblock
+- feedback_agent_xblock
+- course_builder_xblock
+
+Research:
+- Quasar Alpha
+
+OpenEdX Tools/Plugins:
+- AI Proctoring
+- Interactive in-context Video Content:
+  https://www.annoto.net/
+- XPert - ChatGPT Powered Chat
+- WooCommerce

@@ -1,0 +1,40 @@
+Conversational:
+Alexi		PawMsb9h2MWDsRgzCXzT
+Edgar		6woOscCA8iI0Ck2VMkpS
+Hal Elrod	dqTphdd86u7JdUUgX72H
+Glinda		z9fAnlkpzviPz146aGWa
+Antonio Caiado	jeNvh0SVQIsCYYDwArqQ
+FLAC		mWcUVm4BxCsWJrFPEGvt
+Jack NexiServe	QP5g7CY3xU0uU4XU3pbp
+Richard		Oq1bYcvgMqGpa5GwgGRz
+Andrea Wolf	Crm8VULvkVs5ZBDa1Ixm
+Sid		Yr66fXOWqCCUlvWHiVjt
+Sukhman Ladhar	dREhR8Nz4gntv4SZMhmd
+Kristi		y7jusIAhO4eJOzRUuKJX
+
+Advertisement:
+Scoobie		dY9fWBb7TNkZB7UPeFK1
+
+Narrator:
+Mel R Copy	djZrSKxKNunMxmpXm0Vi
+Hannah - Respy	zyHSWCTABVa1FYS0inmu
+Isabella	0sGQQaD2G2X1s87kHM5b
+
+
+If opertunity doesn't knock, build a door.
+We do not quit playing because we grow old, we grow old because we quit playing.
+If you don't know where you are going, you will probably end up somewhere else.
+
+Cheap, Fast, and Good:
+rime-ai		Abbie, Alona, Eva, Tundra, Joy
+
+Offer options: 
+Type: Female, Male
+Voices: (approved/tested only)
+
+Allow user to rate voice/agent.
+
+Hello, I am Alice! How can I help?
+Hello, I am Alice! Here to assist you with your learning needs. How can I help you today?
+--Hello, I am Alice! I will be your instructor, how can I help?
+

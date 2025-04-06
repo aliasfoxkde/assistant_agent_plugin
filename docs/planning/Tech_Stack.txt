@@ -1,0 +1,76 @@
+Tech Stack:
+VAPI	Chat/Voice
+LMS	OpenEdX (MongoDB, MySQL)
+DNS	Cloudflare
+VKB	Supabase
+AWS	AI (Amazon Bedrock: Nova Pro; TBD)
+
+LMS Stack
+- Frontend
+- Backend
+
+AI Management Platform & Storage
+
+Hosting and Backend
+- DigitalOcean
+
+DNS, CDN, TLS, Security & Load-Balancing
+- Cloudflare to manage all in one place.
+
+Voice/Chat Assistant Stack (VAPI)
+- AI Speech Synthesis: RimeAI (lifelike, Low Latency)
+- LLM: OpenAI 4o-mini (low latency, excelent at conversational AI)
+- Transcriber: Deepgram (High Quality, Low latency)
+- Tools: 
+  - Function Calling:
+    - Query_Tool used to retrieve data from knowlege base.
+    - Custom OpenEdX Connector for two way communication between AI and LMS (TBD).
+  - MCP:
+    - Supabase Integration for possible 2-way communication between AI and services (TBD).
+    - Brave API used to give agentic browser Search capabilities (TBD).
+    - VAPI Knowlege Base connection for consistant memory between chat/voice (TBD).
+- Knowlege Base for long term context retrieval with vector embeddings.
+- Integrations (TBD): 
+  - SIP/Vanity Phone number Providers (if needed; out of initial scope)
+  - Webhook Server authenitcation (for securing down webhooks).
+  - Storage (AWS S3, Cloudflare R2, or Google; TBD and if needed)
+  - Slack, Google Calendar, Make.com (Flows),
+  - Supabase (centralized & scaleable VKB), 
+  - Tavus (video generation; TBD)
+  
+Accounts:
+- VAPI: 
+- Supabase:
+- DigitalOcean:
+- Cloudflare:
+- OpenEdX (self-hosted): 
+
+Future (scaling)
+- AWS: Amazon Bedrock (lower latency and scalability)
+- RimeAI: Reduces Voice Latency
+- Deepgram: Reduces Transcriber Latency
+
+Notes:
+- Has the ability to take calls (make calls with flow)
+- Current iteration has ~500-700ms latency; to improve this would mean getting Enterprise access to Amazon Bedrock (for LLM, reduce latency by ~200-250ms), RimeAI (reduce by ~100ms), and Deepgram (unknown).
+- Amazon Bedrock requires Custom LLM development and setup of their platform (which is involved), so it's been excluded from the first iteration).
+
+Other Notes:
+- Cloudflare for DNS, Loadbalancing, etc.
+- Health Check and Monitoring (with notifications)
+- S3 Bucket/storage option?
+
+Voice Assistant Improvements:
+- Bug: Confuses not having access to audio input with text input.
+- Split up system prompt to domain specifics (spit docs/persona, etc. to KB)
+- Consolidate documentation and the like.
+- Add summary of user conversations to user knowlege base.
+
+Future Scope
+- Multi-language support
+- Amazon Route 53 health checks
+
+Refernce Docs:
+https://docs.vapi.ai/knowledge-base/using-query-tool
+https://docs.vapi.ai/server-url/setting-server-urls#via-the-api-1
+https://docs.vapi.ai/tools/custom-tools

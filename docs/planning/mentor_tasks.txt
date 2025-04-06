@@ -1,0 +1,106 @@
+I have a custom platform based on OpenEdX called MENTOR. Please do some deep research on OpenEdX and create me a document to on how to navigate course material, basic overview and anything else that would be helpful to an end user. Do not mention OpenEdX itself, what it is or who it's by but instead focus on being helpful to the user on this custom platform.
+
+Focus on:
+Adaptive Learning
+Rich Variety of Content
+Self-Paced Progress Dashboard
+Powerful Analytics
+
+And also:
+Active community
+Multi-language support
+Interactive lessions
+One-on-one tutor sessions
+Cross-device / cross-platform
+Extensible and inclusive
+
+Todo
+- Setup Custom LLM Model to use Amazon Bedrock: Nova Lite 1.0
+  - Potentially reduces latency from ~250-1250ms to ~70ms.
+  - Allows better performance with Provisioned Throughout to improve latency/reliability.
+  - Allows for more customization with fine-tuning, distillation, guardrails, etc.
+  - Supports knowlege base & document management, embedding, and multimodal features.
+- Supabase integration (add creds to VAPI, etc.)
+- Cloudflare Integration (add creds to VAPI)
+- Create custom connection to Amazon Bedrock (contact, etc.)
+- Local install of OpenEdX (dev)
+- Access to VPS server
+- Work on code/MVP
+
+Goals:
+- Use Custom LLM through Groq to lower latency (600ms --> 200ms)
+- Add MCP Tool for browsing the web
+- Note: rime-ai has the lowest latency and cost, test and fine-tune?
+- Contact VAPI directly for further optimizations, etc.?
+
+Videos:
+https://www.loom.com/share/fba41fbaa19d4ddcaf2c6202cf3def14?sid=d80dd9af-3261-4eab-b075-ff331124669d
+https://www.youtube.com/watch?v=-1xWhYmOT0A
+https://www.youtube.com/watch?v=U8K5WIVQtkY
+
+Xblock Examples:
+https://github.com/abconlinecourses/chatgpt-xblock
+https://github.com/proversity-org/edx-xblock-bibblio
+https://pypi.org/project/chatgpt-block/#files
+
+References:
+https://openedx.org/the-platform/extensions-directory/
+https://app.rime.ai/?code=2842778f-b364-4c58-9231-c9858e807ab3&to=%2F
+https://apps.ottomator.testbot.xyz/learner-dashboard/
+https://apps.ottomator.testbot.xyz/authoring/home
+https://workers.cloudflare.com/built-with/collections/durable-objects/
+https://stocktistics.com/stocksaavy
+https://github.com/ggml-org/llama.cpp/pull/12648
+
+Docs:
+https://docs.vapi.ai/customization/custom-llm/using-your-server
+https://docs.google.com/document/d/1IcLCaIX-4Wi6Iydf7KxgDEVRojiYJtdzSLe-oQiKeo4/edit?tab=t.c43yrfetsmmm#heading=h.a527lqkgkmh8
+
+Articles:
+https://www.mxmoritz.com/article/transcript-formatting-prompt
+https://openedx.org/blog/ai-driven-course-creation-crafting-engaging-content-in-the-open-edx-lms-with-llm/
+https://press.edx.org/edx-debuts-two-ai-powered-learning-assistants-built-on-chatgpt
+https://www.indeed.com/career-advice/career-development/types-of-reasoning
+https://www.indeed.com/career-advice/finding-a-job/what-is-project-management
+https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html
+https://mainfunc.ai/blog/genspark_super_agent
+https://aws.amazon.com/ai/generative-ai/nova/
+
+Services:
+https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/text-generation-playground
+https://us-east-2.console.aws.amazon.com/apigateway/main/apis?region=us-east-2#
+https://www.digitalocean.com/products/droplets
+https://deepgram.com/pricing
+https://actions.zapier.com/settings/mcp/
+https://deepinfra.com/dash/api_keys
+https://deepinfra.com/models
+
+"Using abductive reasoning..." system prompt?
+
+
+Latency Research
+
+***Amazon: Nova Pro 1.0
+Amazon Bedrock @ ~70ms???
+
+https://openrouter.ai
+
+qwen/qwen-turbo		640ms
+
+Together AI ~290ms?
+Mistral ~250ms
+
+qwen/qwen-2.5-7b-instruct
+DeepInfra ~70ms???
+
+deepseek/deepseek-chat
+DeepInfra @ ~120ms
+
+Llama 3.3 70B SpecDec 8k	1600	$0.59	$0.99
+
+Service Quota increases and dedicated "Model Units" which can further improve latency.
+
+tom@ottomator.ai
+
+
+Hello, I am Alice! I will be your instructor. How can I help?

@@ -1,0 +1,12 @@
+{
+  "name": "vapi-voice-assistant",
+  "version": "1.0.0",
+  "description": "VAPI Voice Assistant using the official Widget",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

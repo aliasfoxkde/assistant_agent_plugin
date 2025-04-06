@@ -1,0 +1,40 @@
+But for a Custom LLM, they require API Key and optionally Oauth2 URL, Oauth2 Client ID, and OAuth2 Client Secret.
+
+It needs:
+URL:
+Method: POST
+Headers: Add Headers +
+Body: Add Body +
+Output: Add Output +
+
+And "Run in the background of this conversation" (enabled)
+
+Can you give me the values I need to get Groq working with their "Llama 3.3 70B SpecDec 8k" (ultra fast and capable LLM)?
+
+curl "https://api.groq.com/openai/v1/chat/completions" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${GROQ_API_KEY}" \
+  -d '{
+         "messages": [],
+         "model": "llama-3.3-70b-versatile",
+         "temperature": 1,
+         "max_completion_tokens": 1024,
+         "top_p": 1,
+         "stream": true,
+         "stop": null
+       }'
+
+{
+  "model": "Llama-3.3-70B-SpecDec",
+  "messages": [{"role": "user", "content": "{{input}}"}],
+  "temperature": 0.7,
+  "max_completion_tokens": 8192,
+  "stream": false
+}
+
+https://api.groq.com/v1/chat/completions
+https://openrouter.ai/openai/gpt-3.5-turbo
+https://app.rime.ai/?code=2842778f-b364-4c58-9231-c9858e807ab3&to=%2F
+https://bedrock-runtime.us-east-1.amazonaws.com
+amazon.nova-lite-v1:0
