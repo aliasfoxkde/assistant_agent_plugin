@@ -107,34 +107,43 @@ This application supports Progressive Web App features:
 1. Log in to your Cloudflare dashboard
 2. Go to Pages > Create a project > Connect to Git
 3. Select your repository and configure the following settings:
-   - Build command: (leave empty)
-   - Build output directory: / (root directory)
-   - Root directory: / (root directory)
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Root directory: `/` (root directory)
 4. Click "Save and Deploy"
 
 ### Using Wrangler CLI
 
-1. Install Wrangler CLI:
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Build the project:
+```bash
+npm run build
+```
+
+3. Install Wrangler CLI (if not already installed):
 ```bash
 npm install -g wrangler
 ```
 
-2. Authenticate with Cloudflare:
+4. Authenticate with Cloudflare:
 ```bash
 wrangler login
 ```
 
-3. Create a `wrangler.toml` file in your project root:
-```toml
-name = "voice-assistant"
-type = "webpack"
-account_id = "your-account-id"
-workers_dev = true
-route = ""
-zone_id = ""
+5. Deploy to Cloudflare Pages:
+```bash
+npm run deploy
 ```
 
-4. Deploy to Cloudflare Pages:
-```bash
-wrangler publish
-```
+### Troubleshooting Deployment
+
+If you encounter issues with deployment:
+
+1. Make sure the `wrangler.toml` file contains the `pages_build_output_dir` property
+2. Ensure all static assets are properly included in the build
+3. Check that the build script is creating the `dist` directory correctly
+4. Verify that you have the correct permissions in your Cloudflare account

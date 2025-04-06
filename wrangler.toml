@@ -1,24 +1,23 @@
+# Cloudflare Pages configuration
+name = "voice-assistant"
+compatibility_date = "2023-10-30"
+
+# Specify the directory that should be deployed
+pages_build_output_dir = "."
+
+# Static asset handling
 [site]
-bucket = "./"
-entry-point = "."
+  bucket = "./"
 
 [site.static]
-include = [
-  "*.html",
-  "*.css",
-  "*.js",
-  "*.json",
-  "*.svg",
-  "*.png",
-  "*.ico",
-  "icons/*"
-]
-
-[env.production]
-name = "voice-assistant"
-workers_dev = true
-route = ""
-zone_id = ""
-
-# Update these values with your own Cloudflare account information
-# account_id = "your-account-id"
+  include = [
+    "*.html",
+    "*.css",
+    "*.js",
+    "*.json",
+    "*.svg",
+    "*.png",
+    "*.ico",
+    "sounds/*",
+    "icons/*"
+  ]
