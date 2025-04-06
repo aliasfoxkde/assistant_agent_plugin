@@ -7,10 +7,13 @@
     "start": "serve .",
     "build": "./build.sh",
     "dev": "serve .",
-    "deploy": "wrangler pages publish dist"
+    "deploy": "wrangler pages deploy dist"
   },
   "devDependencies": {
     "serve": "^14.2.1",
     "wrangler": "^3.19.0"
+  },
+  "engines": {
+    "node": ">=16.13.0"
   }
 }

@@ -3,21 +3,4 @@ name = "voice-assistant"
 compatibility_date = "2023-10-30"
 
 # Specify the directory that should be deployed
-pages_build_output_dir = "."
-
-# Static asset handling
-[site]
-  bucket = "./"
-
-[site.static]
-  include = [
-    "*.html",
-    "*.css",
-    "*.js",
-    "*.json",
-    "*.svg",
-    "*.png",
-    "*.ico",
-    "sounds/*",
-    "icons/*"
-  ]
+pages_build_output_dir = "dist"
