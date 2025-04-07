@@ -5,6 +5,14 @@ Infrastructure
 - [ ] Deploy to Cloudflare (to share demo)
 
 Improvements:
+- [ ] Change messages sent to be Session Count, and keep track of the number of voice/chat instances are started.
+- [ ] Latency, Tokens Sent, and Tokens Received are not being calculated. Can you fix this?
+- [ ] Details tab is all boilerplate. Please use the API response to populate these values accurately.
+- [ ] Put "Assistant" in tittle on the next line.
+- [ ] Microphone activated and deactivated repeatidly. Can this be improved, maybe adjust the "Speech recognition" backoff of 1000ms.
+      Is is there a smarter way to listen for "Start Voice Chat"?
+
+- [ ] Automate add, commit (with AI Message), and push (for IDE Agentic features)?
 - [ ] Add tooltip info box for instructions into the chat widget
 - [ ] Add floating text or identifier on how to activate the chat, etc.
 - [ ] Move API Keys to .env (later into Admin settings/dashboard; not in code)
@@ -21,7 +29,7 @@ Improvements:
 - [ ] Incorporate Thumbs UP/DOWN on conversations, Voice Settings, Feedback Buttons, etc.
 - [ ] Buttons: Play (Text Chat), Microphone (Voice/Dictate), Feedback, Settings
       Speech-to-text Writer Feature to dictate?
-      
+
 Future Planning
 - [ ] Maybe eventually a note editor, try code feature, or something
 - [ ] Notification bubbles (red with count)
@@ -32,14 +40,16 @@ Future Planning
 
 UI/UX:
 - [ ] Add sound effects
-- [ ] Improve styling and design
+- [ ] Improve styling and Design (make it look like a chat)
 - [ ] Add mobile responsiveness
 - [ ] Create graphics (favicon, svgs, etc.)
 - [ ] Create audio effects
 - [ ] Add rating and feedback icons (maybe share?)
 - [ ] Add settings button
 
-Issues:
+Bugs:
+- [ ] Fix where words are cut off in the chat window
+- [ ] Fix how spoken words (agent or user) override each other
 - [ ] Swoosh sound does not (always?) work on first hover of chat window
 - [ ] There are the occasional empty bubble in chat (there shouldn't be)
 - [ ] User messages are not being recorded into the chat box (seems like the first one is, or it's being updated?)

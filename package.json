@@ -4,9 +4,9 @@
   "description": "VAPI Voice Assistant using the official Widget",
   "main": "index.html",
   "scripts": {
-    "start": "serve .",
+    "start": "serve . -p 4000",
     "build": "./build.sh",
-    "dev": "serve .",
+    "dev": "serve . -p 4000",
     "deploy": "wrangler pages deploy dist"
   },
   "devDependencies": {

@@ -1,6 +1,24 @@
-# Voice Assistance xBlock Version History
+# VAPI Voice & Chat Assistant for OpenEdX - Version History
 
-This document tracks the development history, major changes, and release notes for the Voice Assistance xBlock.
+This document tracks the development history, major changes, and release notes for the VAPI Voice & Chat Assistant OpenEdX plugin/extension.
+
+## Version 0.2.0 (2024-04-10)
+
+### Major Changes
+- Transitioned from XBlock approach to full OpenEdX plugin/extension
+- Implemented site-wide persistence across all OpenEdX pages
+- Enhanced context awareness to understand course and user context
+
+### Added
+- Platform-level integration hooks
+- Multi-level configuration (site, course, user)
+- Context extraction from OpenEdX pages
+- User authentication integration
+
+### Changed
+- Updated documentation to reflect plugin architecture
+- Revised installation process for platform-wide integration
+- Improved state management for persistent experience
 
 ## Version 0.1.1 (2024-04-05)
 
@@ -46,21 +64,21 @@ This document tracks the development history, major changes, and release notes f
 - UI/UX design concepts
 - Integration planning
 
-### Initial Development (Current)
-- Core functionality implementation
-- Basic UI components
-- VAPI.ai API integration
-- Settings and history management
+### Plugin Development (Current)
+- Platform-level integration implementation
+- Site-wide persistence mechanisms
+- Enhanced context awareness
+- Multi-level configuration system
 
 ### Future Milestones
 
-#### Beta Release (Est. Q2 2023)
-- Complete core functionality
-- Initial user testing
+#### Beta Release (Est. Q2 2024)
+- Complete platform integration
+- Initial deployment testing
 - Performance optimization
 - Bug fixes
 
-#### 1.0 Release (Est. Q3 2023)
+#### 1.0 Release (Est. Q3 2024)
 - Full feature set
 - Comprehensive testing
 - Documentation

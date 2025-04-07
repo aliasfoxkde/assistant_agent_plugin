@@ -1,6 +1,8 @@
 # Tutor Integration Guide
 
-This document provides detailed instructions for integrating the Voice Assistance xBlock with OpenEdX using Tutor.
+**Note: This document is deprecated. Please refer to [OPENEDX_INTEGRATION.md](OPENEDX_INTEGRATION.md) for the latest integration instructions.**
+
+This document previously provided instructions for integrating the Voice Assistance xBlock with OpenEdX using Tutor. The project has now evolved into a full OpenEdX plugin/extension rather than an XBlock.
 
 ## Prerequisites
 

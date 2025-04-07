@@ -1,50 +1,45 @@
-# VAPI Voice & Chat Assistant
+# VAPI Voice & Chat Assistant for OpenEdX
 
-A web application that integrates the VAPI Voice Widget to create both voice and chat assistant experiences.
+An OpenEdX plugin/extension that integrates the VAPI Voice Widget to create persistent, context-aware voice and chat assistant experiences across your entire OpenEdX site.
 
 ## Features
 
-- Clean, responsive UI with tabbed interface
-- Chat widget for text-based conversations
-- Voice assistant for spoken interactions
-- Real-time status updates
-- Debug logging for troubleshooting
-- Progressive Web App (PWA) support for offline use
-- Automatic speech transcription
-- Deployable to Cloudflare Pages
+- **Site-wide Persistence**: Available across all pages in your OpenEdX instance
+- **Context Awareness**: Understands the current course, section, and user context
+- **Dual Interface**: Both voice and chat interaction options
+- **Clean, Responsive UI**: Floating interface that doesn't interfere with content
+- **Real-time Status Updates**: Clear feedback on assistant state
+- **Debug Logging**: Comprehensive troubleshooting tools
+- **Conversation History**: Maintains context between sessions
+- **Customizable**: Configurable at site, course, and user levels
 
 ## Prerequisites
 
-- A modern web browser with microphone access
-- Internet connection to access VAPI services
-- Node.js and npm (optional, for running the local server)
+- OpenEdX instance (Tutor-managed recommended)
+- Administrator access to your OpenEdX installation
+- VAPI account with API credentials
+- Modern web browsers with microphone access for end users
 
 ## Quick Start
 
-1. Clone this repository
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Start the server:
-   ```
-   npm start
-   ```
-4. Open your browser and navigate to the URL shown in the terminal (typically http://localhost:3000)
+1. Install the plugin in your OpenEdX instance (see detailed instructions in docs/OPENEDX_INTEGRATION.md)
+2. Configure your VAPI credentials in the plugin settings
+3. Customize appearance and behavior as needed
+4. The assistant will be available across your entire OpenEdX site
 
 ## How It Works
 
-This application combines two ways to interact with the VAPI assistant, both using the same underlying LLM and knowledge base:
+This OpenEdX plugin provides two ways to interact with the VAPI assistant, both using the same underlying LLM and knowledge base:
 
 1. **Voice Assistant**: Uses the official VAPI Voice Widget for spoken conversations
 2. **Chat Interface**: Uses the VAPI SDK to send text messages to the same assistant
 
 Key components:
-- HTML/CSS for the user interface and chat widget
-- JavaScript for handling messages, status updates, and debug logging
-- VAPI Widget script for voice assistant functionality
-- VAPI SDK integration for the chat interface
-- Conversation history tracking to maintain context between messages
+- **OpenEdX Integration**: Hooks into the OpenEdX platform for site-wide presence
+- **Context Awareness**: Extracts and provides course and user context to the assistant
+- **UI Components**: Floating interface that's consistent across all pages
+- **VAPI Integration**: Connects to VAPI services for AI capabilities
+- **State Management**: Maintains conversation history and settings across sessions
 
 ## Usage
 
@@ -100,50 +95,24 @@ This application supports Progressive Web App features:
 - Works offline
 - Responsive design for all devices
 
-## Deployment to Cloudflare Pages
+## OpenEdX Integration
 
-### Manual Deployment
+This plugin integrates with OpenEdX at the platform level, providing a consistent assistant experience across all pages. See the detailed integration guide in `docs/OPENEDX_INTEGRATION.md`.
 
-1. Log in to your Cloudflare dashboard
-2. Go to Pages > Create a project > Connect to Git
-3. Select your repository and configure the following settings:
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Root directory: `/` (root directory)
-4. Click "Save and Deploy"
+Key integration points:
 
-### Using Wrangler CLI
+1. **Platform-wide Injection**: The assistant UI is injected into all pages
+2. **User Authentication**: Leverages OpenEdX authentication for personalized experiences
+3. **Course Context**: Extracts current course, section, and progress information
+4. **User Data**: Accesses relevant user data to provide personalized assistance
+5. **Configuration**: Integrates with OpenEdX admin interfaces for configuration
 
-1. Install dependencies:
-```bash
-npm install
-```
+### Customization Options
 
-2. Build the project:
-```bash
-npm run build
-```
+The plugin can be customized at multiple levels:
 
-3. Install Wrangler CLI (if not already installed):
-```bash
-npm install -g wrangler
-```
+1. **Site-wide Settings**: Default behavior for all courses
+2. **Course-specific Settings**: Customize behavior for individual courses
+3. **User Preferences**: Allow users to adjust their assistant experience
 
-4. Authenticate with Cloudflare:
-```bash
-wrangler login
-```
-
-5. Deploy to Cloudflare Pages:
-```bash
-npm run deploy
-```
-
-### Troubleshooting Deployment
-
-If you encounter issues with deployment:
-
-1. Make sure the `wrangler.toml` file contains the `pages_build_output_dir` property
-2. Ensure all static assets are properly included in the build
-3. Check that the build script is creating the `dist` directory correctly
-4. Verify that you have the correct permissions in your Cloudflare account
+See the configuration documentation for detailed customization options.

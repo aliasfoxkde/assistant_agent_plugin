@@ -1,9 +1,249 @@
-// Conversation history to maintain context
-let conversationHistory = [];
-let currentAssistantMessageDiv = null;
+// Message Buffer System for robust message handling
+class ChatMessage {
+    constructor(role, content, isFinal = true) {
+        this.id = Date.now() + Math.random().toString(36).substr(2, 9); // Unique ID
+        this.role = role; // 'user' or 'assistant'
+        this.content = content; // Message text
+        this.timestamp = Date.now(); // Creation time
+        this.isFinal = isFinal; // Whether this is a final transcript
+        this.displayElement = null; // Reference to DOM element
+    }
+
+    // Check if this message should be merged with another
+    shouldMergeWith(otherMessage) {
+        // Only merge messages from the same speaker
+        if (this.role !== otherMessage.role) return false;
+
+        // Don't merge if either message is empty
+        if (!this.content || !otherMessage.content) return false;
+
+        // Only merge messages that are close in time (3 seconds max)
+        const timeDiff = Math.abs(this.timestamp - otherMessage.timestamp);
+        if (timeDiff > 3000) return false;
+
+        // Check content-based rules
+        return this.shouldMergeBasedOnContent(otherMessage);
+    }
+
+    // Content-based merging rules
+    shouldMergeBasedOnContent(otherMessage) {
+        const content1 = this.content.trim().toLowerCase();
+        const content2 = otherMessage.content.trim().toLowerCase();
+
+        // If one message contains the other entirely, they should be merged
+        if (content1.includes(content2) || content2.includes(content1)) {
+            return true;
+        }
+
+        // Check for significant overlap at the beginning
+        const words1 = content1.split(' ');
+        const words2 = content2.split(' ');
+
+        let overlapCount = 0;
+        const minLength = Math.min(words1.length, words2.length);
+
+        for (let i = 0; i < minLength; i++) {
+            if (words1[i] === words2[i]) {
+                overlapCount++;
+            } else {
+                break;
+            }
+        }
+
+        // If there's significant overlap (at least 2 words and 50% of the shorter message)
+        if (overlapCount >= 2 && overlapCount >= minLength * 0.5) {
+            return true;
+        }
+
+        // If the first message doesn't end with a sentence marker, it might be incomplete
+        if (!content1.match(/[.!?]\s*$/)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Merge this message with another
+    mergeWith(otherMessage) {
+        const content1 = this.content.trim();
+        const content2 = otherMessage.content.trim();
+
+        // If one message contains the other entirely, use the longer one
+        if (content1.toLowerCase().includes(content2.toLowerCase())) {
+            return content1;
+        }
+
+        if (content2.toLowerCase().includes(content1.toLowerCase())) {
+            return content2;
+        }
+
+        // Check for significant overlap at the beginning
+        const words1 = content1.toLowerCase().split(' ');
+        const words2 = content2.toLowerCase().split(' ');
+
+        let overlapCount = 0;
+        const minLength = Math.min(words1.length, words2.length);
+
+        for (let i = 0; i < minLength; i++) {
+            if (words1[i] === words2[i]) {
+                overlapCount++;
+            } else {
+                break;
+            }
+        }
+
+        // If there's significant overlap, use the longer message
+        if (overlapCount >= 2 && overlapCount >= minLength * 0.5) {
+            return content2.length > content1.length ? content2 : content1;
+        }
+
+        // Check if the second message starts with a word that's already at the end of the first
+        const lastWordOfFirst = words1[words1.length - 1];
+        const firstWordOfSecond = words2[0];
+
+        if (lastWordOfFirst === firstWordOfSecond) {
+            // Remove the duplicate word
+            return content1 + ' ' + words2.slice(1).join(' ');
+        }
+
+        // Just concatenate with a space
+        return content1 + ' ' + content2;
+    }
+}
+
+class MessageBuffer {
+    constructor() {
+        this.messages = []; // Array of ChatMessage objects
+        this.partialMessages = {}; // Map of role -> current partial message
+    }
+
+    // Add a message to the buffer
+    addMessage(role, content, isFinal = true) {
+        // Skip empty messages
+        if (!content || content.trim() === '') {
+            return null;
+        }
+
+        // Create a new message
+        const message = new ChatMessage(role, content, isFinal);
+
+        // Handle partial messages
+        if (!isFinal) {
+            this.partialMessages[role] = message;
+            return message;
+        }
+
+        // Clear any partial messages for this role
+        if (this.partialMessages[role]) {
+            delete this.partialMessages[role];
+        }
+
+        // Try to merge with recent messages
+        const recentMessages = this.getRecentMessages(role, 3);
+
+        for (const existingMessage of recentMessages) {
+            if (existingMessage.shouldMergeWith(message)) {
+                // Merge the messages
+                existingMessage.content = existingMessage.mergeWith(message);
+                existingMessage.timestamp = Math.max(existingMessage.timestamp, message.timestamp);
+                existingMessage.isFinal = true;
+
+                // Return the merged message
+                return existingMessage;
+            }
+        }
+
+        // If no merge happened, add as a new message
+        this.messages.push(message);
+        return message;
+    }
+
+    // Update a partial message
+    updatePartialMessage(role, content) {
+        // Skip empty messages
+        if (!content || content.trim() === '') {
+            return null;
+        }
+
+        // If there's no partial message for this role, create one
+        if (!this.partialMessages[role]) {
+            this.partialMessages[role] = new ChatMessage(role, content, false);
+            return this.partialMessages[role];
+        }
+
+        // Update the existing partial message
+        this.partialMessages[role].content = content;
+        this.partialMessages[role].timestamp = Date.now();
+
+        return this.partialMessages[role];
+    }
+
+    // Finalize a partial message
+    finalizePartialMessage(role) {
+        // If there's no partial message, do nothing
+        if (!this.partialMessages[role]) {
+            return null;
+        }
+
+        // Get the partial message
+        const message = this.partialMessages[role];
+        message.isFinal = true;
+
+        // Remove from partial messages
+        delete this.partialMessages[role];
+
+        // Try to merge with recent messages
+        const recentMessages = this.getRecentMessages(role, 3);
+
+        for (const existingMessage of recentMessages) {
+            if (existingMessage.shouldMergeWith(message)) {
+                // Merge the messages
+                existingMessage.content = existingMessage.mergeWith(message);
+                existingMessage.timestamp = Math.max(existingMessage.timestamp, message.timestamp);
+                existingMessage.isFinal = true;
+
+                // Return the merged message
+                return existingMessage;
+            }
+        }
+
+        // If no merge happened, add as a new message
+        this.messages.push(message);
+        return message;
+    }
+
+    // Get recent messages from a specific role
+    getRecentMessages(role, count = 1) {
+        return this.messages
+            .filter(m => m.role === role)
+            .sort((a, b) => b.timestamp - a.timestamp) // Most recent first
+            .slice(0, count);
+    }
+
+    // Get all messages in chronological order
+    getAllMessages() {
+        return [...this.messages].sort((a, b) => a.timestamp - b.timestamp);
+    }
+
+    // Get the last message from a specific role
+    getLastMessage(role) {
+        const messages = this.getRecentMessages(role, 1);
+        return messages.length > 0 ? messages[0] : null;
+    }
+
+    // Clear all messages
+    clear() {
+        this.messages = [];
+        this.partialMessages = {};
+    }
+}
+
+// Initialize the message buffer
+const messageBuffer = new MessageBuffer();
 
 // Variables for streaming text
 let currentStreamingMessage = null;
+let currentAssistantMessageDiv = null;
 
 // VAPI configuration
 // const ASSISTANT_ID = 'e6b55e0e-7bd3-49ed-87d6-afbe0a454625';
@@ -165,21 +405,73 @@ function stopDurationTimer() {
     }
 }
 
-// Add message to chat
+// Render all messages from the buffer to the DOM
+function renderMessages() {
+    const chatMessages = document.getElementById('chat-messages');
+
+    // Store scroll position and check if we were at the bottom
+    const wasAtBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 10;
+
+    // Get all messages in chronological order
+    const messages = messageBuffer.getAllMessages();
+
+    // Get partial messages
+    const partialMessages = Object.values(messageBuffer.partialMessages);
+
+    // Create a document fragment to minimize DOM operations
+    const fragment = document.createDocumentFragment();
+
+    // Add each message to the fragment
+    [...messages, ...partialMessages].sort((a, b) => a.timestamp - b.timestamp).forEach(message => {
+        // Skip if the message already has a display element in the DOM
+        if (message.displayElement && message.displayElement.parentNode === chatMessages) {
+            // Just update the content if needed
+            if (message.displayElement.textContent !== message.content) {
+                message.displayElement.textContent = message.content;
+            }
+            return;
+        }
+
+        // Create a new message element
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.classList.add(message.role === 'user' ? 'user-message' : 'assistant-message');
+        messageDiv.textContent = message.content;
+        messageDiv.dataset.messageId = message.id;
+
+        // Store reference to the DOM element
+        message.displayElement = messageDiv;
+
+        // Add to fragment
+        fragment.appendChild(messageDiv);
+    });
+
+    // Clear the container and add the fragment
+    chatMessages.innerHTML = '';
+    chatMessages.appendChild(fragment);
+
+    // Restore scroll position if we were at the bottom
+    if (wasAtBottom) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+}
+
+// Add message to chat (updated to use message buffer)
 function addMessage(text, isUser = false) {
     // Don't add empty messages
     if (!text || text.trim() === '') {
         return null;
     }
 
-    const chatMessages = document.getElementById('chat-messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message');
-    messageDiv.classList.add(isUser ? 'user-message' : 'assistant-message');
-    messageDiv.textContent = text;
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    return messageDiv;
+    // Add to message buffer
+    const role = isUser ? 'user' : 'assistant';
+    const message = messageBuffer.addMessage(role, text, true);
+
+    // Render messages
+    renderMessages();
+
+    // Return the message object
+    return message.displayElement;
 }
 
 // Stream text to message
@@ -195,13 +487,19 @@ function streamTextToMessage(text, speed = 30) {
         currentStreamingMessage = null;
     }
 
-    // Create a new message div
-    const messageDiv = addMessage('', false);
+    // Create a streaming message in the buffer
+    const message = messageBuffer.addMessage('assistant', '', true);
 
     // If message creation failed, return
-    if (!messageDiv) {
+    if (!message) {
         return null;
     }
+
+    // Render the empty message
+    renderMessages();
+
+    // Get the message element
+    const messageDiv = message.displayElement;
 
     // Add a cursor element
     const cursorElement = document.createElement('span');
@@ -211,9 +509,15 @@ function streamTextToMessage(text, speed = 30) {
     let i = 0;
     const streamNextChar = () => {
         if (i < text.length) {
-            // Insert the character before the cursor
-            const textNode = document.createTextNode(text.charAt(i));
-            messageDiv.insertBefore(textNode, cursorElement);
+            // Update the message content
+            message.content = text.substring(0, i + 1);
+
+            // Update the display element
+            messageDiv.textContent = message.content;
+
+            // Re-add the cursor
+            messageDiv.appendChild(cursorElement);
+
             i++;
 
             // Scroll to bottom
@@ -227,12 +531,9 @@ function streamTextToMessage(text, speed = 30) {
             cursorElement.remove();
             currentStreamingMessage = null;
 
-            // Add to conversation history when streaming is complete
-            conversationHistory.push({
-                role: 'assistant',
-                content: text,
-                timestamp: new Date().toLocaleTimeString()
-            });
+            // Ensure the final content is set
+            message.content = text;
+            messageDiv.textContent = text;
         }
     };
 
@@ -302,22 +603,16 @@ function setupSpeechRecognition() {
                     }
                 } else if (isCallActive) {
                     // In a voice call - add to chat window
-                    // If we have a current transcript element, remove it
-                    if (currentUserTranscript) {
-                        currentUserTranscript.remove();
-                    }
+                    logDebug(`Adding user speech to buffer: ${transcript}`);
 
-                    // Create a new transcript element or update existing
-                    currentUserTranscript = addMessage(transcript, true);
+                    // Add to message buffer as a final message
+                    // The buffer will handle merging decisions
+                    messageBuffer.addMessage('user', transcript, true);
 
-                    // Add to conversation history
-                    conversationHistory.push({
-                        role: 'user',
-                        content: transcript,
-                        timestamp: new Date().toLocaleTimeString()
-                    });
+                    // Render messages
+                    renderMessages();
 
-                    // Increment user message count
+                    // Update stats
                     stats.userMessages++;
                     stats.messagesSent++;
                     updateStats();
@@ -655,6 +950,9 @@ function setupVapiEventListeners() {
                     logDebug('Assistant speech started');
                     // Create an empty message div for streaming
                     currentAssistantMessageDiv = addMessage('', false);
+
+                    // Reset the current user transcript so the next user message will be new
+                    currentUserTranscript = null;
                 }
             } else if (message.type === 'transcript') {
                 if (message.role === 'assistant') {
@@ -662,37 +960,27 @@ function setupVapiEventListeners() {
                     const transcriptText = message.transcript;
                     logDebug(`Assistant transcript: ${transcriptText}`);
 
-                    // Check if this is a new part or a continuation
-                    if (message.transcriptType === 'final') {
-                        // This is the final transcript for this part
-                        // Add it as a new message if we don't have a current message div
-                        if (!currentAssistantMessageDiv) {
-                            currentAssistantMessageDiv = addMessage(transcriptText, false);
-                        } else {
-                            // Update the current message with the transcript
-                            currentAssistantMessageDiv.textContent = transcriptText;
-                            const chatMessages = document.getElementById('chat-messages');
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
-                        }
+                    // Check if this is a final or partial transcript
+                    const isFinal = message.transcriptType === 'final';
+
+                    if (isFinal) {
+                        // This is a final transcript - add to buffer
+                        messageBuffer.addMessage('assistant', transcriptText, true);
 
                         // Increment message counts for assistant responses
                         stats.messagesSent++;
                         stats.assistantMessages++;
                         updateStats();
 
-                        // Reset the current message div for the next part
+                        // Reset the current assistant message div
                         currentAssistantMessageDiv = null;
-                    } else if (message.transcriptType === 'partial') {
-                        // This is a partial transcript, update the current message
-                        if (!currentAssistantMessageDiv) {
-                            currentAssistantMessageDiv = addMessage(transcriptText, false);
-                        } else {
-                            // Update the current message with the transcript
-                            currentAssistantMessageDiv.textContent = transcriptText;
-                            const chatMessages = document.getElementById('chat-messages');
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
-                        }
+                    } else {
+                        // This is a partial transcript - update or create partial message
+                        messageBuffer.updatePartialMessage('assistant', transcriptText);
                     }
+
+                    // Render messages
+                    renderMessages();
                 } else if (message.role === 'user' && message.transcript) {
                     // User speech transcript
                     const userText = message.transcript.text || message.transcript;
@@ -705,38 +993,8 @@ function setupVapiEventListeners() {
                     }
 
                     if (isFinal) {
-                        // If we have a current transcript element, remove it
-                        if (currentUserTranscript) {
-                            currentUserTranscript.remove();
-                            currentUserTranscript = null;
-                        }
-
-                        // Check if this is a continuation of a previous sentence
-                        const lastMessage = getLastUserMessage();
-                        const shouldMerge = lastMessage && shouldMergeSentences(lastMessage.textContent, userText);
-
-                        if (shouldMerge && lastMessage) {
-                            // Merge with the previous message
-                            lastMessage.textContent = mergeSentences(lastMessage.textContent, userText);
-
-                            // Update the conversation history
-                            for (let i = conversationHistory.length - 1; i >= 0; i--) {
-                                if (conversationHistory[i].role === 'user') {
-                                    conversationHistory[i].content = lastMessage.textContent;
-                                    break;
-                                }
-                            }
-                        } else {
-                            // Add as a new message
-                            addMessage(userText, true);
-
-                            // Add to conversation history with timestamp
-                            conversationHistory.push({
-                                role: 'user',
-                                content: userText,
-                                timestamp: new Date().toLocaleTimeString()
-                            });
-                        }
+                        // This is a final transcript - add to buffer
+                        messageBuffer.addMessage('user', userText, true);
 
                         // Increment message counts for each final transcript
                         stats.messagesSent++;
@@ -751,15 +1009,12 @@ function setupVapiEventListeners() {
                         // Update stats display
                         updateStats();
                     } else {
-                        // This is a partial transcript
-                        if (!currentUserTranscript) {
-                            // Create a new transcript element
-                            currentUserTranscript = addMessage(userText, true);
-                        } else {
-                            // Update existing transcript element
-                            currentUserTranscript.textContent = userText;
-                        }
+                        // This is a partial transcript - update or create partial message
+                        messageBuffer.updatePartialMessage('user', userText);
                     }
+
+                    // Render messages
+                    renderMessages();
                 }
             } else if (message.type === 'model-output' && message.output && message.output.content) {
                 // Direct model output
@@ -821,8 +1076,9 @@ async function sendMessage() {
 
     // Check for voice trigger phrase
     if (message.toLowerCase() === 'start voice chat') {
-        // Add user message to chat
-        addMessage(message, true);
+        // Add user message to buffer
+        messageBuffer.addMessage('user', message, true);
+        renderMessages();
         messageInput.value = '';
 
         // Start voice chat
@@ -848,8 +1104,9 @@ async function sendMessage() {
     }
 
     // Regular text message
-    // Add user message to chat
-    addMessage(message, true);
+    // Add user message to buffer
+    messageBuffer.addMessage('user', message, true);
+    renderMessages();
     messageInput.value = '';
 
     // Disable input while processing
@@ -857,13 +1114,6 @@ async function sendMessage() {
     document.getElementById('send-button').disabled = true;
 
     try {
-        // Add to conversation history with timestamp
-        conversationHistory.push({
-            role: 'user',
-            content: message,
-            timestamp: new Date().toLocaleTimeString()
-        });
-
         // Increment message counts
         stats.messagesSent++;
         stats.userMessages++;
@@ -872,7 +1122,8 @@ async function sendMessage() {
         stats.requestStartTime = Date.now();
 
         // Show loading indicator
-        addMessage('...', false);
+        messageBuffer.addMessage('assistant', '...', false);
+        renderMessages();
 
         // If vapiInstance exists, use it to send the message
         if (vapiInstance) {
@@ -1087,6 +1338,54 @@ function getLastUserMessage() {
     return userMessages[userMessages.length - 1];
 }
 
+// Get the last assistant message in the chat
+function getLastAssistantMessage() {
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return null;
+
+    // Get all assistant messages
+    const assistantMessages = chatMessages.querySelectorAll('.assistant-message');
+    if (assistantMessages.length === 0) return null;
+
+    // Return the last one
+    return assistantMessages[assistantMessages.length - 1];
+}
+
+// Check if the assistant has spoken since the last user message
+function hasAssistantSpokenSinceLastUserMessage() {
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return true; // Default to true if we can't check
+
+    // Get all message elements
+    const messageElements = chatMessages.children;
+    if (messageElements.length === 0) return false;
+
+    // Start from the end and look for the pattern
+    let lastUserMessageIndex = -1;
+
+    // Find the last user message
+    for (let i = messageElements.length - 1; i >= 0; i--) {
+        if (messageElements[i].classList.contains('user-message')) {
+            lastUserMessageIndex = i;
+            break;
+        }
+    }
+
+    // If no user message found, or it's the last message, return false
+    if (lastUserMessageIndex === -1 || lastUserMessageIndex === messageElements.length - 1) {
+        return false;
+    }
+
+    // Check if there's an assistant message after the last user message
+    for (let i = lastUserMessageIndex + 1; i < messageElements.length; i++) {
+        if (messageElements[i].classList.contains('assistant-message')) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // Check if two sentences should be merged
 function shouldMergeSentences(sentence1, sentence2) {
     if (!sentence1 || !sentence2) return false;
@@ -1098,6 +1397,18 @@ function shouldMergeSentences(sentence1, sentence2) {
     // If either sentence is empty, don't merge
     if (sentence1 === '' || sentence2 === '') return false;
 
+    // Check if the second sentence is a complete version of the first
+    if (sentence2.toLowerCase().includes(sentence1.toLowerCase())) {
+        // If the second sentence contains the first one entirely, use the second one
+        return true;
+    }
+
+    // Check if the first sentence is a complete version of the second
+    if (sentence1.toLowerCase().includes(sentence2.toLowerCase())) {
+        // If the first sentence contains the second one entirely, keep the first one
+        return false;
+    }
+
     // Check if the first sentence ends with a complete sentence marker
     const endsWithSentenceMarker = /[.!?]\s*$/.test(sentence1);
     if (endsWithSentenceMarker) return false;
@@ -1105,12 +1416,30 @@ function shouldMergeSentences(sentence1, sentence2) {
     // Check if the second sentence starts with a lowercase letter (likely a continuation)
     const startsWithLowercase = /^[a-z]/.test(sentence2);
 
-    // Check if the combined text makes sense (no repeated words at the boundary)
-    const lastWordOfFirst = sentence1.split(' ').pop();
-    const firstWordOfSecond = sentence2.split(' ')[0];
-    const hasRepeatedWords = lastWordOfFirst.toLowerCase() === firstWordOfSecond.toLowerCase();
+    // Check if the sentences have significant overlap
+    const words1 = sentence1.toLowerCase().split(' ');
+    const words2 = sentence2.toLowerCase().split(' ');
 
-    return startsWithLowercase || !hasRepeatedWords;
+    // Check for partial sentence overlap (e.g., "Tell me about" and "Tell me more about")
+    let overlapCount = 0;
+    const minLength = Math.min(words1.length, words2.length);
+    for (let i = 0; i < minLength; i++) {
+        if (words1[i] === words2[i]) {
+            overlapCount++;
+        } else {
+            break;
+        }
+    }
+
+    // If there's significant overlap at the beginning (more than 2 words), consider merging
+    const hasSignificantOverlap = overlapCount >= 2 && overlapCount >= minLength * 0.5;
+
+    // Check if the combined text makes sense (no repeated words at the boundary)
+    const lastWordOfFirst = words1[words1.length - 1];
+    const firstWordOfSecond = words2[0];
+    const hasRepeatedWords = lastWordOfFirst === firstWordOfSecond;
+
+    return startsWithLowercase || hasSignificantOverlap || !hasRepeatedWords;
 }
 
 // Merge two sentences intelligently
@@ -1122,12 +1451,41 @@ function mergeSentences(sentence1, sentence2) {
     sentence1 = sentence1.trim();
     sentence2 = sentence2.trim();
 
-    // Check if the second sentence starts with a word that's already at the end of the first
-    const words1 = sentence1.split(' ');
-    const words2 = sentence2.split(' ');
+    // Check if the second sentence is a complete version of the first
+    if (sentence2.toLowerCase().includes(sentence1.toLowerCase())) {
+        // If the second sentence contains the first one entirely, use the second one
+        return sentence2;
+    }
 
-    const lastWordOfFirst = words1[words1.length - 1].toLowerCase();
-    const firstWordOfSecond = words2[0].toLowerCase();
+    // Check if the first sentence is a complete version of the second
+    if (sentence1.toLowerCase().includes(sentence2.toLowerCase())) {
+        // If the first sentence contains the second one entirely, keep the first one
+        return sentence1;
+    }
+
+    // Check for partial sentence overlap at the beginning
+    const words1 = sentence1.toLowerCase().split(' ');
+    const words2 = sentence2.toLowerCase().split(' ');
+
+    let overlapCount = 0;
+    const minLength = Math.min(words1.length, words2.length);
+    for (let i = 0; i < minLength; i++) {
+        if (words1[i] === words2[i]) {
+            overlapCount++;
+        } else {
+            break;
+        }
+    }
+
+    // If there's significant overlap at the beginning, merge intelligently
+    if (overlapCount >= 2) {
+        // Use the second sentence as it's likely more complete
+        return sentence2;
+    }
+
+    // Check if the second sentence starts with a word that's already at the end of the first
+    const lastWordOfFirst = words1[words1.length - 1];
+    const firstWordOfSecond = words2[0];
 
     if (lastWordOfFirst === firstWordOfSecond) {
         // Remove the duplicate word
@@ -1135,6 +1493,90 @@ function mergeSentences(sentence1, sentence2) {
     } else {
         // Just concatenate with a space
         return sentence1 + ' ' + sentence2;
+    }
+}
+
+// Check if two assistant messages should be merged
+function shouldMergeAssistantMessages(message1, message2) {
+    if (!message1 || !message2) return false;
+
+    // Trim the messages
+    message1 = message1.trim();
+    message2 = message2.trim();
+
+    // If either message is empty, don't merge
+    if (message1 === '' || message2 === '') return false;
+
+    // Check if the second message is a complete version of the first
+    if (message2.toLowerCase().includes(message1.toLowerCase())) {
+        // If the second message contains the first one entirely, use the second one
+        return true;
+    }
+
+    // Check if the first message is a complete version of the second
+    if (message1.toLowerCase().includes(message2.toLowerCase())) {
+        // If the first message contains the second one entirely, keep the first one
+        return false;
+    }
+
+    // Check if the messages are part of the same sentence or thought
+    // First, check if the first message ends with a complete sentence marker
+    const endsWithSentenceMarker = /[.!?]\s*$/.test(message1);
+    if (endsWithSentenceMarker) {
+        // If the first message ends with a sentence marker, only merge if the second
+        // message is clearly a continuation (starts with lowercase)
+        return /^[a-z]/.test(message2);
+    }
+
+    // If the first message doesn't end with a sentence marker, it's likely incomplete
+    // so we should merge with the second message
+    return true;
+}
+
+// Merge two assistant messages intelligently
+function mergeAssistantMessages(message1, message2) {
+    if (!message1 || message1.trim() === '') return message2 || '';
+    if (!message2 || message2.trim() === '') return message1 || '';
+
+    // Trim the messages
+    message1 = message1.trim();
+    message2 = message2.trim();
+
+    // Check if the second message is a complete version of the first
+    if (message2.toLowerCase().includes(message1.toLowerCase())) {
+        // If the second message contains the first one entirely, use the second one
+        return message2;
+    }
+
+    // Check if the first message is a complete version of the second
+    if (message1.toLowerCase().includes(message2.toLowerCase())) {
+        // If the first message contains the second one entirely, keep the first one
+        return message1;
+    }
+
+    // Check if the first message ends with a sentence marker
+    if (/[.!?]\s*$/.test(message1)) {
+        // If it does, just concatenate with a space
+        return message1 + ' ' + message2;
+    } else {
+        // If it doesn't, it's likely an incomplete sentence, so we need to be smarter
+        // about how we merge
+
+        // Split into words
+        const words1 = message1.split(' ');
+        const words2 = message2.split(' ');
+
+        // Check for duplicate words at the boundary
+        const lastWordOfFirst = words1[words1.length - 1].toLowerCase();
+        const firstWordOfSecond = words2[0].toLowerCase();
+
+        if (lastWordOfFirst === firstWordOfSecond) {
+            // Remove the duplicate word
+            return message1 + ' ' + words2.slice(1).join(' ');
+        } else {
+            // Just concatenate with a space
+            return message1 + ' ' + message2;
+        }
     }
 }
 
@@ -1146,7 +1588,10 @@ function updateHistoryTab() {
     // Clear existing content
     historyContent.innerHTML = '';
 
-    if (conversationHistory.length === 0) {
+    // Get all messages from the buffer
+    const messages = messageBuffer.getAllMessages();
+
+    if (messages.length === 0) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('history-message', 'system-message');
         messageDiv.textContent = 'No conversation history yet';
@@ -1155,18 +1600,16 @@ function updateHistoryTab() {
     }
 
     // Add each message to the history
-    conversationHistory.forEach(message => {
+    messages.forEach(message => {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('history-message');
         messageDiv.classList.add(message.role === 'user' ? 'user-message' : 'assistant-message');
 
-        // Add timestamp if available
-        if (message.timestamp) {
-            const timestampSpan = document.createElement('span');
-            timestampSpan.classList.add('message-timestamp');
-            timestampSpan.textContent = message.timestamp;
-            messageDiv.appendChild(timestampSpan);
-        }
+        // Add timestamp
+        const timestampSpan = document.createElement('span');
+        timestampSpan.classList.add('message-timestamp');
+        timestampSpan.textContent = new Date(message.timestamp).toLocaleTimeString();
+        messageDiv.appendChild(timestampSpan);
 
         // Add content
         const contentDiv = document.createElement('div');
@@ -1183,7 +1626,8 @@ function updateHistoryTab() {
 
 // Clear conversation history
 function clearHistory() {
-    conversationHistory = [];
+    messageBuffer.clear();
+    renderMessages();
     updateHistoryTab();
     logDebug('Conversation history cleared');
 }
