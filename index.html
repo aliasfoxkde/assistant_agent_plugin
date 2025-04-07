@@ -19,7 +19,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Voice & Chat Assistant</h1>
+        <h1>Voice & Chat<br>Assistant</h1>
 
         <!-- Status Display -->
         <div class="status-display">
@@ -53,8 +53,8 @@
                         <div class="stat-value" id="stat-ttfw">-- ms</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-title">Messages Sent</div>
-                        <div class="stat-value" id="stat-messages-sent">0</div>
+                        <div class="stat-title">Session Count</div>
+                        <div class="stat-value" id="stat-session-count">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-title">User Messages</div>
@@ -149,51 +149,94 @@
                     </div>
                     <div class="details-content">
                         <div class="details-section">
-                            <h4>Basic Information</h4>
-                            <div class="details-item">
-                                <span class="details-label">Assistant ID:</span>
-                                <span class="details-value" id="details-assistant-id">Loading...</span>
-                            </div>
+                            <h4>Assistant Information</h4>
                             <div class="details-item">
                                 <span class="details-label">Name:</span>
                                 <span class="details-value" id="details-name">Loading...</span>
                             </div>
                             <div class="details-item">
-                                <span class="details-label">Description:</span>
-                                <span class="details-value" id="details-description">Loading...</span>
+                                <span class="details-label">ID:</span>
+                                <span class="details-value" id="details-assistant-id">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Created:</span>
+                                <span class="details-value" id="details-created">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Updated:</span>
+                                <span class="details-value" id="details-updated">Loading...</span>
                             </div>
                         </div>
                         <div class="details-section">
-                            <h4>Model Configuration</h4>
+                            <h4>AI Model</h4>
                             <div class="details-item">
                                 <span class="details-label">Model:</span>
                                 <span class="details-value" id="details-model">Loading...</span>
                             </div>
                             <div class="details-item">
-                                <span class="details-label">Temperature:</span>
-                                <span class="details-value" id="details-temperature">Loading...</span>
+                                <span class="details-label">Provider:</span>
+                                <span class="details-value" id="details-model-provider">Loading...</span>
                             </div>
                             <div class="details-item">
-                                <span class="details-label">System Prompt:</span>
-                                <div class="details-value system-prompt" id="details-system-prompt">Loading...</div>
+                                <span class="details-label">Temperature:</span>
+                                <span class="details-value" id="details-temperature">Loading...</span>
                             </div>
                         </div>
                         <div class="details-section">
                             <h4>Voice Configuration</h4>
                             <div class="details-item">
-                                <span class="details-label">Voice:</span>
+                                <span class="details-label">Voice ID:</span>
                                 <span class="details-value" id="details-voice">Loading...</span>
                             </div>
                             <div class="details-item">
-                                <span class="details-label">Voice Settings:</span>
-                                <span class="details-value" id="details-voice-settings">Loading...</span>
+                                <span class="details-label">Voice Model:</span>
+                                <span class="details-value" id="details-voice-model">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Provider:</span>
+                                <span class="details-value" id="details-voice-provider">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Settings:</span>
+                                <span class="details-value code-format" id="details-voice-settings">Loading...</span>
                             </div>
                         </div>
                         <div class="details-section">
-                            <h4>Tools & Capabilities</h4>
+                            <h4>Speech Recognition</h4>
                             <div class="details-item">
-                                <span class="details-label">Tools:</span>
-                                <div class="details-value" id="details-tools">Loading...</div>
+                                <span class="details-label">Model:</span>
+                                <span class="details-value" id="details-transcriber-model">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Provider:</span>
+                                <span class="details-value" id="details-transcriber-provider">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Language:</span>
+                                <span class="details-value" id="details-transcriber-language">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="details-section">
+                            <h4>Conversation Features</h4>
+                            <div class="details-item">
+                                <span class="details-label">Backchanneling:</span>
+                                <span class="details-value" id="details-backchanneling">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Background Denoising:</span>
+                                <span class="details-value" id="details-denoising">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Silence Timeout:</span>
+                                <span class="details-value" id="details-silence-timeout">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Max Duration:</span>
+                                <span class="details-value" id="details-max-duration">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Recording Enabled:</span>
+                                <span class="details-value" id="details-recording">Loading...</span>
                             </div>
                         </div>
                     </div>

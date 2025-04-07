@@ -344,7 +344,7 @@ h1 {
     color: #334155;
 }
 
-.system-prompt {
+.system-prompt, .code-format {
     white-space: pre-wrap;
     background-color: #f1f5f9;
     padding: 10px;
@@ -837,4 +837,56 @@ h1 {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
+}
+
+/* Enhanced Details Tab Styling */
+.details-section {
+    margin-bottom: 24px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.details-section h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    font-size: 16px;
+}
+
+.details-item {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 4px 0;
+}
+
+.details-label {
+    font-weight: bold;
+    color: #555;
+    flex: 0 0 40%;
+}
+
+.details-value {
+    color: #333;
+    flex: 0 0 58%;
+    text-align: right;
+    word-break: break-word;
+}
+
+.code-format {
+    font-family: monospace;
+    background-color: #f1f5f9;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    max-height: 150px;
+    overflow-y: auto;
+    text-align: left;
+    white-space: pre-wrap;
 }

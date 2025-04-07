@@ -270,7 +270,7 @@ let stats = {
     latency: 0,
     duration: 0,
     timeToFirstWord: 0,
-    messagesSent: 0,
+    sessionCount: 0,
     userMessages: 0,
     assistantMessages: 0,
     callStartTime: 0,
@@ -283,15 +283,37 @@ let stats = {
 
 // Assistant details
 let assistantDetails = {
-    id: ASSISTANT_ID,
-    name: 'VAPI Assistant',
-    description: 'A voice-enabled AI assistant',
-    model: 'Unknown',
-    temperature: 0.7,
-    systemPrompt: 'You are a helpful assistant.',
-    voice: 'alloy',
-    voiceSettings: {},
-    tools: []
+    id: '007c44a8-8465-4539-b579-dd6d6f471b72',
+    orgId: 'fc8e63be-1bd1-4c43-b09e-2287e6186067',
+    name: 'Agent_v0.3.3',
+    createdAt: '2025-04-06T06:46:22.106Z',
+    updatedAt: '2025-04-06T08:33:56.687Z',
+    model: 'gpt-4o-mini',
+    modelProvider: 'openai',
+    temperature: 0.6,
+    maxTokens: 256,
+    toolIds: ['948e8ec4-b9d3-48cc-9d58-86b7af4affa6'],
+    voice: 'tundra',
+    voiceModel: 'mistv2',
+    voiceProvider: 'rime-ai',
+    voiceSettings: {
+        reduceLatency: false,
+        pauseBetweenBrackets: false,
+        phonemizeBetweenBrackets: false
+    },
+    transcriberModel: 'nova-3-general',
+    transcriberProvider: 'deepgram',
+    transcriberLanguage: 'en',
+    transcriberEndpointing: 300,
+    transcriberConfidence: 0.5,
+    transcriberNumerals: false,
+    backchannelingEnabled: true,
+    backgroundDenoisingEnabled: true,
+    silenceTimeout: 30,
+    maxDuration: 7200,
+    backgroundSound: 'off',
+    recordingEnabled: false,
+    hipaaEnabled: false
 };
 
 // Debug logging function
@@ -333,7 +355,7 @@ function updateStats() {
     document.getElementById('stat-latency').textContent = stats.latency + ' ms';
     document.getElementById('stat-duration').textContent = stats.duration.toFixed(1) + ' sec';
     document.getElementById('stat-ttfw').textContent = stats.timeToFirstWord + ' ms';
-    document.getElementById('stat-messages-sent').textContent = stats.messagesSent;
+    document.getElementById('stat-session-count').textContent = stats.sessionCount;
     document.getElementById('stat-user-messages').textContent = stats.userMessages;
     document.getElementById('stat-assistant-messages').textContent = stats.assistantMessages;
     document.getElementById('stat-tokens-sent').textContent = stats.tokensSent;
@@ -344,34 +366,125 @@ function updateStats() {
 
 // Update details tab
 function updateDetailsTab() {
-    // Basic Information
-    document.getElementById('details-assistant-id').textContent = assistantDetails.id;
-    document.getElementById('details-name').textContent = assistantDetails.name;
-    document.getElementById('details-description').textContent = assistantDetails.description;
+    // Assistant Information
+    document.getElementById('details-name').textContent = assistantDetails.name || 'Unknown';
+    document.getElementById('details-assistant-id').textContent = assistantDetails.id || 'Unknown';
 
-    // Model Configuration
-    document.getElementById('details-model').textContent = assistantDetails.model;
-    document.getElementById('details-temperature').textContent = assistantDetails.temperature;
-    document.getElementById('details-system-prompt').textContent = assistantDetails.systemPrompt;
+    // Format created date
+    if (assistantDetails.createdAt) {
+        try {
+            const createdDate = new Date(assistantDetails.createdAt);
+            document.getElementById('details-created').textContent =
+                createdDate.toLocaleString(undefined, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+        } catch (e) {
+            document.getElementById('details-created').textContent = assistantDetails.createdAt;
+        }
+    } else {
+        document.getElementById('details-created').textContent = 'Not available';
+    }
+
+    // Format updated date
+    if (assistantDetails.updatedAt) {
+        try {
+            const updatedDate = new Date(assistantDetails.updatedAt);
+            document.getElementById('details-updated').textContent =
+                updatedDate.toLocaleString(undefined, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+        } catch (e) {
+            document.getElementById('details-updated').textContent = assistantDetails.updatedAt;
+        }
+    } else {
+        document.getElementById('details-updated').textContent = 'Not available';
+    }
+
+    // AI Model Information
+    document.getElementById('details-model').textContent = assistantDetails.model || 'Unknown';
+    document.getElementById('details-model-provider').textContent = assistantDetails.modelProvider || 'Unknown';
+    document.getElementById('details-temperature').textContent =
+        typeof assistantDetails.temperature === 'number' ?
+        assistantDetails.temperature.toFixed(2) : 'Default';
 
     // Voice Configuration
-    document.getElementById('details-voice').textContent = assistantDetails.voice;
-    document.getElementById('details-voice-settings').textContent =
-        Object.keys(assistantDetails.voiceSettings).length > 0 ?
-        JSON.stringify(assistantDetails.voiceSettings, null, 2) : 'Default';
+    document.getElementById('details-voice').textContent = assistantDetails.voice || 'Unknown';
+    document.getElementById('details-voice-model').textContent = assistantDetails.voiceModel || 'Unknown';
+    document.getElementById('details-voice-provider').textContent = assistantDetails.voiceProvider || 'Unknown';
 
-    // Tools
-    const toolsElement = document.getElementById('details-tools');
-    if (assistantDetails.tools && assistantDetails.tools.length > 0) {
-        toolsElement.innerHTML = '';
-        assistantDetails.tools.forEach(tool => {
-            const toolDiv = document.createElement('div');
-            toolDiv.classList.add('tool-item');
-            toolDiv.textContent = tool.name || tool;
-            toolsElement.appendChild(toolDiv);
-        });
+    // Format voice settings for better readability
+    const voiceSettingsElement = document.getElementById('details-voice-settings');
+    if (assistantDetails.voiceSettings && Object.keys(assistantDetails.voiceSettings).length > 0) {
+        try {
+            // Format as pretty JSON with indentation
+            const formattedSettings = JSON.stringify(assistantDetails.voiceSettings, null, 2);
+            voiceSettingsElement.textContent = formattedSettings;
+        } catch (error) {
+            voiceSettingsElement.textContent = 'Custom settings (unable to display)';
+        }
     } else {
-        toolsElement.textContent = 'No tools configured';
+        voiceSettingsElement.textContent = 'Default settings';
+    }
+
+    // Speech Recognition Information
+    document.getElementById('details-transcriber-model').textContent =
+        assistantDetails.transcriberModel || 'Unknown';
+    document.getElementById('details-transcriber-provider').textContent =
+        assistantDetails.transcriberProvider || 'Unknown';
+    document.getElementById('details-transcriber-language').textContent =
+        assistantDetails.transcriberLanguage || 'Unknown';
+
+    // Conversation Features
+    document.getElementById('details-backchanneling').textContent =
+        assistantDetails.backchannelingEnabled !== undefined ?
+        (assistantDetails.backchannelingEnabled ? 'Enabled' : 'Disabled') : 'Unknown';
+
+    document.getElementById('details-denoising').textContent =
+        assistantDetails.backgroundDenoisingEnabled !== undefined ?
+        (assistantDetails.backgroundDenoisingEnabled ? 'Enabled' : 'Disabled') : 'Unknown';
+
+    // Silence timeout
+    document.getElementById('details-silence-timeout').textContent =
+        assistantDetails.silenceTimeout !== undefined ?
+        `${assistantDetails.silenceTimeout} seconds` : 'Default';
+
+    // Max duration
+    document.getElementById('details-max-duration').textContent =
+        assistantDetails.maxDuration !== undefined ?
+        formatDuration(assistantDetails.maxDuration) : 'Default';
+
+    // Recording enabled
+    document.getElementById('details-recording').textContent =
+        assistantDetails.recordingEnabled !== undefined ?
+        (assistantDetails.recordingEnabled ? 'Enabled' : 'Disabled') : 'Unknown';
+
+    // Log that details have been updated
+    logDebug('Assistant details updated in UI with specific information');
+}
+
+// Helper function to format duration in seconds to a human-readable format
+function formatDuration(seconds) {
+    if (seconds < 60) {
+        return `${seconds} seconds`;
+    } else if (seconds < 3600) {
+        const minutes = Math.floor(seconds / 60);
+        return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+    } else {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        let result = `${hours} hour${hours !== 1 ? 's' : ''}`;
+        if (minutes > 0) {
+            result += ` ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        }
+        return result;
     }
 }
 
@@ -807,7 +920,7 @@ function setupVapiEventListeners() {
         // Update stats
         stats.callStartTime = Date.now();
         stats.firstWordTime = 0;
-        stats.messagesSent++;
+        stats.sessionCount++;
         updateStats();
 
         // Start duration timer
@@ -898,42 +1011,175 @@ function setupVapiEventListeners() {
 
         // Check for assistant details
         if (message.assistant) {
-            // Update assistant details
+            logDebug(`Assistant details received: ${JSON.stringify(message.assistant)}`);
+
+            // Create a deep copy of the current assistant details for comparison
+            const previousDetails = JSON.stringify(assistantDetails);
+
+            // Update basic assistant details
             assistantDetails.id = message.assistant.id || assistantDetails.id;
             assistantDetails.name = message.assistant.name || assistantDetails.name;
-            assistantDetails.description = message.assistant.description || assistantDetails.description;
 
+            // Update organization ID if available
+            if (message.assistant.orgId) {
+                assistantDetails.orgId = message.assistant.orgId;
+            }
+
+            // Update creation and update dates if available
+            if (message.assistant.createdAt) {
+                assistantDetails.createdAt = message.assistant.createdAt;
+            }
+            if (message.assistant.updatedAt) {
+                assistantDetails.updatedAt = message.assistant.updatedAt;
+            }
+
+            // Handle model information
             if (message.assistant.model) {
-                assistantDetails.model = message.assistant.model.name || message.assistant.model;
-                if (message.assistant.model.temperature) {
-                    assistantDetails.temperature = message.assistant.model.temperature;
+                if (typeof message.assistant.model === 'string') {
+                    assistantDetails.model = message.assistant.model;
+                } else if (typeof message.assistant.model === 'object') {
+                    // Extract model name
+                    if (message.assistant.model.model) {
+                        assistantDetails.model = message.assistant.model.model;
+                    } else if (message.assistant.model.name) {
+                        assistantDetails.model = message.assistant.model.name;
+                    } else if (message.assistant.model.id) {
+                        assistantDetails.model = message.assistant.model.id;
+                    }
+
+                    // Extract temperature
+                    if (typeof message.assistant.model.temperature === 'number') {
+                        assistantDetails.temperature = message.assistant.model.temperature;
+                    }
+
+                    // Extract provider if available
+                    if (message.assistant.model.provider) {
+                        assistantDetails.modelProvider = message.assistant.model.provider;
+                    }
+
+                    // Extract tool IDs if available
+                    if (Array.isArray(message.assistant.model.toolIds)) {
+                        assistantDetails.toolIds = message.assistant.model.toolIds;
+                    }
+
+                    // Extract max tokens if available
+                    if (message.assistant.model.maxTokens) {
+                        assistantDetails.maxTokens = message.assistant.model.maxTokens;
+                    }
                 }
             }
 
+            // Handle voice information
             if (message.assistant.voice) {
-                assistantDetails.voice = message.assistant.voice.name || message.assistant.voice;
-                assistantDetails.voiceSettings = message.assistant.voice.settings || {};
+                if (typeof message.assistant.voice === 'string') {
+                    assistantDetails.voice = message.assistant.voice;
+                } else if (typeof message.assistant.voice === 'object') {
+                    // Extract voice ID
+                    if (message.assistant.voice.voiceId) {
+                        assistantDetails.voice = message.assistant.voice.voiceId;
+                    } else if (message.assistant.voice.name) {
+                        assistantDetails.voice = message.assistant.voice.name;
+                    } else if (message.assistant.voice.id) {
+                        assistantDetails.voice = message.assistant.voice.id;
+                    }
+
+                    // Extract voice model
+                    if (message.assistant.voice.model) {
+                        assistantDetails.voiceModel = message.assistant.voice.model;
+                    }
+
+                    // Extract voice provider
+                    if (message.assistant.voice.provider) {
+                        assistantDetails.voiceProvider = message.assistant.voice.provider;
+                    }
+
+                    // Extract all voice settings
+                    assistantDetails.voiceSettings = {};
+
+                    // Copy all properties from voice object except known ones
+                    const knownProps = ['voiceId', 'name', 'id', 'model', 'provider'];
+                    Object.keys(message.assistant.voice).forEach(key => {
+                        if (!knownProps.includes(key)) {
+                            assistantDetails.voiceSettings[key] = message.assistant.voice[key];
+                        }
+                    });
+                }
             }
 
-            if (message.assistant.tools) {
-                assistantDetails.tools = message.assistant.tools;
+            // Handle transcriber information
+            if (message.assistant.transcriber) {
+                assistantDetails.transcriberModel = message.assistant.transcriber.model || 'Unknown';
+                assistantDetails.transcriberProvider = message.assistant.transcriber.provider || 'Unknown';
+                assistantDetails.transcriberLanguage = message.assistant.transcriber.language || 'en';
+
+                // Extract additional transcriber settings
+                if (message.assistant.transcriber.endpointing) {
+                    assistantDetails.transcriberEndpointing = message.assistant.transcriber.endpointing;
+                }
+                if (message.assistant.transcriber.confidenceThreshold) {
+                    assistantDetails.transcriberConfidence = message.assistant.transcriber.confidenceThreshold;
+                }
+                if (message.assistant.transcriber.numerals !== undefined) {
+                    assistantDetails.transcriberNumerals = message.assistant.transcriber.numerals;
+                }
             }
 
-            if (message.assistant.system_prompt) {
-                assistantDetails.systemPrompt = message.assistant.system_prompt;
+            // Handle conversation settings
+            if (message.assistant.backchannelingEnabled !== undefined) {
+                assistantDetails.backchannelingEnabled = message.assistant.backchannelingEnabled;
+            }
+            if (message.assistant.backgroundDenoisingEnabled !== undefined) {
+                assistantDetails.backgroundDenoisingEnabled = message.assistant.backgroundDenoisingEnabled;
+            }
+            if (message.assistant.silenceTimeoutSeconds !== undefined) {
+                assistantDetails.silenceTimeout = message.assistant.silenceTimeoutSeconds;
+            }
+            if (message.assistant.maxDurationSeconds !== undefined) {
+                assistantDetails.maxDuration = message.assistant.maxDurationSeconds;
+            }
+            if (message.assistant.backgroundSound !== undefined) {
+                assistantDetails.backgroundSound = message.assistant.backgroundSound;
+            }
+            if (message.assistant.recordingEnabled !== undefined) {
+                assistantDetails.recordingEnabled = message.assistant.recordingEnabled;
+            }
+            if (message.assistant.hipaaEnabled !== undefined) {
+                assistantDetails.hipaaEnabled = message.assistant.hipaaEnabled;
             }
 
-            // Update details tab
-            updateDetailsTab();
+            // Check if details have changed before updating UI
+            if (previousDetails !== JSON.stringify(assistantDetails)) {
+                logDebug('Assistant details have changed, updating UI');
+                updateDetailsTab();
+            } else {
+                logDebug('Assistant details unchanged, skipping UI update');
+            }
         }
 
         // Check for token usage
         if (message.usage) {
+            logDebug(`Token usage received: ${JSON.stringify(message.usage)}`);
             if (message.usage.prompt_tokens) {
                 stats.tokensSent += message.usage.prompt_tokens;
+                logDebug(`Updated tokens sent: ${stats.tokensSent}`);
             }
             if (message.usage.completion_tokens) {
                 stats.tokensReceived += message.usage.completion_tokens;
+                logDebug(`Updated tokens received: ${stats.tokensReceived}`);
+            }
+            updateStats();
+        }
+
+        // Also check for token usage in other message formats
+        if (message.tokens) {
+            logDebug(`Token info received: ${JSON.stringify(message.tokens)}`);
+            if (message.tokens.prompt) {
+                stats.tokensSent += message.tokens.prompt;
+                logDebug(`Updated tokens sent: ${stats.tokensSent}`);
+            }
+            if (message.tokens.completion) {
+                stats.tokensReceived += message.tokens.completion;
+                logDebug(`Updated tokens received: ${stats.tokensReceived}`);
             }
             updateStats();
         }
@@ -967,8 +1213,7 @@ function setupVapiEventListeners() {
                         // This is a final transcript - add to buffer
                         messageBuffer.addMessage('assistant', transcriptText, true);
 
-                        // Increment message counts for assistant responses
-                        stats.messagesSent++;
+                        // Increment assistant message count
                         stats.assistantMessages++;
                         updateStats();
 
@@ -996,8 +1241,7 @@ function setupVapiEventListeners() {
                         // This is a final transcript - add to buffer
                         messageBuffer.addMessage('user', userText, true);
 
-                        // Increment message counts for each final transcript
-                        stats.messagesSent++;
+                        // Increment user message count
                         stats.userMessages++;
 
                         // Calculate latency if we have a request start time
@@ -1056,8 +1300,7 @@ function setupVapiEventListeners() {
             removeLoadingIndicators();
             streamTextToMessage(text);
 
-            // Increment message counts for text responses
-            stats.messagesSent++;
+            // Increment assistant message count
             stats.assistantMessages++;
             updateStats();
         });
@@ -1115,7 +1358,10 @@ async function sendMessage() {
 
     try {
         // Increment message counts
-        stats.messagesSent++;
+        if (!isCallActive) {
+            // Only increment session count if this is a new text chat (not during an active call)
+            stats.sessionCount++;
+        }
         stats.userMessages++;
 
         // Record request start time for latency calculation

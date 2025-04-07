@@ -11,7 +11,6 @@ Improvements:
 - [ ] Put "Assistant" in tittle on the next line.
 - [ ] Microphone activated and deactivated repeatidly. Can this be improved, maybe adjust the "Speech recognition" backoff of 1000ms.
       Is is there a smarter way to listen for "Start Voice Chat"?
-
 - [ ] Automate add, commit (with AI Message), and push (for IDE Agentic features)?
 - [ ] Add tooltip info box for instructions into the chat widget
 - [ ] Add floating text or identifier on how to activate the chat, etc.
@@ -48,6 +47,10 @@ UI/UX:
 - [ ] Add settings button
 
 Bugs:
+- [ ] Fix Cloudflare errors:
+  - [ ] "Speech recognition error: network"
+  - [ ] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+  - [ ] Constantly connecting and disconnecting the microphone/Speech recognition
 - [ ] Fix where words are cut off in the chat window
 - [ ] Fix how spoken words (agent or user) override each other
 - [ ] Swoosh sound does not (always?) work on first hover of chat window
