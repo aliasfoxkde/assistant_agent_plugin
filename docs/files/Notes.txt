@@ -1,0 +1,46 @@
+# Inline Speed Alpha
+Allows setting voice speed dynamically in text using alpha notation. Enter custom inline speed parameters for more granular control over speech pacing. Values < 1.0 speed up speech, > 1.0 slow it down. Example: “This is [slow] and [fast]”, use “3, 0.5” to make “slow” slower and “fast” faster..
+Speech types: (sad|depressed|angry|tired|excited|happy)
+
+## Todo:
+- Add Filters (Language, Gender, Age, Country, Region, Demographic, and Genre)
+
+## Testing
+Test memory and confusing agent.
+I'm Micheal, I like ...
+
+https://docs.vapi.ai/customization/tool-calling-integration
+https://docs.vapi.ai/customization/custom-transcriber
+app.post("/chat/completions/custom-tool", async (req: Request, res: Response) => {
+  logEvent("Received request at /chat/completions/custom-tool", req.body);
+  // Expect the payload to have a "message" with a "toolCallList" array.
+  const vapiPayload = req.body.message;
+
+  // Process tool call.
+  for (const toolCall of vapiPayload.toolCallList) {
+    if (toolCall.function?.name === "processOrder") {
+      const hardcodedResult = "CustomTool processOrder With CustomLLM Always Works";
+      logEvent("Returning hardcoded result for 'processOrder'", { toolCallId: toolCall.id });
+      return res.json({
+        results: [
+          {
+            toolCallId: toolCall.id,
+            result: hardcodedResult,
+          },
+        ],
+      });
+    }
+  }
+});
+
+# Resources:
+https://api.vapi.ai/api#/Calls/CallController_create
+https://www.box.com/ai/ai-studio
+https://docs.rime.ai/api-reference/endpoint/websockets#param-inline-speed-alpha
+https://docs.rime.ai/api-reference/speed
+https://docs.rime.ai/api-reference/quickstart
+https://docs.vapi.ai/introduction
+https://docs.vapi.ai/community/outbound
+https://docs.vapi.ai/community/snippets-sdks-tutorials
+https://docs.vapi.ai/customization/custom-llm/using-your-server
+https://app.rime.ai/
