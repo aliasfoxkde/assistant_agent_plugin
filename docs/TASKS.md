@@ -3,6 +3,7 @@ This document outlines the tasks required to implement the Voice Assistance Plug
 
 Infrastructure
 - [ ] Deploy to Cloudflare (to share demo)
+- [ ] Move around tasks and cleanup
 
 Improvements:
 - [ ] Change messages sent to be Session Count, and keep track of the number of voice/chat instances are started.
