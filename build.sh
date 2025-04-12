@@ -5,10 +5,10 @@ mkdir -p dist
 mkdir -p dist/functions
 
 # Copy all necessary files to dist
-cp -r index.html login.html manifest.json _redirects dist/
+cp -r index.html login.html landing.html config.html manifest.json _redirects dist/
 
 # Create assets directory structure in dist
-mkdir -p dist/assets/css dist/assets/js dist/assets/icons dist/assets/sounds
+mkdir -p dist/assets/css dist/assets/js dist/assets/icons dist/assets/sounds dist/assets/images
 
 # Copy CSS files
 cp -r assets/css/* dist/assets/css/
@@ -21,6 +21,9 @@ cp -r assets/icons/* dist/assets/icons/
 
 # Copy sounds
 cp -r assets/sounds/* dist/assets/sounds/
+
+# Copy images
+cp -r assets/images/* dist/assets/images/
 
 # Copy functions directory
 cp -r functions/ dist/functions/

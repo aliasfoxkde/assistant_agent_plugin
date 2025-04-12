@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAPI Learning Platform - AI-Powered Education</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/landing-styles.css">
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    
+    <!-- Swiper JS for Carousel -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+</head>
+<body>
+    <!-- Discount Banner -->
+    <div class="discount-banner">
+        <div class="container">
+            <p><strong>Limited Time Offer:</strong> Get 30% off all annual plans with code <span class="promo-code">LEARN30</span></p>
+            <button class="banner-close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+    
+    <!-- Sticky Navigation -->
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/icons/icon.svg" alt="VAPI Logo">
+                <span>VAPI</span>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-buttons">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="login.html?signup=true" class="btn btn-primary">Sign Up</a>
+                <button class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Transform Your Learning Experience with AI</h1>
+                <p>VAPI is an AI-powered learning platform that adapts to your needs, providing personalized education for students and powerful tools for instructors.</p>
+                <div class="hero-buttons">
+                    <a href="login.html?signup=true" class="btn btn-primary btn-lg">Get Started for Free</a>
+                    <a href="#courses" class="btn btn-outline btn-lg">Explore Courses</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10k+</span>
+                        <span class="stat-label">Students</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Courses</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/images/hero-illustration.svg" alt="Learning Illustration">
+            </div>
+        </div>
+    </section>
+    
+    <!-- Mission Statement -->
+    <section class="mission">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Mission</h2>
+                <p>Empowering learners and educators through innovative AI technology</p>
+            </div>
+            <div class="mission-cards">
+                <div class="mission-card">
+                    <div class="card-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Personalized Learning</h3>
+                    <p>Our AI adapts to your learning style, pace, and preferences to create a truly personalized educational experience.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Focused</h3>
+                    <p>Join a vibrant community of learners and educators who collaborate and support each other's growth.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Data-Driven Progress</h3>
+                    <p>Track your learning journey with detailed analytics and insights to maximize your educational outcomes.</p>
+                </div>
+            </div>
+            <div class="mission-cta">
+                <a href="login.html?signup=true" class="btn btn-primary">Join Our Community</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Courses Section -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <div class="section-header">
+                <h2>Explore Our Courses</h2>
+                <p>Discover a wide range of courses designed to help you achieve your goals</p>
+            </div>
+            
+            <div class="course-filters">
+                <button class="filter-btn active" data-filter="all">All Categories</button>
+                <button class="filter-btn" data-filter="technology">Technology</button>
+                <button class="filter-btn" data-filter="business">Business</button>
+                <button class="filter-btn" data-filter="design">Design</button>
+                <button class="filter-btn" data-filter="language">Languages</button>
+            </div>
+            
+            <div class="swiper course-carousel">
+                <div class="swiper-wrapper">
+                    <!-- Technology Courses -->
+                    <div class="swiper-slide course-card" data-category="technology">
+                        <div class="course-image">
+                            <img src="assets/images/course-python.jpg" alt="Python Programming">
+                            <div class="course-badge">Bestseller</div>
+                        </div>
+                        <div class="course-content">
+                            <div class="course-info">
+                                <span class="course-level"><i class="fas fa-signal"></i> Beginner</span>
+                                <span class="course-duration"><i class="fas fa-clock"></i> 12 weeks</span>
+                            </div>
+                            <h3>Python Programming Fundamentals</h3>
+                            <p>Learn Python from scratch and build real-world applications with this comprehensive course.</p>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span>4.8 (2.4k reviews)</span>
+                                </div>
+                                <div class="course-price">$49.99</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="swiper-slide course-card" data-category="technology">
+                        <div class="course-image">
+                            <img src="assets/images/course-web-dev.jpg" alt="Web Development">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-info">
+                                <span class="course-level"><i class="fas fa-signal"></i> Intermediate</span>
+                                <span class="course-duration"><i class="fas fa-clock"></i> 10 weeks</span>
+                            </div>
+                            <h3>Full-Stack Web Development</h3>
+                            <p>Master front-end and back-end technologies to become a complete web developer.</p>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (1.8k reviews)</span>
+                                </div>
+                                <div class="course-price">$69.99</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Business Courses -->
+                    <div class="swiper-slide course-card" data-category="business">
+                        <div class="course-image">
+                            <img src="assets/images/course-marketing.jpg" alt="Digital Marketing">
+                            <div class="course-badge">New</div>
+                        </div>
+                        <div class="course-content">
+                            <div class="course-info">
+                                <span class="course-level"><i class="fas fa-signal"></i> All Levels</span>
+                                <span class="course-duration"><i class="fas fa-clock"></i> 8 weeks</span>
+                            </div>
+                            <h3>Digital Marketing Mastery</h3>
+                            <p>Learn proven strategies to grow your business online and reach more customers.</p>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span>4.2 (950 reviews)</span>
+                                </div>
+                                <div class="course-price">$59.99</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="swiper-slide course-card" data-category="business">
+                        <div class="course-image">
+                            <img src="assets/images/course-finance.jpg" alt="Financial Planning">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-info">
+                                <span class="course-level"><i class="fas fa-signal"></i> Beginner</span>
+                                <span class="course-duration"><i class="fas fa-clock"></i> 6 weeks</span>
+                            </div>
+                            <h3>Personal Finance Fundamentals</h3>
+                            <p>Take control of your financial future with practical strategies for budgeting and investing.</p>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span>4.7 (1.2k reviews)</span>
+                                </div>
+                                <div class="course-price">$39.99</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Design Courses -->
+                    <div class="swiper-slide course-card" data-category="design">
+                        <div class="course-image">
+                            <img src="assets/images/course-ui-design.jpg" alt="UI/UX Design">
+                        </div>
+                        <div class="course-content">
+                            <div class="course-info">
+                                <span class="course-level"><i class="fas fa-signal"></i> Intermediate</span>
+                                <span class="course-duration"><i class="fas fa-clock"></i> 9 weeks</span>
+                            </div>
+                            <h3>UI/UX Design Principles</h3>
+                            <p>Learn to create beautiful, user-friendly interfaces that delight your users.</p>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span>5.0 (876 reviews)</span>
+                                </div>
+                                <div class="course-price">$79.99</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Language Courses -->
+                    <div class="swiper-slide course-card" data-category="language">
+                        <div class="course-image">
+                            <img src="assets/images/course-spanish.jpg" alt="Spanish Language">
+                            <div class="course-badge">Popular</div>
+                        </div>
+                        <div class="course-content">
+                            <div class="course-info">
+                                <span class="course-level"><i class="fas fa-signal"></i> Beginner</span>
+                                <span class="course-duration"><i class="fas fa-clock"></i> 12 weeks</span>
+                            </div>
+                            <h3>Spanish for Beginners</h3>
+                            <p>Start speaking Spanish confidently with our immersive, conversation-focused approach.</p>
+                            <div class="course-footer">
+                                <div class="course-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span>4.3 (1.5k reviews)</span>
+                                </div>
+                                <div class="course-price">$44.99</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+            
+            <div class="courses-cta">
+                <a href="login.html?signup=true" class="btn btn-primary">View All Courses</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your Plan</h2>
+                <p>Flexible pricing options designed to fit your learning needs</p>
+            </div>
+            
+            <div class="pricing-toggle">
+                <span>Monthly</span>
+                <label class="switch">
+                    <input type="checkbox" id="pricing-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span>Annual <span class="save-badge">Save 20%</span></span>
+            </div>
+            
+            <div class="pricing-cards">
+                <!-- Free Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Free</h3>
+                        <div class="pricing-price">
+                            <span class="price">$0</span>
+                            <span class="period">forever</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Access to 10 free courses</li>
+                            <li><i class="fas fa-check"></i> Basic AI learning assistant</li>
+                            <li><i class="fas fa-check"></i> Community forum access</li>
+                            <li><i class="fas fa-check"></i> Mobile app access</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Personalized learning path</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Certificate of completion</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Instructor support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="login.html?signup=true" class="btn btn-outline btn-block">Get Started</a>
+                    </div>
+                </div>
+                
+                <!-- Basic Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Basic</h3>
+                        <div class="pricing-price monthly">
+                            <span class="price">$19</span>
+                            <span class="period">per month</span>
+                        </div>
+                        <div class="pricing-price annual">
+                            <span class="price">$15</span>
+                            <span class="period">per month, billed annually</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Access to 50+ courses</li>
+                            <li><i class="fas fa-check"></i> Enhanced AI learning assistant</li>
+                            <li><i class="fas fa-check"></i> Community forum access</li>
+                            <li><i class="fas fa-check"></i> Mobile app access</li>
+                            <li><i class="fas fa-check"></i> Personalized learning path</li>
+                            <li><i class="fas fa-check"></i> Certificate of completion</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Instructor support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="login.html?signup=true" class="btn btn-primary btn-block">Choose Basic</a>
+                    </div>
+                </div>
+                
+                <!-- Pro Plan -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Pro</h3>
+                        <div class="pricing-price monthly">
+                            <span class="price">$39</span>
+                            <span class="period">per month</span>
+                        </div>
+                        <div class="pricing-price annual">
+                            <span class="price">$31</span>
+                            <span class="period">per month, billed annually</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Access to all 200+ courses</li>
+                            <li><i class="fas fa-check"></i> Advanced AI learning assistant</li>
+                            <li><i class="fas fa-check"></i> Priority community support</li>
+                            <li><i class="fas fa-check"></i> Mobile app access</li>
+                            <li><i class="fas fa-check"></i> Personalized learning path</li>
+                            <li><i class="fas fa-check"></i> Certificate of completion</li>
+                            <li><i class="fas fa-check"></i> Email instructor support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="login.html?signup=true" class="btn btn-primary btn-block">Choose Pro</a>
+                    </div>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="pricing-price monthly">
+                            <span class="price">$99</span>
+                            <span class="period">per month</span>
+                        </div>
+                        <div class="pricing-price annual">
+                            <span class="price">$79</span>
+                            <span class="period">per month, billed annually</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Access to all 200+ courses</li>
+                            <li><i class="fas fa-check"></i> Premium AI learning assistant</li>
+                            <li><i class="fas fa-check"></i> VIP community access</li>
+                            <li><i class="fas fa-check"></i> Mobile app access</li>
+                            <li><i class="fas fa-check"></i> Custom learning path</li>
+                            <li><i class="fas fa-check"></i> Accredited certificates</li>
+                            <li><i class="fas fa-check"></i> 1-on-1 instructor sessions</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="login.html?signup=true" class="btn btn-outline btn-block">Choose Enterprise</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="assets/icons/icon.svg" alt="VAPI Logo">
+                        <span>VAPI</span>
+                    </div>
+                    <p>AI-powered learning platform that adapts to your needs, providing personalized education for everyone.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR Compliance</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Download Our App</h4>
+                    <div class="app-buttons">
+                        <a href="#" class="app-button">
+                            <img src="assets/images/app-store-badge.svg" alt="Download on the App Store">
+                        </a>
+                        <a href="#" class="app-button">
+                            <img src="assets/images/google-play-badge.svg" alt="Get it on Google Play">
+                        </a>
+                    </div>
+                    <p class="newsletter-text">Subscribe to our newsletter</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 VAPI Learning Platform. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Sitemap</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Press Kit</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="assets/js/landing.js"></script>
+    <script type="text/javascript" src="assets/js/register-sw.js"></script>
+    <script type="text/javascript" src="assets/js/pwa.js"></script>
+</body>
+</html>
