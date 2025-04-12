@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENTOR - AI-Powered Learning Companion</title>
+    <meta name="description" content="MENTOR is your AI-Powered Learning Companion">
+    <meta name="theme-color" content="#4a6cf7">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="login-styles.css">
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MENTOR">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-content">
+            <div class="login-header">
+                <h1>Welcome to <span class="brand-name">MENTOR</span></h1>
+                <p class="login-subtitle">Your AI-Powered Learning Companion</p>
+                <p class="login-description">Log in to access personalized courses, track progress, and achieve your goals.</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" name="email" required placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" name="password" required placeholder="Enter your password">
+                    </div>
+                    
+                    <a href="#" class="forgot-password" id="forgot-password-link">Forgot password?</a>
+                    
+                    <button type="submit" class="auth-button">Login</button>
+                    
+                    <div class="auth-error" id="login-error"></div>
+                </form>
+                
+                <!-- Signup Form -->
+                <form id="signup-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" name="email" required placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" name="password" required placeholder="Create a password" minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-confirm-password">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="signup-instructor" name="isInstructor">
+                        <label for="signup-instructor">I am an instructor</label>
+                        <div class="instructor-info">
+                            <p>Instructors can create courses, manage students, and access additional teaching tools. Your instructor status will need to be verified.</p>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="auth-button">Sign Up</button>
+                    
+                    <div class="auth-error" id="signup-error"></div>
+                </form>
+            </div>
+            
+            <div class="login-footer">
+                <p>By logging in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+            </div>
+        </div>
+        
+        <div class="login-image">
+            <!-- Background image will be set via CSS -->
+        </div>
+    </div>
+    
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal-container" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reset Password</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="forgot-password-form">
+                    <div class="form-group">
+                        <label for="reset-email">Email</label>
+                        <input type="email" id="reset-email" name="email" required placeholder="Enter your email">
+                    </div>
+                    <button type="submit" class="auth-button">Send Reset Link</button>
+                    <div class="auth-error" id="reset-error"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Authentication Scripts -->
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="login.js"></script>
+</body>
+</html>

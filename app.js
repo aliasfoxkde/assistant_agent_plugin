@@ -1902,10 +1902,147 @@ function switchChatTab(tabId) {
     }
 }
 
+// Initialize authentication
+async function initAuth() {
+    try {
+        // Import auth-ui module
+        const authUI = await import('./auth-ui.js');
+
+        // Initialize auth UI
+        await authUI.initAuthUI();
+
+        // Add auth UI to account tab
+        const accountContent = document.getElementById('account-content');
+        if (accountContent) {
+            // Clear any existing content
+            accountContent.innerHTML = '';
+
+            // Create auth container if it doesn't exist
+            if (!document.getElementById('auth-container')) {
+                const authContainer = authUI.createAuthUI();
+                accountContent.appendChild(authContainer);
+            }
+        }
+
+        logDebug('Authentication initialized');
+    } catch (error) {
+        console.error('Error initializing authentication:', error);
+        logDebug(`Auth initialization error: ${error.message}`);
+    }
+}
+
+// Get current user
+async function getCurrentUser() {
+    try {
+        // Import auth module
+        const auth = await import('./auth.js');
+
+        // Get current session
+        const { success, user } = await auth.getSession();
+
+        if (success && user) {
+            logDebug(`User authenticated: ${user.email}`);
+
+            // Check if user is an instructor
+            const isInstructor = user.user_metadata?.isInstructor || false;
+            const instructorStatus = user.user_metadata?.instructorVerificationStatus || 'none';
+
+            if (isInstructor) {
+                logDebug(`User is an instructor (Status: ${instructorStatus})`);
+            }
+
+            return user;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error getting current user:', error);
+        logDebug(`Get current user error: ${error.message}`);
+        return null;
+    }
+}
+
 // Initialize when the page loads
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     logDebug('Page loaded');
     updateStatus('Ready', 'ready');
+
+    // Initialize authentication
+    await initAuth();
+
+    // Get current user
+    const currentUser = await getCurrentUser();
+
+    // Update UI based on authentication status
+    if (currentUser) {
+        logDebug(`Logged in as: ${currentUser.email}`);
+
+        // Update account tab with user info
+        const accountContent = document.getElementById('account-content');
+        if (accountContent) {
+            // Create user profile element
+            const userProfile = document.createElement('div');
+            userProfile.className = 'user-profile';
+
+            // Add user info
+            const userInfo = document.createElement('div');
+            userInfo.className = 'user-info';
+
+            const userEmail = document.createElement('div');
+            userEmail.className = 'user-email';
+            userEmail.textContent = currentUser.email;
+
+            // Add instructor badge if applicable
+            if (currentUser.user_metadata?.isInstructor) {
+                const instructorBadge = document.createElement('div');
+                instructorBadge.className = 'instructor-badge';
+                instructorBadge.textContent = 'Instructor';
+
+                // Add verification status
+                const status = currentUser.user_metadata?.instructorVerificationStatus || 'pending';
+                instructorBadge.classList.add(`status-${status}`);
+                instructorBadge.title = `Verification Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
+
+                userInfo.appendChild(instructorBadge);
+            }
+
+            userInfo.appendChild(userEmail);
+
+            // Add logout button
+            const logoutButton = document.createElement('button');
+            logoutButton.className = 'logout-button';
+            logoutButton.textContent = 'Logout';
+            logoutButton.addEventListener('click', async () => {
+                try {
+                    // Import auth functions
+                    const { signOut } = await import('./auth.js');
+
+                    // Sign out user
+                    const result = await signOut();
+
+                    if (result.success) {
+                        // Redirect to login page
+                        window.location.href = 'login.html';
+                    }
+                } catch (error) {
+                    console.error('Error signing out:', error);
+                    logDebug(`Sign out error: ${error.message}`);
+                }
+            });
+
+            // Add elements to profile container
+            userProfile.appendChild(userInfo);
+            userProfile.appendChild(logoutButton);
+
+            // Add profile to account content
+            accountContent.innerHTML = '';
+            accountContent.appendChild(userProfile);
+        }
+    } else {
+        logDebug('Not logged in');
+        // Redirect to login page
+        window.location.href = 'login.html';
+    }
 
     // Initialize speech recognition for voice trigger
     setupSpeechRecognition();

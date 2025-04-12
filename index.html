@@ -16,6 +16,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Voice Assistant">
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Authentication Styles -->
+    <link rel="stylesheet" href="auth-styles.css">
 </head>
 <body>
     <div class="container">
@@ -35,6 +41,7 @@
                 <button class="tab-button" data-tab="details">Details</button>
                 <button class="tab-button" data-tab="transcription">Transcription</button>
                 <button class="tab-button" data-tab="history">History</button>
+                <button class="tab-button" data-tab="account">Account</button>
             </div>
 
             <!-- Stats Tab -->
@@ -242,6 +249,19 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Account Tab -->
+            <div id="account-tab" class="tab-content">
+                <div class="account-container">
+                    <div class="account-header">
+                        <h3>User Account</h3>
+                        <p>Manage your account settings and authentication.</p>
+                    </div>
+                    <div class="account-content" id="account-content">
+                        <!-- Auth UI will be inserted here by auth-ui.js -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -293,6 +313,36 @@
         </div>
     </div>
 
+    <!-- Authentication Scripts -->
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="auth-ui.js"></script>
+
+    <!-- Authentication Check Script -->
+    <script type="module">
+        // Import authentication functions
+        import { getSession } from './auth.js';
+
+        // Check if user is authenticated
+        async function checkAuth() {
+            try {
+                const { success, user } = await getSession();
+
+                if (!success || !user) {
+                    // User is not authenticated, redirect to login page
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                // Redirect to login page on error
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Run auth check when page loads
+        checkAuth();
+    </script>
+
+    <!-- Main Application Scripts -->
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="register-sw.js"></script>
     <script type="text/javascript" src="pwa.js"></script>
