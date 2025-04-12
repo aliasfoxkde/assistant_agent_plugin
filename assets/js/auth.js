@@ -9,8 +9,12 @@ function logAuthDebug(message) {
   console.log(`[Auth] ${message}`);
 }
 
-// Initialize Supabase client
+// Initialize Supabase client - use a singleton pattern with a global variable
+// This prevents multiple GoTrueClient instances
 let supabaseClient = null;
+
+// Create a global variable to track initialization status
+let isInitializing = false;
 
 // Get Supabase credentials from various sources
 async function getSupabaseCredentials() {
@@ -72,41 +76,73 @@ async function getSupabaseCredentials() {
 
 // Initialize Supabase with environment variables or Cloudflare Variables
 async function initSupabase() {
+  // Set initialization flag to prevent multiple simultaneous initializations
+  isInitializing = true;
+
   logAuthDebug('Initializing Supabase client...');
   try {
     // Get credentials from various sources
     logAuthDebug('Getting Supabase credentials...');
     const { supabaseUrl, supabaseAnonKey } = await getSupabaseCredentials();
 
+    if (!supabaseUrl || !supabaseAnonKey) {
+      logAuthDebug('Error: Missing Supabase credentials');
+      isInitializing = false;
+      return null;
+    }
+
     logAuthDebug(`Using Supabase URL: ${supabaseUrl}`);
     logAuthDebug(`Using Supabase Anon Key: ${supabaseAnonKey.substring(0, 10)}...`);
 
     // Create Supabase client
     logAuthDebug('Creating Supabase client...');
-    supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+    supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        storageKey: 'vapi-supabase-auth', // Use a unique storage key to avoid conflicts
+        autoRefreshToken: true,
+        persistSession: true
+      }
+    });
 
     if (!supabaseClient) {
       logAuthDebug('Error: Failed to create Supabase client');
+      isInitializing = false;
       return null;
     }
 
     logAuthDebug('Supabase client initialized successfully');
+    isInitializing = false;
     return supabaseClient;
   } catch (error) {
     logAuthDebug(`Error initializing Supabase: ${error.message}`);
     console.error('Supabase initialization error:', error);
+    isInitializing = false;
     return null;
   }
 }
 
 // Get the Supabase client (initialize if needed)
 async function getSupabaseClient() {
-  if (!supabaseClient) {
-    logAuthDebug('No existing Supabase client, initializing...');
-    return await initSupabase();
+  // If client already exists, return it immediately
+  if (supabaseClient) {
+    logAuthDebug('Using existing Supabase client');
+    return supabaseClient;
   }
-  logAuthDebug('Using existing Supabase client');
-  return supabaseClient;
+
+  // If initialization is in progress, wait for it to complete
+  if (isInitializing) {
+    logAuthDebug('Supabase client initialization in progress, waiting...');
+    // Wait for initialization to complete (poll every 100ms)
+    while (isInitializing) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    // After waiting, return the client (if it was successfully initialized)
+    return supabaseClient;
+  }
+
+  // Otherwise, initialize the client
+  logAuthDebug('No existing Supabase client, initializing...');
+  return await initSupabase();
 }
 
 // Sign up a new user
