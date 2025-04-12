@@ -1,0 +1,149 @@
+/* Dark Mode Styles */
+:root {
+  /* Light Mode Variables (default) */
+  --bg-color: #f8fafc;
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e9f2ff 100%);
+  --text-color: #334155;
+  --heading-color: #1e293b;
+  --card-bg: #ffffff;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --border-color: #e2e8f0;
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --button-primary-bg: #4a6cf7;
+  --button-primary-text: #ffffff;
+  --button-secondary-bg: #f1f5f9;
+  --button-secondary-text: #334155;
+  --status-ready: #10b981;
+  --status-listening: #f59e0b;
+  --status-thinking: #6366f1;
+  --status-speaking: #ec4899;
+  --status-error: #ef4444;
+  --chat-user-bg: #f1f5f9;
+  --chat-assistant-bg: #e9f2ff;
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+}
+
+/* Dark Mode Class */
+body.dark-mode {
+  --bg-color: #0f172a;
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --text-color: #e2e8f0;
+  --heading-color: #f8fafc;
+  --card-bg: #1e293b;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --border-color: #334155;
+  --input-bg: #334155;
+  --input-border: #475569;
+  --button-primary-bg: #4a6cf7;
+  --button-primary-text: #ffffff;
+  --button-secondary-bg: #334155;
+  --button-secondary-text: #e2e8f0;
+  --status-ready: #10b981;
+  --status-listening: #f59e0b;
+  --status-thinking: #6366f1;
+  --status-speaking: #ec4899;
+  --status-error: #ef4444;
+  --chat-user-bg: #334155;
+  --chat-assistant-bg: #1e3a8a;
+  --scrollbar-track: #1e293b;
+  --scrollbar-thumb: #475569;
+}
+
+/* Apply Variables */
+body {
+  background-color: var(--bg-color);
+  background-image: var(--bg-gradient);
+  color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+}
+
+.card, .tab-content, .chat-bubble, .status-display, .debug-log, .instructions, .details, .transcription, .history {
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  border-color: var(--border-color);
+}
+
+input, textarea, select {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-color);
+}
+
+button.primary {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+button.secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+
+/* Status Colors */
+.status-dot.ready {
+  background-color: var(--status-ready);
+}
+
+.status-dot.listening {
+  background-color: var(--status-listening);
+}
+
+.status-dot.thinking {
+  background-color: var(--status-thinking);
+}
+
+.status-dot.speaking {
+  background-color: var(--status-speaking);
+}
+
+.status-dot.error {
+  background-color: var(--status-error);
+}
+
+/* Chat Messages */
+.message.user {
+  background-color: var(--chat-user-bg);
+}
+
+.message.assistant {
+  background-color: var(--chat-assistant-bg);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+}
+
+/* Tabs */
+.tab-button {
+  background-color: var(--button-secondary-bg);
+  color: var(--text-color);
+}
+
+.tab-button.active {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+/* Debug Log */
+.debug-log {
+  border-color: var(--border-color);
+}
+
+.debug-entry {
+  border-bottom-color: var(--border-color);
+}
+
+/* Transitions */
+body, .card, .tab-content, input, textarea, select, button, .message {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}

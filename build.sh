@@ -5,7 +5,7 @@ mkdir -p dist
 mkdir -p dist/functions
 
 # Copy all necessary files to dist
-cp -r index.html login.html styles.css login-styles.css sidebar.css app.js auth.js auth-ui.js auth-styles.css cloudflare-auth.js login.js sidebar.js pwa.js register-sw.js sw.js manifest.json _redirects dist/
+cp -r index.html login.html styles.css login-styles.css sidebar.css dark-mode.css app.js auth.js auth-ui.js auth-styles.css cloudflare-auth.js login.js sidebar.js pwa.js register-sw.js sw.js manifest.json _redirects dist/
 
 # Copy functions directory
 cp -r functions/ dist/functions/

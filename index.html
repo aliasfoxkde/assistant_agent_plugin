@@ -26,6 +26,9 @@
     <!-- Sidebar Styles -->
     <link rel="stylesheet" href="sidebar.css">
 
+    <!-- Dark Mode Styles -->
+    <link rel="stylesheet" href="dark-mode.css">
+
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -75,6 +78,18 @@
                 <a href="#account-tab" class="sidebar-link">
                     <span class="sidebar-icon"><i class="fas fa-user"></i></span>
                     <span class="sidebar-text">Account</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link" id="theme-toggle">
+                    <span class="sidebar-icon"><i class="fas fa-moon" id="theme-icon"></i></span>
+                    <span class="sidebar-text">Dark Mode</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link" id="pwa-install-sidebar">
+                    <span class="sidebar-icon"><i class="fas fa-download"></i></span>
+                    <span class="sidebar-text">Install App</span>
                 </a>
             </li>
             <li class="sidebar-item">
@@ -329,10 +344,45 @@
                 <div class="account-container">
                     <div class="account-header">
                         <h3>User Account</h3>
-                        <p>Manage your account settings and authentication.</p>
+                        <p>Manage your account settings and preferences.</p>
                     </div>
                     <div class="account-content" id="account-content">
-                        <!-- Auth UI will be inserted here by auth-ui.js -->
+                        <div class="account-section">
+                            <h4>Profile Information</h4>
+                            <div class="profile-card">
+                                <div class="profile-avatar" id="profile-avatar">U</div>
+                                <div class="profile-details">
+                                    <div class="profile-name" id="profile-email">Loading...</div>
+                                    <div class="profile-role" id="profile-role">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-section">
+                            <h4>Appearance</h4>
+                            <div class="setting-item">
+                                <span class="setting-label">Theme</span>
+                                <div class="setting-control">
+                                    <button id="theme-toggle-btn" class="theme-toggle-btn">
+                                        <span class="theme-icon"><i class="fas fa-moon" id="theme-btn-icon"></i></span>
+                                        <span class="theme-text" id="theme-text">Dark Mode</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-section">
+                            <h4>Application</h4>
+                            <div class="setting-item">
+                                <span class="setting-label">Install App</span>
+                                <div class="setting-control">
+                                    <button id="pwa-install-btn" class="pwa-install-btn">
+                                        <span class="pwa-icon"><i class="fas fa-download"></i></span>
+                                        <span class="pwa-text">Install as App</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
