@@ -5,7 +5,7 @@ mkdir -p dist
 mkdir -p dist/functions
 
 # Copy all necessary files to dist
-cp -r index.html index.html.old login.html config.html manifest.json _redirects dist/
+cp -r index.html index.html.old login.html signup.html config.html manifest.json _redirects dist/
 
 # Copy pages directory
 mkdir -p dist/pages

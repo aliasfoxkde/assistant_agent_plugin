@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join MENTOR - Start Your Learning Adventure</title>
+    <meta name="description" content="Join MENTOR - Your AI-Powered Learning Companion">
+    <meta name="theme-color" content="#4a6cf7">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/auth-styles.css">
+    <link rel="stylesheet" href="assets/css/signup-styles.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Confetti JS for celebration animation -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+    <div class="signup-container">
+        <!-- Left Panel - Information and Benefits -->
+        <div class="signup-info">
+            <div class="logo">
+                <img src="assets/icons/icon.svg" alt="MENTOR Logo">
+                <span>MENTOR</span>
+            </div>
+
+            <div class="info-content">
+                <h1>Begin Your Learning Adventure</h1>
+                <p class="tagline">Join thousands of learners discovering their potential with MENTOR</p>
+
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Personalized Learning</h3>
+                            <p>AI-powered recommendations tailored to your unique learning style</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Accelerated Progress</h3>
+                            <p>Learn faster with adaptive content that evolves with you</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Supportive Community</h3>
+                            <p>Connect with peers and mentors on your learning journey</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
+                    <p class="quote-text">MENTOR transformed how I learn. The personalized approach helped me master concepts I struggled with for years.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="author-info">
+                            <p class="author-name">Sarah Johnson</p>
+                            <p class="author-title">Software Developer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-footer">
+                <p>Already have an account? <a href="/login">Log In</a></p>
+            </div>
+        </div>
+
+        <!-- Right Panel - Signup Form with Gamification -->
+        <div class="signup-form-container">
+            <div class="form-header">
+                <h2>Create Your Account</h2>
+                <p>Complete your profile to get the most out of MENTOR</p>
+
+                <!-- Gamification Elements -->
+                <div class="gamification-container">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <div class="completion-percentage">
+                                Profile: <span id="completion-percentage">0%</span> complete
+                            </div>
+                            <div class="points-earned">
+                                <i class="fas fa-star"></i> Points: <span id="points-counter">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-badges">
+                        <div class="badge" id="badge-basics" title="Account Basics">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="badge" id="badge-profile" title="Profile Details">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="badge" id="badge-learning" title="Learning Style">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="badge" id="badge-interests" title="Interests & Goals">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="signup-form" class="multi-step-form">
+                <!-- Step Navigation -->
+                <div class="step-navigation">
+                    <button type="button" class="step-btn active" data-step="1">
+                        <span class="step-number">1</span>
+                        <span class="step-name">Basics</span>
+                    </button>
+                    <button type="button" class="step-btn" data-step="2">
+                        <span class="step-number">2</span>
+                        <span class="step-name">Profile</span>
+                    </button>
+                    <button type="button" class="step-btn" data-step="3">
+                        <span class="step-number">3</span>
+                        <span class="step-name">Learning</span>
+                    </button>
+                    <button type="button" class="step-btn" data-step="4">
+                        <span class="step-number">4</span>
+                        <span class="step-name">Interests</span>
+                    </button>
+                </div>
+
+                <!-- Step 1: Account Information -->
+                <div class="form-step active" id="step-1">
+                    <h3 class="step-title">Let's get started!</h3>
+                    <p class="step-description">Create your account credentials</p>
+
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        </div>
+                        <div class="points-indicator" title="Required field">+10 points</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Create a secure password" required>
+                            <button type="button" class="toggle-password" tabindex="-1">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-meter">
+                                <div class="strength-bar" id="strength-bar"></div>
+                            </div>
+                            <div class="strength-label">Password strength: <span id="strength-text">Weak</span></div>
+                        </div>
+                        <div class="points-indicator" title="Required field">+10 points</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                            <button type="button" class="toggle-password" tabindex="-1">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="pages/terms.html" target="_blank">Terms of Service</a> and <a href="pages/privacy.html" target="_blank">Privacy Policy</a>
+                        </label>
+                        <div class="points-indicator" title="Required field">+5 points</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary next-step" data-next="2">Continue</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Profile Information -->
+                <div class="form-step" id="step-2">
+                    <h3 class="step-title">Tell us about yourself</h3>
+                    <p class="step-description">Help us personalize your experience</p>
+
+                    <div class="form-group">
+                        <label for="full-name">Full Name <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="full-name" name="full-name" placeholder="Your full name" required>
+                        </div>
+                        <div class="points-indicator" title="Required field">+10 points</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="age">Age Range</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-birthday-cake"></i>
+                                <select id="age" name="age">
+                                    <option value="">Select age range</option>
+                                    <option value="under-18">Under 18</option>
+                                    <option value="18-24">18-24</option>
+                                    <option value="25-34">25-34</option>
+                                    <option value="35-44">35-44</option>
+                                    <option value="45-54">45-54</option>
+                                    <option value="55-64">55-64</option>
+                                    <option value="65+">65+</option>
+                                </select>
+                            </div>
+                            <div class="points-indicator" title="Optional field">+5 points</div>
+                        </div>
+
+                        <div class="form-group half">
+                            <label for="gender">Gender</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-venus-mars"></i>
+                                <select id="gender" name="gender">
+                                    <option value="">Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="non-binary">Non-binary</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="points-indicator" title="Optional field">+5 points</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="location" name="location" placeholder="City, Country">
+                        </div>
+                        <div class="points-indicator" title="Optional field">+5 points</div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="instructor" name="instructor">
+                            <span class="checkmark"></span>
+                            I am an instructor
+                        </label>
+                        <div class="points-indicator" title="Optional field">+5 points</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="1">Back</button>
+                        <button type="button" class="btn btn-primary next-step" data-next="3">Continue</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Learning Style -->
+                <div class="form-step" id="step-3">
+                    <h3 class="step-title">Your Learning Style</h3>
+                    <p class="step-description">Help us tailor content to how you learn best</p>
+
+                    <div class="form-group">
+                        <label>How do you prefer to learn? <span class="required">*</span></label>
+                        <div class="learning-style-options">
+                            <label class="style-option" for="style-visual">
+                                <input type="radio" id="style-visual" name="learning-style" value="visual" required>
+                                <div class="style-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="style-label">Visual</div>
+                                <div class="style-description">Learn through images, diagrams, and videos</div>
+                            </label>
+
+                            <label class="style-option" for="style-auditory">
+                                <input type="radio" id="style-auditory" name="learning-style" value="auditory">
+                                <div class="style-icon">
+                                    <i class="fas fa-headphones"></i>
+                                </div>
+                                <div class="style-label">Auditory</div>
+                                <div class="style-description">Learn through listening and discussions</div>
+                            </label>
+
+                            <label class="style-option" for="style-reading">
+                                <input type="radio" id="style-reading" name="learning-style" value="reading">
+                                <div class="style-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="style-label">Reading</div>
+                                <div class="style-description">Learn through text and writing</div>
+                            </label>
+
+                            <label class="style-option" for="style-kinesthetic">
+                                <input type="radio" id="style-kinesthetic" name="learning-style" value="kinesthetic">
+                                <div class="style-icon">
+                                    <i class="fas fa-hands"></i>
+                                </div>
+                                <div class="style-label">Kinesthetic</div>
+                                <div class="style-description">Learn through hands-on activities</div>
+                            </label>
+                        </div>
+                        <div class="points-indicator" title="Required field">+15 points</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What time of day are you most productive?</label>
+                        <div class="time-preference-options">
+                            <label class="time-option" for="time-morning">
+                                <input type="radio" id="time-morning" name="productive-time" value="morning">
+                                <div class="time-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div class="time-label">Morning</div>
+                            </label>
+
+                            <label class="time-option" for="time-afternoon">
+                                <input type="radio" id="time-afternoon" name="productive-time" value="afternoon">
+                                <div class="time-icon">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </div>
+                                <div class="time-label">Afternoon</div>
+                            </label>
+
+                            <label class="time-option" for="time-evening">
+                                <input type="radio" id="time-evening" name="productive-time" value="evening">
+                                <div class="time-icon">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                                <div class="time-label">Evening</div>
+                            </label>
+
+                            <label class="time-option" for="time-night">
+                                <input type="radio" id="time-night" name="productive-time" value="night">
+                                <div class="time-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="time-label">Night</div>
+                            </label>
+                        </div>
+                        <div class="points-indicator" title="Optional field">+10 points</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What is your primary learning goal? <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-bullseye"></i>
+                            <select id="learning-goal" name="learning-goal" required>
+                                <option value="">Select your primary goal</option>
+                                <option value="academic">Academic success (school/university)</option>
+                                <option value="career">Career advancement</option>
+                                <option value="skills">Learn new skills</option>
+                                <option value="personal">Personal enrichment</option>
+                                <option value="certification">Earn certifications</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="points-indicator" title="Required field">+10 points</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="2">Back</button>
+                        <button type="button" class="btn btn-primary next-step" data-next="4">Continue</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Interests -->
+                <div class="form-step" id="step-4">
+                    <h3 class="step-title">Your Interests</h3>
+                    <p class="step-description">Select topics you're interested in learning</p>
+
+                    <div class="form-group">
+                        <label>Select subjects that interest you <span class="required">*</span></label>
+                        <div class="interest-categories">
+                            <label class="interest-category" for="interest-technology">
+                                <input type="checkbox" id="interest-technology" name="interests" value="technology" required>
+                                <div class="category-icon">
+                                    <i class="fas fa-laptop-code"></i>
+                                </div>
+                                <div class="category-label">Technology</div>
+                            </label>
+
+                            <label class="interest-category" for="interest-business">
+                                <input type="checkbox" id="interest-business" name="interests" value="business">
+                                <div class="category-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="category-label">Business</div>
+                            </label>
+
+                            <label class="interest-category" for="interest-science">
+                                <input type="checkbox" id="interest-science" name="interests" value="science">
+                                <div class="category-icon">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div class="category-label">Science</div>
+                            </label>
+
+                            <label class="interest-category" for="interest-arts">
+                                <input type="checkbox" id="interest-arts" name="interests" value="arts">
+                                <div class="category-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <div class="category-label">Arts</div>
+                            </label>
+
+                            <label class="interest-category" for="interest-health">
+                                <input type="checkbox" id="interest-health" name="interests" value="health">
+                                <div class="category-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div class="category-label">Health</div>
+                            </label>
+
+                            <label class="interest-category" for="interest-languages">
+                                <input type="checkbox" id="interest-languages" name="interests" value="languages">
+                                <div class="category-icon">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="category-label">Languages</div>
+                            </label>
+
+                            <label class="interest-category" for="interest-humanities">
+                                <input type="checkbox" id="interest-humanities" name="interests" value="humanities">
+                                <div class="category-icon">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="category-label">Humanities</div>
+                            </label>
+
+                            <label class="interest-category" for="interest-math">
+                                <input type="checkbox" id="interest-math" name="interests" value="math">
+                                <div class="category-icon">
+                                    <i class="fas fa-square-root-alt"></i>
+                                </div>
+                                <div class="category-label">Mathematics</div>
+                            </label>
+                        </div>
+                        <div class="points-indicator" title="At least one required">+5 points per selection</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience-level">Your experience level</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-level-up-alt"></i>
+                            <select id="experience-level" name="experience-level">
+                                <option value="">Select your experience level</option>
+                                <option value="beginner">Beginner - Just starting out</option>
+                                <option value="intermediate">Intermediate - Some experience</option>
+                                <option value="advanced">Advanced - Considerable experience</option>
+                                <option value="expert">Expert - Deep knowledge</option>
+                            </select>
+                        </div>
+                        <div class="points-indicator" title="Optional field">+5 points</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="3">Back</button>
+                        <button type="submit" class="btn btn-primary">Complete Signup</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Completion Animation (Hidden initially) -->
+            <div class="completion-animation" id="completion-animation" style="display: none;">
+                <div class="confetti-container" id="confetti-container"></div>
+                <div class="completion-content">
+                    <div class="completion-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Welcome to MENTOR!</h2>
+                    <p>Your learning journey begins now</p>
+                    <div class="points-summary">
+                        <div class="total-points">
+                            <i class="fas fa-star"></i>
+                            <span id="final-points">0</span> points earned
+                        </div>
+                        <div class="profile-status">
+                            <span id="profile-status">Beginner</span> profile created
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="continue-to-dashboard">Continue to Dashboard</button>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <p>Already have an account? <a href="/login">Log In</a></p>
+                <p><a href="/">Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Scripts -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/signup.js"></script>
+    <script type="text/javascript" src="assets/js/register-sw.js"></script>
+    <script type="text/javascript" src="assets/js/pwa.js"></script>
+</body>
+</html>

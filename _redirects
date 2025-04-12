@@ -1,3 +1,5 @@
-/app /index.html.old 200
-/app/* /index.html.old 200
+/login /login.html 200
+/signup /signup.html 200
+/app /login.html 200
+/app/* /login.html 200
 /* /index.html 200
