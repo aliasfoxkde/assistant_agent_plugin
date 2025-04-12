@@ -5,7 +5,7 @@ import { signUp, signIn, resetPassword, getSession } from './auth.js';
 async function checkAuthStatus() {
   try {
     const { success, user } = await getSession();
-    
+
     if (success && user) {
       // User is already logged in, redirect to main app
       window.location.href = 'index.html';
@@ -15,148 +15,207 @@ async function checkAuthStatus() {
   }
 }
 
+// Debug logging function
+function logDebug(message) {
+  console.log(`[Login] ${message}`);
+}
+
 // Initialize login page
 function initLoginPage() {
+  logDebug('Initializing login page');
+
   // Set up tab switching
   const authTabs = document.querySelectorAll('.auth-tab');
   const authForms = document.querySelectorAll('.auth-form');
-  
+
+  logDebug(`Found ${authTabs.length} tabs and ${authForms.length} forms`);
+
   authTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       // Remove active class from all tabs and forms
       authTabs.forEach(t => t.classList.remove('active'));
       authForms.forEach(f => f.classList.remove('active'));
-      
+
       // Add active class to clicked tab and corresponding form
       tab.classList.add('active');
-      document.getElementById(`${tab.dataset.tab}-form`).classList.add('active');
+      const formId = `${tab.dataset.tab}-form`;
+      const form = document.getElementById(formId);
+
+      if (form) {
+        form.classList.add('active');
+        logDebug(`Switched to ${tab.dataset.tab} tab`);
+      } else {
+        logDebug(`Error: Form with ID ${formId} not found`);
+      }
     });
   });
-  
+
   // Set up login form
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
+    logDebug('Login form handler attached');
+  } else {
+    logDebug('Error: Login form not found');
   }
-  
+
   // Set up signup form
   const signupForm = document.getElementById('signup-form');
   if (signupForm) {
     signupForm.addEventListener('submit', handleSignup);
+    logDebug('Signup form handler attached');
+  } else {
+    logDebug('Error: Signup form not found');
   }
-  
+
   // Set up forgot password link
   const forgotPasswordLink = document.getElementById('forgot-password-link');
   if (forgotPasswordLink) {
     forgotPasswordLink.addEventListener('click', showForgotPasswordModal);
+    logDebug('Forgot password link handler attached');
+  } else {
+    logDebug('Error: Forgot password link not found');
   }
-  
+
   // Set up forgot password form
   const forgotPasswordForm = document.getElementById('forgot-password-form');
   if (forgotPasswordForm) {
     forgotPasswordForm.addEventListener('submit', handleForgotPassword);
+    logDebug('Forgot password form handler attached');
+  } else {
+    logDebug('Error: Forgot password form not found');
   }
-  
+
   // Set up modal close button
   const modalCloseButton = document.querySelector('.modal-close');
   if (modalCloseButton) {
     modalCloseButton.addEventListener('click', hideForgotPasswordModal);
+    logDebug('Modal close button handler attached');
+  } else {
+    logDebug('Error: Modal close button not found');
   }
+
+  logDebug('Login page initialization complete');
 }
 
 // Handle login form submission
 async function handleLogin(event) {
   event.preventDefault();
-  
+  logDebug('Login form submitted');
+
+  const form = event.target; // Get the form from the event
   const emailInput = document.getElementById('login-email');
   const passwordInput = document.getElementById('login-password');
   const errorElement = document.getElementById('login-error');
-  const submitButton = loginForm.querySelector('button[type="submit"]');
-  
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  if (!emailInput || !passwordInput || !errorElement || !submitButton) {
+    console.error('Missing form elements:', {
+      emailInput: !!emailInput,
+      passwordInput: !!passwordInput,
+      errorElement: !!errorElement,
+      submitButton: !!submitButton
+    });
+    return;
+  }
+
   const email = emailInput.value.trim();
   const password = passwordInput.value;
-  
+  logDebug(`Attempting login for email: ${email.substring(0, 3)}...`);
+
   // Validate inputs
   if (!email || !password) {
     errorElement.textContent = 'Please enter both email and password.';
+    logDebug('Login validation failed: missing email or password');
     return;
   }
-  
+
   // Show loading state
   submitButton.disabled = true;
   submitButton.textContent = 'Logging in...';
   errorElement.textContent = '';
-  
+  logDebug('Login in progress...');
+
   try {
     // Sign in user
+    logDebug('Calling signIn function...');
     const result = await signIn(email, password);
-    
+    logDebug(`Sign in result: ${result.success ? 'success' : 'failed'}`);
+
     if (result.success) {
       // Redirect to main app
+      logDebug('Login successful, redirecting to main app...');
       window.location.href = 'index.html';
     } else {
       // Show error message
-      errorElement.textContent = result.error || 'Failed to login. Please check your credentials and try again.';
+      const errorMsg = result.error || 'Failed to login. Please check your credentials and try again.';
+      logDebug(`Login failed: ${errorMsg}`);
+      errorElement.textContent = errorMsg;
     }
   } catch (error) {
     // Show error message
-    errorElement.textContent = error.message || 'An unexpected error occurred.';
+    const errorMsg = error.message || 'An unexpected error occurred.';
+    logDebug(`Login error: ${errorMsg}`);
+    console.error('Login error details:', error);
+    errorElement.textContent = errorMsg;
   } finally {
     // Reset button state
     submitButton.disabled = false;
     submitButton.textContent = 'Login';
+    logDebug('Login form reset to initial state');
   }
 }
 
 // Handle signup form submission
 async function handleSignup(event) {
   event.preventDefault();
-  
+
+  const form = event.target; // Get the form from the event
   const emailInput = document.getElementById('signup-email');
   const passwordInput = document.getElementById('signup-password');
   const confirmPasswordInput = document.getElementById('signup-confirm-password');
   const isInstructorCheckbox = document.getElementById('signup-instructor');
   const errorElement = document.getElementById('signup-error');
-  const submitButton = signupForm.querySelector('button[type="submit"]');
-  
+  const submitButton = form.querySelector('button[type="submit"]');
+
   const email = emailInput.value.trim();
   const password = passwordInput.value;
   const confirmPassword = confirmPasswordInput.value;
   const isInstructor = isInstructorCheckbox.checked;
-  
+
   // Validate inputs
   if (!email || !password || !confirmPassword) {
     errorElement.textContent = 'Please fill in all fields.';
     return;
   }
-  
+
   if (password !== confirmPassword) {
     errorElement.textContent = 'Passwords do not match.';
     return;
   }
-  
+
   if (password.length < 6) {
     errorElement.textContent = 'Password must be at least 6 characters long.';
     return;
   }
-  
+
   // Show loading state
   submitButton.disabled = true;
   submitButton.textContent = 'Signing up...';
   errorElement.textContent = '';
-  
+
   try {
     // Sign up user with instructor flag in metadata
     const result = await signUp(email, password, { isInstructor });
-    
+
     if (result.success) {
       // Show success message
       errorElement.textContent = 'Registration successful! Please check your email to confirm your account.';
       errorElement.style.color = 'green';
-      
+
       // Clear form
       signupForm.reset();
-      
+
       // Switch to login tab after a delay
       setTimeout(() => {
         document.querySelector('.auth-tab[data-tab="login"]').click();
@@ -178,36 +237,37 @@ async function handleSignup(event) {
 // Handle forgot password form submission
 async function handleForgotPassword(event) {
   event.preventDefault();
-  
+
+  const form = event.target; // Get the form from the event
   const emailInput = document.getElementById('reset-email');
   const errorElement = document.getElementById('reset-error');
-  const submitButton = forgotPasswordForm.querySelector('button[type="submit"]');
-  
+  const submitButton = form.querySelector('button[type="submit"]');
+
   const email = emailInput.value.trim();
-  
+
   // Validate input
   if (!email) {
     errorElement.textContent = 'Please enter your email.';
     return;
   }
-  
+
   // Show loading state
   submitButton.disabled = true;
   submitButton.textContent = 'Sending...';
   errorElement.textContent = '';
-  
+
   try {
     // Reset password
     const result = await resetPassword(email);
-    
+
     if (result.success) {
       // Show success message
       errorElement.textContent = 'Password reset link sent to your email.';
       errorElement.style.color = 'green';
-      
+
       // Clear form
       forgotPasswordForm.reset();
-      
+
       // Hide modal after a delay
       setTimeout(() => {
         hideForgotPasswordModal();
@@ -229,7 +289,7 @@ async function handleForgotPassword(event) {
 // Show forgot password modal
 function showForgotPasswordModal(event) {
   if (event) event.preventDefault();
-  
+
   const modal = document.getElementById('forgot-password-modal');
   if (modal) {
     modal.style.display = 'flex';
@@ -248,7 +308,7 @@ function hideForgotPasswordModal() {
 document.addEventListener('DOMContentLoaded', async () => {
   // Check if user is already logged in
   await checkAuthStatus();
-  
+
   // Initialize login page
   initLoginPage();
 });

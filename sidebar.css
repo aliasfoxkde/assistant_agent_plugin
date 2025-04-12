@@ -1,0 +1,221 @@
+/* Sidebar Styles */
+:root {
+  --sidebar-width-collapsed: 60px;
+  --sidebar-width-expanded: 240px;
+  --sidebar-bg-color: #1e293b;
+  --sidebar-text-color: #f8fafc;
+  --sidebar-hover-color: #334155;
+  --sidebar-active-color: #4a6cf7;
+  --sidebar-icon-color: #94a3b8;
+  --sidebar-transition: 0.3s ease;
+  --sidebar-z-index: 1000;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--sidebar-width-collapsed);
+  background-color: var(--sidebar-bg-color);
+  color: var(--sidebar-text-color);
+  transition: width var(--sidebar-transition);
+  z-index: var(--sidebar-z-index);
+  overflow-x: hidden;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.expanded {
+  width: var(--sidebar-width-expanded);
+}
+
+.sidebar-toggle {
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--sidebar-icon-color);
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform var(--sidebar-transition);
+}
+
+.sidebar.expanded .sidebar-toggle {
+  transform: rotate(180deg);
+}
+
+.sidebar-header {
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--sidebar-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--sidebar-transition);
+}
+
+.sidebar.expanded .sidebar-logo {
+  opacity: 1;
+}
+
+.sidebar-logo-icon {
+  font-size: 24px;
+  color: var(--sidebar-active-color);
+  margin-right: 16px;
+}
+
+.sidebar-menu {
+  padding: 16px 0;
+  list-style: none;
+  margin: 0;
+}
+
+.sidebar-item {
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: var(--sidebar-text-color);
+  text-decoration: none;
+  transition: background-color var(--sidebar-transition);
+  white-space: nowrap;
+}
+
+.sidebar-link:hover {
+  background-color: var(--sidebar-hover-color);
+}
+
+.sidebar-link.active {
+  background-color: var(--sidebar-active-color);
+}
+
+.sidebar-icon {
+  font-size: 20px;
+  min-width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sidebar-icon-color);
+  transition: color var(--sidebar-transition);
+}
+
+.sidebar-link:hover .sidebar-icon,
+.sidebar-link.active .sidebar-icon {
+  color: var(--sidebar-text-color);
+}
+
+.sidebar-text {
+  margin-left: 16px;
+  opacity: 0;
+  transition: opacity var(--sidebar-transition);
+}
+
+.sidebar.expanded .sidebar-text {
+  opacity: 1;
+}
+
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--sidebar-active-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+}
+
+.user-details {
+  margin-left: 12px;
+  opacity: 0;
+  transition: opacity var(--sidebar-transition);
+}
+
+.sidebar.expanded .user-details {
+  opacity: 1;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 12px;
+  color: var(--sidebar-icon-color);
+}
+
+/* Main content adjustment */
+.main-content {
+  margin-left: var(--sidebar-width-collapsed);
+  transition: margin-left var(--sidebar-transition);
+}
+
+.main-content.sidebar-expanded {
+  margin-left: var(--sidebar-width-expanded);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 0;
+  }
+  
+  .sidebar.expanded {
+    width: var(--sidebar-width-expanded);
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .main-content.sidebar-expanded {
+    margin-left: var(--sidebar-width-expanded);
+  }
+  
+  .sidebar-toggle {
+    left: 10px;
+    top: 10px;
+    background-color: var(--sidebar-bg-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar.expanded .sidebar-toggle {
+    left: calc(var(--sidebar-width-expanded) - 50px);
+  }
+}

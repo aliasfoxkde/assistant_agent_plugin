@@ -22,9 +22,83 @@
 
     <!-- Authentication Styles -->
     <link rel="stylesheet" href="auth-styles.css">
+
+    <!-- Sidebar Styles -->
+    <link rel="stylesheet" href="sidebar.css">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo-icon"><i class="fas fa-robot"></i></span>
+            <span class="sidebar-logo">MENTOR</span>
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="#stats-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#instructions-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-book"></i></span>
+                    <span class="sidebar-text">Instructions</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#details-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-info-circle"></i></span>
+                    <span class="sidebar-text">Details</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#transcription-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-microphone"></i></span>
+                    <span class="sidebar-text">Transcription</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#history-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-history"></i></span>
+                    <span class="sidebar-text">History</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#account-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-user"></i></span>
+                    <span class="sidebar-text">Account</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link" data-action="logout">
+                    <span class="sidebar-icon"><i class="fas fa-sign-out-alt"></i></span>
+                    <span class="sidebar-text">Logout</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div id="user-avatar" class="user-avatar">U</div>
+                <div class="user-details">
+                    <div id="user-name" class="user-name">User</div>
+                    <div id="user-role" class="user-role">Student</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+        <div class="container">
         <h1>Voice & Chat<br>Assistant</h1>
 
         <!-- Status Display -->
@@ -342,6 +416,9 @@
         checkAuth();
     </script>
 
+    <!-- Sidebar Script -->
+    <script type="module" src="sidebar.js"></script>
+
     <!-- Main Application Scripts -->
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="register-sw.js"></script>
@@ -355,6 +432,7 @@
                 <button id="pwa-install-button">Install</button>
                 <button id="pwa-dismiss-button">Not Now</button>
             </div>
+        </div>
         </div>
     </div>
 </body>
