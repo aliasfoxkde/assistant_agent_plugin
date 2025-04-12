@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice & Chat Assistant</title>
+    <meta name="description" content="A voice and chat assistant powered by VAPI">
+    <meta name="theme-color" content="#4a6cf7">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Voice Assistant">
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Authentication Styles -->
+    <link rel="stylesheet" href="assets/css/auth-styles.css">
+
+    <!-- Sidebar Styles -->
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+
+    <!-- Dark Mode Styles -->
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo-icon"><i class="fas fa-robot"></i></span>
+            <span class="sidebar-logo">MENTOR</span>
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="#stats-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-chart-bar"></i></span>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#instructions-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-book"></i></span>
+                    <span class="sidebar-text">Instructions</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#details-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-info-circle"></i></span>
+                    <span class="sidebar-text">Details</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#transcription-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-microphone"></i></span>
+                    <span class="sidebar-text">Transcription</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#history-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-history"></i></span>
+                    <span class="sidebar-text">History</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#account-tab" class="sidebar-link">
+                    <span class="sidebar-icon"><i class="fas fa-user"></i></span>
+                    <span class="sidebar-text">Account</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link" id="theme-toggle">
+                    <span class="sidebar-icon"><i class="fas fa-moon" id="theme-icon"></i></span>
+                    <span class="sidebar-text">Dark Mode</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link" id="pwa-install-sidebar">
+                    <span class="sidebar-icon"><i class="fas fa-download"></i></span>
+                    <span class="sidebar-text">Install App</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link" data-action="logout">
+                    <span class="sidebar-icon"><i class="fas fa-sign-out-alt"></i></span>
+                    <span class="sidebar-text">Logout</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div id="user-avatar" class="user-avatar">U</div>
+                <div class="user-details">
+                    <div id="user-name" class="user-name">User</div>
+                    <div id="user-role" class="user-role">Student</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+        <div class="container">
+        <h1>Voice & Chat<br>Assistant</h1>
+
+        <!-- Status Display -->
+        <div class="status-display">
+            <strong>Current Status:</strong>&nbsp;<span id="main-status">Ready</span>
+        </div>
+
+        <!-- Content Container -->
+        <div class="content-container">
+
+            <!-- Stats Tab -->
+            <div id="stats-tab" class="tab-content active">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-title">Latency</div>
+                        <div class="stat-value" id="stat-latency">-- ms</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Duration</div>
+                        <div class="stat-value" id="stat-duration">-- sec</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Time to First Word</div>
+                        <div class="stat-value" id="stat-ttfw">-- ms</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Session Count</div>
+                        <div class="stat-value" id="stat-session-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">User Messages</div>
+                        <div class="stat-value" id="stat-user-messages">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Assistant Messages</div>
+                        <div class="stat-value" id="stat-assistant-messages">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Tokens Sent</div>
+                        <div class="stat-value" id="stat-tokens-sent">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Tokens Received</div>
+                        <div class="stat-value" id="stat-tokens-received">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Microphone Status</div>
+                        <div class="stat-value" id="stat-mic-status">Checking...</div>
+                    </div>
+                    <div class="stat-card last-stat-card">
+                        <div class="stat-title">Assistant ID</div>
+                        <div class="stat-value" id="stat-assistant-id">e6b55e0e-7bd3-49ed-87d6-afbe0a454625</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debug Tab -->
+            <div id="debug-tab" class="tab-content">
+                <div class="debug-info" id="debug-info"></div>
+            </div>
+
+            <!-- Instructions Tab -->
+            <div id="instructions-tab" class="tab-content">
+                <div class="instructions">
+                    <h3>How to Use the VAPI Assistant</h3>
+                    <ul>
+                        <li><strong>Text Chat:</strong> Click on the chat bubble in the bottom right corner to expand it. Type your message and press Enter or click the send button.</li>
+                        <li><strong>Voice Chat:</strong> Say "Start Voice Chat" or click the microphone button to start a voice conversation.</li>
+                        <li><strong>Stats:</strong> View performance metrics and assistant properties in the Stats tab.</li>
+                        <li><strong>Debug:</strong> Check the Debug tab for detailed logs of what's happening behind the scenes.</li>
+                        <li><strong>Transcription:</strong> View real-time transcriptions of your speech outside of voice chat sessions.</li>
+                        <li><strong>History:</strong> View your conversation history with the assistant.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Transcription Tab -->
+            <div id="transcription-tab" class="tab-content">
+                <div class="transcription-container">
+                    <div class="transcription-header">
+                        <h3>Voice Transcription</h3>
+                        <p>This tab shows real-time transcription of your speech outside of voice chat sessions.</p>
+                    </div>
+                    <div class="transcription-content" id="transcription-content">
+                        <div class="transcription-message system-message">
+                            Speak to see your voice transcribed here in real-time
+                        </div>
+                    </div>
+                    <div class="transcription-controls">
+                        <button class="control-button" id="start-transcription-button">Start Transcription</button>
+                        <button class="control-button secondary" id="clear-transcription-button">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div id="history-tab" class="tab-content">
+                <div class="history-container">
+                    <div class="history-header">
+                        <h3>Conversation History</h3>
+                        <p>Your conversation history with the assistant is displayed here.</p>
+                    </div>
+                    <div class="history-content" id="history-content">
+                        <div class="history-message system-message">
+                            Your conversation history will appear here
+                        </div>
+                    </div>
+                    <div class="history-controls">
+                        <button class="control-button secondary" id="clear-history-button">Clear History</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details Tab -->
+            <div id="details-tab" class="tab-content">
+                <div class="details-container">
+                    <div class="details-header">
+                        <h3>Assistant Details</h3>
+                        <p>Information about the current assistant and its configuration.</p>
+                    </div>
+                    <div class="details-content">
+                        <div class="details-section">
+                            <h4>Assistant Information</h4>
+                            <div class="details-item">
+                                <span class="details-label">Name:</span>
+                                <span class="details-value" id="details-name">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">ID:</span>
+                                <span class="details-value" id="details-assistant-id">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Created:</span>
+                                <span class="details-value" id="details-created">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Updated:</span>
+                                <span class="details-value" id="details-updated">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="details-section">
+                            <h4>AI Model</h4>
+                            <div class="details-item">
+                                <span class="details-label">Model:</span>
+                                <span class="details-value" id="details-model">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Provider:</span>
+                                <span class="details-value" id="details-model-provider">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Temperature:</span>
+                                <span class="details-value" id="details-temperature">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="details-section">
+                            <h4>Voice Configuration</h4>
+                            <div class="details-item">
+                                <span class="details-label">Voice ID:</span>
+                                <span class="details-value" id="details-voice">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Voice Model:</span>
+                                <span class="details-value" id="details-voice-model">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Provider:</span>
+                                <span class="details-value" id="details-voice-provider">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Settings:</span>
+                                <span class="details-value code-format" id="details-voice-settings">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="details-section">
+                            <h4>Speech Recognition</h4>
+                            <div class="details-item">
+                                <span class="details-label">Model:</span>
+                                <span class="details-value" id="details-transcriber-model">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Provider:</span>
+                                <span class="details-value" id="details-transcriber-provider">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Language:</span>
+                                <span class="details-value" id="details-transcriber-language">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="details-section">
+                            <h4>Conversation Features</h4>
+                            <div class="details-item">
+                                <span class="details-label">Backchanneling:</span>
+                                <span class="details-value" id="details-backchanneling">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Background Denoising:</span>
+                                <span class="details-value" id="details-denoising">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Silence Timeout:</span>
+                                <span class="details-value" id="details-silence-timeout">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Max Duration:</span>
+                                <span class="details-value" id="details-max-duration">Loading...</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Recording Enabled:</span>
+                                <span class="details-value" id="details-recording">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Tab -->
+            <div id="account-tab" class="tab-content">
+                <div class="account-container">
+                    <div class="account-header">
+                        <h3>User Account</h3>
+                        <p>Manage your account settings and preferences.</p>
+                    </div>
+                    <div class="account-content" id="account-content">
+                        <div class="account-section">
+                            <h4>Profile Information</h4>
+                            <div class="profile-card">
+                                <div class="profile-avatar" id="profile-avatar">U</div>
+                                <div class="profile-details">
+                                    <div class="profile-name" id="profile-email">Loading...</div>
+                                    <div class="profile-role" id="profile-role">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-section">
+                            <h4>Appearance</h4>
+                            <div class="setting-item">
+                                <span class="setting-label">Theme</span>
+                                <div class="setting-control">
+                                    <button id="theme-toggle-btn" class="theme-toggle-btn">
+                                        <span class="theme-icon"><i class="fas fa-moon" id="theme-btn-icon"></i></span>
+                                        <span class="theme-text" id="theme-text">Dark Mode</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-section">
+                            <h4>Application</h4>
+                            <div class="setting-item">
+                                <span class="setting-label">Install App</span>
+                                <div class="setting-control">
+                                    <button id="pwa-install-btn" class="pwa-install-btn">
+                                        <span class="pwa-icon"><i class="fas fa-download"></i></span>
+                                        <span class="pwa-text">Install as App</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Bubble -->
+    <div class="chat-bubble" id="chat-bubble">
+        <!-- Chat Icon (visible when minimized) -->
+        <div class="chat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- Collapse Button (visible when expanded) -->
+        <button class="collapse-button" id="collapse-button">&#128469;</button>
+
+        <!-- Chat Content (visible when expanded) -->
+        <div class="chat-content">
+            <!-- Status Indicator -->
+            <div class="status-indicator">
+                <div class="status-dot ready" id="status-dot"></div>
+                <span id="status">Ready</span>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chat-messages">
+                <div class="message system-message">
+                    Type a message below or say "Start Voice Chat" to begin a voice conversation
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="message-input" placeholder="Type your message here...">
+                <div class="action-buttons">
+                    <button class="send-button" id="send-button">
+                        <svg class="send-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="mic-button" id="mic-button">
+                        <svg class="mic-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1C11.2044 1 10.4413 1.31607 9.87868 1.87868C9.31607 2.44129 9 3.20435 9 4V12C9 12.7956 9.31607 13.5587 9.87868 14.1213C10.4413 14.6839 11.2044 15 12 15C12.7956 15 13.5587 14.6839 14.1213 14.1213C14.6839 13.5587 15 12.7956 15 12V4C15 3.20435 14.6839 2.44129 14.1213 1.87868C13.5587 1.31607 12.7956 1 12 1Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 10V12C19 13.8565 18.2625 15.637 16.9497 16.9497C15.637 18.2625 13.8565 19 12 19C10.1435 19 8.36301 18.2625 7.05025 16.9497C5.7375 15.637 5 13.8565 5 12V10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Scripts -->
+    <script type="module" src="assets/js/auth.js"></script>
+    <script type="module" src="assets/js/auth-ui.js"></script>
+
+    <!-- Authentication Check Script -->
+    <script type="module">
+        // Import authentication functions
+        import { getSession } from './auth.js';
+
+        // Check if user is authenticated
+        async function checkAuth() {
+            try {
+                const { success, user } = await getSession();
+
+                if (!success || !user) {
+                    // User is not authenticated, redirect to login page
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                // Redirect to login page on error
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Run auth check when page loads
+        checkAuth();
+    </script>
+
+    <!-- Sidebar Script -->
+    <script type="module" src="assets/js/sidebar.js"></script>
+
+    <!-- Main Application Scripts -->
+    <script type="text/javascript" src="assets/js/app.js"></script>
+    <script type="text/javascript" src="assets/js/register-sw.js"></script>
+    <script type="text/javascript" src="assets/js/pwa.js"></script>
+
+    <!-- PWA Install Prompt -->
+    <div id="pwa-install-prompt" class="pwa-install-prompt">
+        <div class="pwa-install-content">
+            <p>Install this app on your device for a better experience</p>
+            <div class="pwa-install-buttons">
+                <button id="pwa-install-button">Install</button>
+                <button id="pwa-dismiss-button">Not Now</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

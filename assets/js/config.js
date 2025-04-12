@@ -2,12 +2,12 @@
 
 document.addEventListener('DOMContentLoaded', async function() {
   console.log('Config page loaded');
-  
+
   // Get DOM elements
   const saveConfigBtn = document.getElementById('save-config');
   const resetConfigBtn = document.getElementById('reset-config');
   const togglePasswordBtns = document.querySelectorAll('.toggle-password');
-  
+
   // Form fields
   const supabaseUrlInput = document.getElementById('supabase-url');
   const supabaseAnonKeyInput = document.getElementById('supabase-anon-key');
@@ -16,16 +16,16 @@ document.addEventListener('DOMContentLoaded', async function() {
   const elevenlabsApiKeyInput = document.getElementById('elevenlabs-api-key');
   const openedxUrlInput = document.getElementById('openedx-url');
   const openedxApiKeyInput = document.getElementById('openedx-api-key');
-  
+
   // Load saved configuration
   loadConfig();
-  
+
   // Toggle password visibility
   togglePasswordBtns.forEach(btn => {
     btn.addEventListener('click', function() {
       const targetId = this.getAttribute('data-target');
       const targetInput = document.getElementById(targetId);
-      
+
       if (targetInput.type === 'password') {
         targetInput.type = 'text';
         this.innerHTML = '<i class="fas fa-eye-slash"></i>';
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     });
   });
-  
+
   // Save configuration
   saveConfigBtn.addEventListener('click', function() {
     const config = {
@@ -56,14 +56,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       },
       lastUpdated: new Date().toISOString()
     };
-    
+
     // Save to localStorage
-    localStorage.setItem('vapi_config', JSON.stringify(config));
-    
+    localStorage.setItem('mentor_config', JSON.stringify(config));
+
     // Show success message
     showNotification('Configuration saved successfully!', 'success');
   });
-  
+
   // Reset configuration
   resetConfigBtn.addEventListener('click', function() {
     if (confirm('Are you sure you want to reset all configuration to defaults?')) {
@@ -86,26 +86,26 @@ document.addEventListener('DOMContentLoaded', async function() {
         },
         lastUpdated: new Date().toISOString()
       };
-      
+
       // Save to localStorage
-      localStorage.setItem('vapi_config', JSON.stringify(defaultConfig));
-      
+      localStorage.setItem('mentor_config', JSON.stringify(defaultConfig));
+
       // Update form fields
       loadConfig();
-      
+
       // Show success message
       showNotification('Configuration reset to defaults', 'info');
     }
   });
-  
+
   // Function to load configuration from localStorage
   function loadConfig() {
     try {
-      const savedConfig = localStorage.getItem('vapi_config');
-      
+      const savedConfig = localStorage.getItem('mentor_config');
+
       if (savedConfig) {
         const config = JSON.parse(savedConfig);
-        
+
         // Populate form fields
         supabaseUrlInput.value = config.supabase?.url || '';
         supabaseAnonKeyInput.value = config.supabase?.anonKey || '';
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         elevenlabsApiKeyInput.value = config.elevenlabs?.apiKey || '';
         openedxUrlInput.value = config.openedx?.url || '';
         openedxApiKeyInput.value = config.openedx?.apiKey || '';
-        
+
         console.log('Configuration loaded from localStorage');
       } else {
         console.log('No saved configuration found');
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       console.error('Error loading configuration:', error);
     }
   }
-  
+
   // Function to show notification
   function showNotification(message, type = 'info') {
     // Create notification element
@@ -136,10 +136,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       </div>
       <button class="notification-close"><i class="fas fa-times"></i></button>
     `;
-    
+
     // Add to document
     document.body.appendChild(notification);
-    
+
     // Add styles if not already added
     if (!document.getElementById('notification-styles')) {
       const style = document.createElement('style');
@@ -162,34 +162,34 @@ document.addEventListener('DOMContentLoaded', async function() {
           animation: slideIn 0.3s ease, fadeOut 0.5s ease 4.5s forwards;
           border-left: 4px solid #4a6cf7;
         }
-        
+
         .notification.success {
           border-left-color: #10b981;
         }
-        
+
         .notification.error {
           border-left-color: #ef4444;
         }
-        
+
         .notification-content {
           display: flex;
           align-items: center;
           gap: 10px;
         }
-        
+
         .notification-content i {
           font-size: 1.2rem;
           color: #4a6cf7;
         }
-        
+
         .notification.success .notification-content i {
           color: #10b981;
         }
-        
+
         .notification.error .notification-content i {
           color: #ef4444;
         }
-        
+
         .notification-close {
           background: none;
           border: none;
@@ -198,16 +198,16 @@ document.addEventListener('DOMContentLoaded', async function() {
           cursor: pointer;
           transition: opacity 0.3s ease;
         }
-        
+
         .notification-close:hover {
           opacity: 1;
         }
-        
+
         @keyframes slideIn {
           from { transform: translateX(100%); opacity: 0; }
           to { transform: translateX(0); opacity: 1; }
         }
-        
+
         @keyframes fadeOut {
           from { opacity: 1; }
           to { opacity: 0; visibility: hidden; }
@@ -215,13 +215,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       `;
       document.head.appendChild(style);
     }
-    
+
     // Add close button functionality
     const closeBtn = notification.querySelector('.notification-close');
     closeBtn.addEventListener('click', function() {
       notification.remove();
     });
-    
+
     // Auto-remove after 5 seconds
     setTimeout(() => {
       notification.remove();

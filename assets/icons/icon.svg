@@ -2,6 +2,12 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="512" height="512" rx="128" fill="#4a6cf7"/>
   <circle cx="256" cy="256" r="160" fill="white" opacity="0.2"/>
-  <path d="M256 160C245.217 160 234.869 164.214 227.255 171.828C219.641 179.442 215.428 189.791 215.428 200.571V285.714C215.428 296.495 219.641 306.843 227.255 314.457C234.869 322.071 245.217 326.285 256 326.285C266.782 326.285 277.13 322.071 284.744 314.457C292.358 306.843 296.571 296.495 296.571 285.714V200.571C296.571 189.791 292.358 179.442 284.744 171.828C277.13 164.214 266.782 160 256 160Z" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M368 240V285.714C368 308.184 359.05 329.789 342.761 345.761C326.472 361.733 304.47 371.428 281.524 371.428H256C233.054 371.428 211.052 361.733 194.763 345.761C178.474 329.789 169.524 308.184 169.524 285.714V240" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- M letter -->
+  <path d="M128 160L128 352" stroke="white" stroke-width="24" stroke-linecap="round"/>
+  <path d="M128 160L192 256L256 160" stroke="white" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M256 160L256 352" stroke="white" stroke-width="24" stroke-linecap="round"/>
+  <!-- Brain icon -->
+  <path d="M320 192C320 178.7 330.7 168 344 168C357.3 168 368 178.7 368 192C368 198.3 365.7 204.1 361.7 208.1C367.7 212.1 371.1 220.3 371.1 228C371.1 241.3 361.3 252 347.1 252C344.1 252 342.7 251.7 339.7 250.7C338.7 264.7 327.3 276 313.3 276C299.3 276 287.1 264.7 287.1 250.7C284.1 251.7 282.7 252 279.7 252C266.4 252 255.7 241.3 255.7 228C255.7 220.3 259.1 212.1 265.1 208.1C261.1 204.1 258.8 198.3 258.8 192C258.8 178.7 269.5 168 282.8 168C296.1 168 306.8 178.7 306.8 192" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M320 276V352" stroke="white" stroke-width="24" stroke-linecap="round"/>
+  <path d="M384 276V352" stroke="white" stroke-width="24" stroke-linecap="round"/>
 </svg>

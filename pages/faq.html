@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions - MENTOR Learning Platform</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../assets/css/landing-styles.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+    <link rel="stylesheet" href="../assets/css/pages.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-192x192.png">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <img src="../assets/icons/icon.svg" alt="MENTOR Logo">
+                <span>MENTOR</span>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#courses">Courses</a></li>
+                    <li><a href="../index.html#pricing">Pricing</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-buttons">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="../app" class="btn btn-outline">Log In</a>
+                <a href="../app?signup=true" class="btn btn-primary">Sign Up</a>
+                <button class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Frequently Asked Questions</h1>
+                <p>Find answers to common questions about MENTOR Learning Platform</p>
+            </div>
+
+            <div class="faq-search">
+                <div class="search-container">
+                    <input type="text" id="faq-search" placeholder="Search for questions...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <div class="faq-categories">
+                <button class="category-btn active" data-category="all">All Questions</button>
+                <button class="category-btn" data-category="account">Account & Billing</button>
+                <button class="category-btn" data-category="courses">Courses & Content</button>
+                <button class="category-btn" data-category="technical">Technical Support</button>
+                <button class="category-btn" data-category="mobile">Mobile App</button>
+            </div>
+
+            <div class="faq-list">
+                <!-- Account & Billing -->
+                <div class="faq-item" data-category="account">
+                    <div class="faq-question">
+                        <h3>How do I create an account?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Creating an account is easy! Click on the "Sign Up" button in the top right corner of the page. You'll need to provide your email address and create a password. You can also sign up using your Google or Apple account for faster registration.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="account">
+                    <div class="faq-question">
+                        <h3>What payment methods do you accept?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept all major credit cards (Visa, Mastercard, American Express, Discover), PayPal, and Apple Pay. For annual subscriptions, we also offer payment via bank transfer. All payments are processed securely through our payment providers.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="account">
+                    <div class="faq-question">
+                        <h3>Can I cancel my subscription at any time?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can cancel your subscription at any time from your account settings. Your access will continue until the end of your current billing period. We don't offer refunds for partial subscription periods, but you won't be charged for the next billing cycle after cancellation.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="account">
+                    <div class="faq-question">
+                        <h3>How do I reset my password?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can reset your password by clicking on the "Forgot Password" link on the login page. You'll receive an email with instructions to create a new password. If you don't receive the email, please check your spam folder or contact our support team.</p>
+                    </div>
+                </div>
+
+                <!-- Courses & Content -->
+                <div class="faq-item" data-category="courses">
+                    <div class="faq-question">
+                        <h3>How does the AI personalize my learning experience?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our AI analyzes your learning patterns, strengths, and areas for improvement to create a personalized learning path. It adapts in real-time based on your performance, adjusting the difficulty level, recommending relevant content, and providing targeted practice exercises. The more you use MENTOR, the more personalized your experience becomes.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="courses">
+                    <div class="faq-question">
+                        <h3>Can I download courses for offline learning?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, most courses are available for offline learning through our mobile app. Simply look for the download icon next to the course or lesson you want to save. Downloaded content will be available for 30 days without an internet connection. Note that some interactive features may require an internet connection.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="courses">
+                    <div class="faq-question">
+                        <h3>Do I get a certificate after completing a course?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you'll receive a certificate of completion for each course you finish. These certificates can be downloaded, printed, or shared directly to your LinkedIn profile. For certain professional courses, we also offer accredited certificates that are recognized by industry partners (available on Pro and Enterprise plans).</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="courses">
+                    <div class="faq-question">
+                        <h3>How often is new content added?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We add new courses and update existing content regularly. On average, we add 5-10 new courses each month across various categories. We also update our existing courses to ensure the information remains current and relevant. You can see recently added courses in the "New" section on the homepage.</p>
+                    </div>
+                </div>
+
+                <!-- Technical Support -->
+                <div class="faq-item" data-category="technical">
+                    <div class="faq-question">
+                        <h3>What are the system requirements for using MENTOR?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>MENTOR works on any modern web browser (Chrome, Firefox, Safari, Edge) and requires an internet connection for most features. For the best experience, we recommend using the latest version of your browser and having at least 4GB of RAM. Our mobile app is compatible with iOS 12+ and Android 8.0+.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="technical">
+                    <div class="faq-question">
+                        <h3>I'm experiencing technical issues. What should I do?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If you're experiencing technical issues, try these steps:</p>
+                        <ol>
+                            <li>Refresh the page</li>
+                            <li>Clear your browser cache and cookies</li>
+                            <li>Try a different browser</li>
+                            <li>Check your internet connection</li>
+                        </ol>
+                        <p>If the issue persists, please contact our support team with details about the problem, including any error messages, the device you're using, and the browser version.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="technical">
+                    <div class="faq-question">
+                        <h3>Is my data secure?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we take data security very seriously. All data is encrypted in transit and at rest. We use industry-standard security measures to protect your personal information and learning data. We never sell your data to third parties. For more information, please see our <a href="privacy.html">Privacy Policy</a>.</p>
+                    </div>
+                </div>
+
+                <!-- Mobile App -->
+                <div class="faq-item" data-category="mobile">
+                    <div class="faq-question">
+                        <h3>Is there a mobile app available?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, MENTOR is available as a mobile app for both iOS and Android devices. You can download it from the App Store or Google Play Store. The mobile app offers most of the same features as the web version, plus offline learning capabilities.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="mobile">
+                    <div class="faq-question">
+                        <h3>Can I sync my progress between devices?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, your learning progress is automatically synced across all your devices. You can start a course on your computer and continue on your mobile device seamlessly. Just make sure you're signed in with the same account on all devices.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="mobile">
+                    <div class="faq-question">
+                        <h3>Does the mobile app use a lot of data?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The amount of data used depends on the content you're accessing. Video lessons will use more data than text-based content. To minimize data usage, you can download courses for offline use when connected to Wi-Fi. You can also adjust video quality in the app settings to reduce data consumption.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Still Have Questions?</h2>
+                <p>If you couldn't find the answer you were looking for, please don't hesitate to contact our support team.</p>
+                <div class="contact-options">
+                    <a href="contact.html" class="contact-option">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email Support</h3>
+                        <p>Get a response within 24 hours</p>
+                    </a>
+                    <a href="#" class="contact-option">
+                        <i class="fas fa-comments"></i>
+                        <h3>Live Chat</h3>
+                        <p>Available 9AM-6PM (PST)</p>
+                    </a>
+                    <a href="#" class="contact-option">
+                        <i class="fas fa-book"></i>
+                        <h3>Knowledge Base</h3>
+                        <p>Browse detailed guides</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="../assets/icons/icon.svg" alt="MENTOR Logo">
+                        <span>MENTOR</span>
+                    </div>
+                    <p>MENTOR is an AI-powered learning platform that adapts to your needs, providing personalized education for everyone.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#courses">Courses</a></li>
+                        <li><a href="../index.html#pricing">Pricing</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="cookies.html">Cookie Policy</a></li>
+                        <li><a href="gdpr.html">GDPR Compliance</a></li>
+                        <li><a href="accessibility.html">Accessibility</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Download Our App</h4>
+                    <div class="app-buttons">
+                        <a href="#" class="app-button">
+                            <img src="../assets/images/app-store-badge.svg" alt="Download on the App Store">
+                        </a>
+                        <a href="#" class="app-button">
+                            <img src="../assets/images/google-play-badge.svg" alt="Get it on Google Play">
+                        </a>
+                    </div>
+                    <p class="newsletter-text">Subscribe to our newsletter</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 MENTOR Learning Platform. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Sitemap</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Press Kit</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                const icon = question.querySelector('i');
+
+                // Initially hide all answers
+                answer.style.display = 'none';
+
+                question.addEventListener('click', function() {
+                    // Toggle answer visibility
+                    if (answer.style.display === 'none') {
+                        answer.style.display = 'block';
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        answer.style.display = 'none';
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+
+            // Category filtering
+            const categoryButtons = document.querySelectorAll('.category-btn');
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Get category
+                    const category = this.getAttribute('data-category');
+
+                    // Filter items
+                    faqItems.forEach(item => {
+                        if (category === 'all' || item.getAttribute('data-category') === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('faq-search');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question h3').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+
+                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Reset category buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('[data-category="all"]').classList.add('active');
+            });
+        });
+    </script>
+    <script src="../assets/js/landing.js"></script>
+    <script type="text/javascript" src="../assets/js/register-sw.js"></script>
+    <script type="text/javascript" src="../assets/js/pwa.js"></script>
+</body>
+</html>

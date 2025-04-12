@@ -1,7 +1,7 @@
 {
-  "name": "Voice & Chat Assistant",
-  "short_name": "Voice Assistant",
-  "description": "A voice and chat assistant powered by VAPI",
+  "name": "MENTOR Learning Platform",
+  "short_name": "MENTOR",
+  "description": "AI-powered learning platform that adapts to your needs",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
