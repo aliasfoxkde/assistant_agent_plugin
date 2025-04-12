@@ -2,6 +2,60 @@
 
 An OpenEdX plugin/extension that integrates the VAPI Voice Widget to create persistent, context-aware voice and chat assistant experiences across your entire OpenEdX site.
 
+## Project Structure
+
+```
+/
+├── assets/               # Static assets for the application
+│   ├── css/             # CSS stylesheets
+│   │   ├── styles.css           # Main application styles
+│   │   ├── auth-styles.css      # Authentication UI styles
+│   │   ├── login-styles.css     # Login page specific styles
+│   │   ├── sidebar.css          # Sidebar navigation styles
+│   │   └── dark-mode.css        # Dark mode theme styles
+│   ├── js/              # JavaScript files
+│   │   ├── app.js              # Main application logic
+│   │   ├── auth.js             # Authentication module
+│   │   ├── auth-ui.js          # Authentication UI components
+│   │   ├── cloudflare-auth.js  # Cloudflare authentication handler
+│   │   ├── login.js            # Login page functionality
+│   │   ├── pwa.js              # Progressive Web App functionality
+│   │   ├── register-sw.js      # Service Worker registration
+│   │   ├── sidebar.js          # Sidebar navigation functionality
+│   │   └── sw.js               # Service Worker for offline support
+│   ├── icons/           # Icons and images
+│   │   ├── icon-*.png          # Various sized app icons
+│   │   ├── icon.svg            # Vector app icon
+│   │   └── favicon.ico         # Browser favicon
+│   └── sounds/          # Audio files
+│       └── slide.mp3           # UI sound effect
+├── functions/           # Serverless functions for Cloudflare
+│   ├── get-supabase-credentials.js  # Function to get Supabase credentials
+│   └── _middleware.js           # Cloudflare Pages middleware
+├── docs/                # Documentation files
+│   ├── CHANGELOG.md            # Version history
+│   ├── CONTRIBUTE.md           # Contribution guidelines
+│   ├── OPENEDX_INTEGRATION.md  # OpenEdX integration guide
+│   └── ... (other documentation files)
+├── index.html           # Main application page
+├── login.html           # Authentication page
+├── manifest.json        # PWA manifest
+├── _redirects           # Netlify/Cloudflare redirects
+├── build.sh             # Build script
+├── generate-icons.sh    # Icon generation script
+└── README.md            # This file
+```
+
+### Key Files
+
+- **index.html**: The main application interface with tabs for different functionality
+- **login.html**: The authentication page for user login and signup
+- **assets/js/app.js**: Core application logic for the voice and chat assistant
+- **assets/js/auth.js**: Authentication module using Supabase
+- **assets/css/styles.css**: Main application styling
+- **manifest.json**: PWA configuration for installable web app
+- **functions/_middleware.js**: Cloudflare Pages middleware for authentication
+
 ## Features
 
 - **Site-wide Persistence**: Available across all pages in your OpenEdX instance

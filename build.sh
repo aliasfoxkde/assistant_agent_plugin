@@ -5,14 +5,31 @@ mkdir -p dist
 mkdir -p dist/functions
 
 # Copy all necessary files to dist
-cp -r index.html login.html styles.css login-styles.css sidebar.css dark-mode.css app.js auth.js auth-ui.js auth-styles.css cloudflare-auth.js login.js sidebar.js pwa.js register-sw.js sw.js manifest.json _redirects dist/
+cp -r index.html login.html manifest.json _redirects dist/
+
+# Create assets directory structure in dist
+mkdir -p dist/assets/css dist/assets/js dist/assets/icons dist/assets/sounds
+
+# Copy CSS files
+cp -r assets/css/* dist/assets/css/
+
+# Copy JS files
+cp -r assets/js/* dist/assets/js/
+
+# Copy icons
+cp -r assets/icons/* dist/assets/icons/
+
+# Copy sounds
+cp -r assets/sounds/* dist/assets/sounds/
 
 # Copy functions directory
 cp -r functions/ dist/functions/
 
-# Copy directories
-cp -r icons/ dist/icons/
-cp -r sounds/ dist/sounds/
+# Copy docs directory if needed
+if [ -d "docs" ]; then
+  mkdir -p dist/docs
+  cp -r docs/* dist/docs/
+fi
 
 # Create functions directory and add middleware
 mkdir -p dist/functions
