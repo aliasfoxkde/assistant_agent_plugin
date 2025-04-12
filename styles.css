@@ -1,14 +1,14 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-body {
+html, body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    height: 100%;
     background-color: #f8fafc;
     background-image: linear-gradient(135deg, #f8fafc 0%, #e9f2ff 100%);
-    overflow-x: hidden;
+    overflow: auto;
     color: #334155;
 }
 
@@ -45,65 +45,27 @@ h1 {
 }
 
 /* Tabs styling */
-.tabs-container {
+.content-container {
     width: 100%;
     max-width: 900px;
     margin: 20px auto;
     border-radius: 16px;
-    background-color: #fff;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    background-color: var(--card-bg, #fff);
+    box-shadow: var(--card-shadow, 0 10px 30px rgba(0, 0, 0, 0.08));
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
+    height: auto;
 }
 
-.tabs-header {
-    display: flex;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #eaedf0;
-    padding: 0 10px;
-}
-
-.tab-button {
-    padding: 16px 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    position: relative;
-    color: #64748b;
-    font-size: 15px;
-    letter-spacing: -0.2px;
-}
-
-.tab-button:hover {
-    color: #4a6cf7;
-    background-color: rgba(74, 108, 247, 0.05);
-}
-
-.tab-button.active {
-    color: #4a6cf7;
-    background-color: #fff;
-}
-
-.tab-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #4a6cf7;
-}
+/* Tab content styling */
 
 .tab-content {
     display: none;
     padding: 30px;
-    height: max-content;
-    max-height: 500px;
+    height: auto;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 #f1f5f9;
+    scrollbar-color: var(--scrollbar-thumb, #cbd5e1) var(--scrollbar-track, #f1f5f9);
 }
 
 .tab-content::-webkit-scrollbar {
@@ -111,12 +73,12 @@ h1 {
 }
 
 .tab-content::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: var(--scrollbar-track, #f1f5f9);
     border-radius: 4px;
 }
 
 .tab-content::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
+    background-color: var(--scrollbar-thumb, #cbd5e1);
     border-radius: 4px;
 }
 
@@ -132,12 +94,12 @@ h1 {
 
 /* Status display */
 .status-display {
-    background-color: #fff;
+    background-color: var(--card-bg, #fff);
     padding: 16px 20px;
     border-radius: 12px;
     margin-bottom: 20px;
-    border-left: 4px solid #4a6cf7;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--button-primary-bg, #4a6cf7);
+    box-shadow: var(--card-shadow, 0 4px 15px rgba(0, 0, 0, 0.05));
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -437,7 +399,7 @@ h1 {
     right: 20px;
     width: 60px;
     height: 60px;
-    background-color: #4a6cf7;
+    background-color: var(--chat-icon-color, #4a6cf7);
     border-radius: 50%;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -457,10 +419,10 @@ h1 {
     width: min-content;
     height: auto;
     border-radius: 20px;
-    background-color: #fff;
+    background-color: var(--chat-bubble-bg, #fff);
     animation: none;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: var(--chat-bubble-shadow, 0 10px 40px rgba(0, 0, 0, 0.2));
+    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
 }
 
 .chat-bubble:hover:not(.expanded) {
@@ -624,10 +586,10 @@ h1 {
     display: flex;
     align-items: center;
     font-size: 13px;
-    color: #64748b;
+    color: var(--text-color, #64748b);
     padding: 12px 20px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eee;
+    background-color: var(--card-bg, #ffffff);
+    border-bottom: 1px solid var(--border-color, #eee);
     font-weight: 500;
 }
 
@@ -641,12 +603,12 @@ h1 {
 }
 
 .status-dot.ready {
-    background-color: #10b981; /* Green */
+    background-color: var(--status-ready, #10b981); /* Green */
     box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
 }
 
 .status-dot.processing {
-    background-color: #f59e0b; /* Yellow */
+    background-color: var(--status-listening, #f59e0b); /* Yellow */
     box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
     animation: pulse-yellow 1.5s infinite;
 }
@@ -658,7 +620,7 @@ h1 {
 }
 
 .status-dot.error {
-    background-color: #ef4444; /* Red */
+    background-color: var(--status-error, #ef4444); /* Red */
     box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
 }
 
@@ -670,8 +632,8 @@ h1 {
 
 /* Updated: Changed mic button color to green */
 .mic-button {
-    background-color: #10b981; /* Changed from red to green */
-    color: white;
+    background-color: var(--mic-button-bg, #10b981); /* Changed from red to green */
+    color: var(--button-primary-text, white);
     border: none;
     border-radius: 50%;
     width: 44px;
@@ -697,7 +659,7 @@ h1 {
 
 /* Updated: Changed active mic button to red for hang-up state */
 .mic-button.active {
-    background-color: #ef4444; /* Red background when active (hang up) */
+    background-color: var(--mic-button-active-bg, #ef4444); /* Red background when active (hang up) */
     animation: pulse-red 1.5s infinite;
 }
 
@@ -710,7 +672,7 @@ h1 {
 .mic-icon {
     width: 18px;
     height: 18px;
-    color: white;
+    color: var(--mic-icon-color, white);
 }
 
 /* Updated: Changed collapse button from X to _ */

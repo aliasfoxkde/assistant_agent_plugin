@@ -52,8 +52,15 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
+      // If this is the PWA install button
+      if (this.id === 'pwa-install-sidebar') {
+        e.preventDefault();
+        // PWA install is handled in pwa.js
+        return;
+      }
+
       // If this is a navigation link (not logout or theme toggle or pwa install)
-      if (!this.dataset.action && this.id !== 'pwa-install-sidebar') {
+      if (!this.dataset.action) {
         e.preventDefault();
 
         // Remove active class from all links
@@ -74,14 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show target section
         if (targetSection) {
           targetSection.classList.add('active');
-
-          // Update tab buttons to match
-          document.querySelectorAll('.tab-button').forEach(button => {
-            button.classList.remove('active');
-            if (button.getAttribute('data-tab') === targetId) {
-              button.classList.add('active');
-            }
-          });
         }
 
         // On mobile, close sidebar after navigation
@@ -120,25 +119,53 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle logout
   const logoutLink = document.querySelector('.sidebar-link[data-action="logout"]');
   if (logoutLink) {
-    logoutLink.addEventListener('click', async function(e) {
+    logoutLink.addEventListener('click', function(e) {
       e.preventDefault();
+      console.log('Logout clicked');
 
-      try {
-        // Import auth functions
-        const { signOut } = await import('./auth.js');
+      // Force logout by clearing localStorage and redirecting
+      function forceLogout() {
+        console.log('Forcing logout');
+        // Clear all auth-related localStorage items
+        try {
+          localStorage.removeItem('supabase.auth.token');
+          localStorage.removeItem('sb-refresh-token');
+          localStorage.removeItem('sb-access-token');
+          localStorage.removeItem('sb-auth-token');
 
-        // Sign out user
-        const result = await signOut();
-
-        if (result.success) {
-          // Redirect to login page
-          window.location.href = 'login.html';
-        } else {
-          console.error('Logout failed:', result.error);
+          // Clear any other auth-related items
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && (key.includes('supabase') || key.includes('sb-'))) {
+              localStorage.removeItem(key);
+            }
+          }
+        } catch (e) {
+          console.error('Error clearing localStorage:', e);
         }
-      } catch (error) {
-        console.error('Error during logout:', error);
+
+        // Redirect to login page
+        console.log('Redirecting to login page');
+        window.location.href = 'login.html';
       }
+
+      // Try the normal logout first
+      import('./auth.js').then(auth => {
+        console.log('Auth module imported');
+        auth.signOut().then(result => {
+          console.log('Sign out result:', result);
+          // Always redirect regardless of result
+          forceLogout();
+        }).catch(error => {
+          console.error('Error during signOut():', error);
+          // If API call fails, force logout anyway
+          forceLogout();
+        });
+      }).catch(error => {
+        console.error('Error importing auth module:', error);
+        // If import fails, force logout anyway
+        forceLogout();
+      });
     });
   }
 
@@ -215,6 +242,90 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   updateUserInfo();
+
+  // Listen for user-authenticated event
+  document.addEventListener('user-authenticated', (event) => {
+    const { user } = event.detail;
+    if (user) {
+      // Update user avatar in sidebar
+      const userAvatar = document.getElementById('user-avatar');
+      if (userAvatar) {
+        // Use first letter of email as avatar
+        userAvatar.textContent = user.email.charAt(0).toUpperCase();
+      }
+
+      // Update user name in sidebar
+      const userName = document.getElementById('user-name');
+      if (userName) {
+        userName.textContent = user.email;
+      }
+
+      // Update user role in sidebar
+      const userRole = document.getElementById('user-role');
+      if (userRole) {
+        if (user.user_metadata?.isInstructor) {
+          userRole.textContent = 'Instructor';
+        } else {
+          userRole.textContent = 'Student';
+        }
+      }
+
+      // Update profile info in account tab
+      const profileAvatar = document.getElementById('profile-avatar');
+      if (profileAvatar) {
+        profileAvatar.textContent = user.email.charAt(0).toUpperCase();
+      }
+
+      const profileEmail = document.getElementById('profile-email');
+      if (profileEmail) {
+        profileEmail.textContent = user.email;
+      }
+
+      const profileRole = document.getElementById('profile-role');
+      if (profileRole) {
+        if (user.user_metadata?.isInstructor) {
+          profileRole.textContent = 'Instructor';
+        } else {
+          profileRole.textContent = 'Student';
+        }
+      }
+    }
+  });
+
+  // Listen for user-signed-out event
+  document.addEventListener('user-signed-out', () => {
+    // Reset user info in sidebar
+    const userAvatar = document.getElementById('user-avatar');
+    if (userAvatar) {
+      userAvatar.textContent = 'U';
+    }
+
+    const userName = document.getElementById('user-name');
+    if (userName) {
+      userName.textContent = 'User';
+    }
+
+    const userRole = document.getElementById('user-role');
+    if (userRole) {
+      userRole.textContent = 'Guest';
+    }
+
+    // Reset profile info in account tab
+    const profileAvatar = document.getElementById('profile-avatar');
+    if (profileAvatar) {
+      profileAvatar.textContent = 'U';
+    }
+
+    const profileEmail = document.getElementById('profile-email');
+    if (profileEmail) {
+      profileEmail.textContent = 'Not logged in';
+    }
+
+    const profileRole = document.getElementById('profile-role');
+    if (profileRole) {
+      profileRole.textContent = 'Guest';
+    }
+  });
 
   // Set up account tab theme toggle button
   const themeToggleBtn = document.getElementById('theme-toggle-btn');

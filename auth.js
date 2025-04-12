@@ -177,17 +177,47 @@ async function signIn(email, password) {
 
 // Sign out the current user
 async function signOut() {
-  const supabase = await getSupabaseClient();
-
   try {
-    const { error } = await supabase.auth.signOut();
+    // Clear all auth-related localStorage items regardless of API call success
+    console.log('Clearing local storage auth data');
+    localStorage.removeItem('supabase.auth.token');
+    localStorage.removeItem('sb-refresh-token');
+    localStorage.removeItem('sb-access-token');
+    localStorage.removeItem('sb-auth-token');
+    localStorage.removeItem('supabase.auth.expires_at');
+    localStorage.removeItem('supabase.auth.refresh_token');
+    localStorage.removeItem('supabase.auth.access_token');
 
-    if (error) throw error;
+    // Clear any other auth-related items that might be in localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.includes('supabase') || key.includes('sb-'))) {
+        console.log('Removing localStorage item:', key);
+        localStorage.removeItem(key);
+      }
+    }
 
+    try {
+      const supabase = await getSupabaseClient();
+      console.log('Got Supabase client for signOut');
+
+      if (supabase) {
+        console.log('Calling supabase.auth.signOut()');
+        await supabase.auth.signOut().catch(e => {
+          console.log('Ignoring signOut error:', e);
+        });
+      }
+    } catch (apiError) {
+      console.log('Ignoring API error during logout:', apiError);
+      // Continue with logout process even if API call fails
+    }
+
+    console.log('Sign out successful');
     return { success: true };
   } catch (error) {
-    console.error('Error signing out:', error.message);
-    return { success: false, error: error.message };
+    console.error('Error in signOut function:', error);
+    // Even if there's an error, we'll return success since we've cleared localStorage
+    return { success: true };
   }
 }
 

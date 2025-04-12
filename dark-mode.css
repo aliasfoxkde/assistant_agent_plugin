@@ -10,7 +10,7 @@
   --border-color: #e2e8f0;
   --input-bg: #ffffff;
   --input-border: #cbd5e1;
-  --button-primary-bg: #4a6cf7;
+  --button-primary-bg: #3b82f6;
   --button-primary-text: #ffffff;
   --button-secondary-bg: #f1f5f9;
   --button-secondary-text: #334155;
@@ -23,6 +23,12 @@
   --chat-assistant-bg: #e9f2ff;
   --scrollbar-track: #f1f5f9;
   --scrollbar-thumb: #cbd5e1;
+  --chat-icon-color: #4a6cf7;
+  --chat-bubble-bg: #ffffff;
+  --chat-bubble-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --mic-button-bg: #3b82f6;
+  --mic-button-active-bg: #ef4444;
+  --mic-icon-color: #ffffff;
 }
 
 /* Dark Mode Class */
@@ -36,7 +42,7 @@ body.dark-mode {
   --border-color: #334155;
   --input-bg: #334155;
   --input-border: #475569;
-  --button-primary-bg: #4a6cf7;
+  --button-primary-bg: #3b82f6;
   --button-primary-text: #ffffff;
   --button-secondary-bg: #334155;
   --button-secondary-text: #e2e8f0;
@@ -49,6 +55,12 @@ body.dark-mode {
   --chat-assistant-bg: #1e3a8a;
   --scrollbar-track: #1e293b;
   --scrollbar-thumb: #475569;
+  --chat-icon-color: #60a5fa;
+  --chat-bubble-bg: #1e293b;
+  --chat-bubble-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --mic-button-bg: #3b82f6;
+  --mic-button-active-bg: #ef4444;
+  --mic-icon-color: #ffffff;
 }
 
 /* Apply Variables */

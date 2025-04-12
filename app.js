@@ -1976,68 +1976,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Update UI based on authentication status
     if (currentUser) {
         logDebug(`Logged in as: ${currentUser.email}`);
-
-        // Update account tab with user info
-        const accountContent = document.getElementById('account-content');
-        if (accountContent) {
-            // Create user profile element
-            const userProfile = document.createElement('div');
-            userProfile.className = 'user-profile';
-
-            // Add user info
-            const userInfo = document.createElement('div');
-            userInfo.className = 'user-info';
-
-            const userEmail = document.createElement('div');
-            userEmail.className = 'user-email';
-            userEmail.textContent = currentUser.email;
-
-            // Add instructor badge if applicable
-            if (currentUser.user_metadata?.isInstructor) {
-                const instructorBadge = document.createElement('div');
-                instructorBadge.className = 'instructor-badge';
-                instructorBadge.textContent = 'Instructor';
-
-                // Add verification status
-                const status = currentUser.user_metadata?.instructorVerificationStatus || 'pending';
-                instructorBadge.classList.add(`status-${status}`);
-                instructorBadge.title = `Verification Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
-
-                userInfo.appendChild(instructorBadge);
-            }
-
-            userInfo.appendChild(userEmail);
-
-            // Add logout button
-            const logoutButton = document.createElement('button');
-            logoutButton.className = 'logout-button';
-            logoutButton.textContent = 'Logout';
-            logoutButton.addEventListener('click', async () => {
-                try {
-                    // Import auth functions
-                    const { signOut } = await import('./auth.js');
-
-                    // Sign out user
-                    const result = await signOut();
-
-                    if (result.success) {
-                        // Redirect to login page
-                        window.location.href = 'login.html';
-                    }
-                } catch (error) {
-                    console.error('Error signing out:', error);
-                    logDebug(`Sign out error: ${error.message}`);
-                }
-            });
-
-            // Add elements to profile container
-            userProfile.appendChild(userInfo);
-            userProfile.appendChild(logoutButton);
-
-            // Add profile to account content
-            accountContent.innerHTML = '';
-            accountContent.appendChild(userProfile);
-        }
+        // User is authenticated, continue with app initialization
     } else {
         logDebug('Not logged in');
         // Redirect to login page

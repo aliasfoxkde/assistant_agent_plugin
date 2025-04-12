@@ -124,19 +124,7 @@
   font-size: 13px;
 }
 
-/* User Profile */
-.user-profile {
-  position: relative;
-  padding: 16px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 20px;
-}
+/* User Profile styles moved to sidebar.css */
 
 .user-info {
   display: flex;
@@ -244,9 +232,5 @@
     right: 5%;
   }
 
-  .user-profile {
-    width: 90%;
-    top: 10px;
-    right: 5%;
-  }
+  /* User profile styles removed */
 }
