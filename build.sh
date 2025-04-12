@@ -5,7 +5,7 @@ mkdir -p dist
 mkdir -p dist/functions
 
 # Copy all necessary files to dist
-cp -r index.html login.html config.html manifest.json _redirects dist/
+cp -r index.html index.html.old login.html config.html manifest.json _redirects dist/
 
 # Copy pages directory
 mkdir -p dist/pages
@@ -75,9 +75,9 @@ EOL
 # Create a package.json in the dist directory for Cloudflare Pages
 cat > dist/package.json << EOL
 {
-  "name": "voice-assistant-dist",
+  "name": "mentor-learning-platform",
   "version": "1.0.0",
-  "description": "VAPI Voice Assistant Distribution",
+  "description": "MENTOR Learning Platform Distribution",
   "main": "index.html"
 }
 EOL
