@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/css/dev-banner.css">
     <link rel="stylesheet" href="assets/css/dashboard-styles.css">
     <link rel="stylesheet" href="assets/css/settings-styles.css">
+    <link rel="stylesheet" href="assets/css/details-styles.css">
 
     <!-- PWA Support -->
     <link rel="manifest" href="manifest.json">
@@ -34,7 +35,18 @@
     <!-- Sidebar Navigation -->
     <div id="sidebar" class="collapsed">
         <div class="sidebar-header">
-            <img src="assets/icons/icon.svg" alt="MENTOR Logo" class="sidebar-logo">
+            <a href="index.html" title="Go to Home Page">
+                <img src="assets/icons/icon.svg" alt="MENTOR Logo" class="sidebar-logo">
+                <span class="sidebar-title">MENTOR</span>
+            </a>
+        </div>
+
+        <div class="sidebar-user">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <div class="user-info">
+                <div id="user-name">User</div>
+                <div id="user-role">Guest</div>
+            </div>
         </div>
 
         <nav class="sidebar-nav">
@@ -58,6 +70,10 @@
                 <i class="fas fa-user"></i>
                 <span>Profile</span>
             </a>
+            <a href="#assistant-details" class="sidebar-link" data-tab="assistant-details">
+                <i class="fas fa-robot"></i>
+                <span>Assistant Details</span>
+            </a>
             <a href="#" id="settings-link" class="sidebar-link">
                 <i class="fas fa-cog"></i>
                 <span>Settings</span>
@@ -69,8 +85,8 @@
         </nav>
 
         <div class="sidebar-footer">
-            <button id="sidebar-toggle" class="sidebar-toggle">
-                <i class="fas fa-chevron-right"></i>
+            <button class="sidebar-toggle" title="Toggle Sidebar">
+                <i class="fas fa-chevron-left"></i>
             </button>
         </div>
     </div>
@@ -78,21 +94,24 @@
     <!-- Main Content -->
     <div id="main-content">
         <!-- Header -->
-        <header class="main-header">
+        <header class="main-header dashboard-header">
             <div class="header-left">
                 <h1 id="page-title">Dashboard</h1>
             </div>
             <div class="header-right">
                 <div class="search-bar">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" placeholder="Search...">
+                    <input type="text" id="search-input" name="search" placeholder="Search courses, docs, or help..." autocomplete="off">
+                    <div class="search-results" id="search-results">
+                        <!-- Search results will be populated dynamically -->
+                    </div>
                 </div>
                 <div class="header-actions">
-                    <button id="notifications-btn" class="icon-button">
+                    <button id="notifications-btn" class="icon-button" title="Notifications">
                         <i class="fas fa-bell"></i>
                         <span class="badge">3</span>
                     </button>
-                    <button id="pwa-install-btn" class="icon-button">
+                    <button id="pwa-install-btn" class="icon-button" title="Install this app on your device">
                         <i class="fas fa-download"></i>
                     </button>
                 </div>
@@ -199,10 +218,100 @@
             <h2>Settings</h2>
             <p>Manage your account and preferences.</p>
 
-            <!-- Settings content will be loaded here -->
-            <div class="placeholder-message">
-                <i class="fas fa-cog"></i>
-                <p>Settings page will be implemented in the next phase.</p>
+            <div class="settings-container">
+                <div class="settings-card">
+                    <h3>Appearance</h3>
+                    <div class="settings-option">
+                        <label for="theme-setting">Theme</label>
+                        <div class="settings-control">
+                            <select id="theme-setting">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Voice Assistant</h3>
+                    <div class="settings-option">
+                        <label for="voice-enabled-setting">Voice Enabled</label>
+                        <div class="settings-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="voice-enabled-setting" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-option">
+                        <label for="voice-language-setting">Language</label>
+                        <div class="settings-control">
+                            <select id="voice-language-setting">
+                                <option value="en-US">English (US)</option>
+                                <option value="en-GB">English (UK)</option>
+                                <option value="es-ES">Spanish</option>
+                                <option value="fr-FR">French</option>
+                                <option value="de-DE">German</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Account</h3>
+                    <div class="settings-option">
+                        <label>Reset Settings</label>
+                        <div class="settings-control">
+                            <button id="reset-settings-btn" class="btn-danger">Reset to Defaults</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="assistant-details">
+            <h2>Assistant Details</h2>
+            <p>Information about the AI assistant and its capabilities.</p>
+
+            <div class="details-container">
+                <div class="details-card">
+                    <h3>Assistant Information</h3>
+                    <div class="details-row">
+                        <div class="details-label">Model</div>
+                        <div class="details-value">Claude 3.7 Sonnet</div>
+                    </div>
+                    <div class="details-row">
+                        <div class="details-label">Version</div>
+                        <div class="details-value">1.0.0</div>
+                    </div>
+                    <div class="details-row">
+                        <div class="details-label">Assistant ID</div>
+                        <div class="details-value" id="stat-assistant-id">007c44a8-8465-4539-b579-dd6d6f471b72</div>
+                    </div>
+                    <div class="details-row">
+                        <div class="details-label">Microphone</div>
+                        <div class="details-value" id="stat-mic-status">Checking...</div>
+                    </div>
+                </div>
+
+                <div class="details-card">
+                    <h3>Usage Statistics</h3>
+                    <div class="details-row">
+                        <div class="details-label">Tokens Sent</div>
+                        <div class="details-value" id="stat-tokens-sent">0</div>
+                    </div>
+                    <div class="details-row">
+                        <div class="details-label">Tokens Received</div>
+                        <div class="details-value" id="stat-tokens-received">0</div>
+                    </div>
+                </div>
+
+                <div class="details-card">
+                    <h3>Voice Transcription</h3>
+                    <div class="transcription-container" id="transcription-container">
+                        <div class="transcription-placeholder">Voice transcription will appear here when you speak.</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -236,7 +345,7 @@
 
             <!-- Chat Input -->
             <div class="chat-input-container">
-                <input type="text" class="chat-input" id="message-input" placeholder="Type your message here...">
+                <input type="text" class="chat-input" id="message-input" name="message" placeholder="Type your message here..." autocomplete="off">
                 <div class="action-buttons">
                     <button class="send-button" id="send-button">
                         <svg class="send-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -251,6 +360,29 @@
                         </svg>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA Install Prompt -->
+    <div class="pwa-install-prompt" id="pwa-install-prompt">
+        <div class="pwa-install-content">
+            <div class="pwa-install-header">
+                <img src="assets/icons/icon.svg" alt="MENTOR Logo" class="pwa-logo">
+                <h3>Install MENTOR</h3>
+                <button id="pwa-close" class="pwa-close">&times;</button>
+            </div>
+            <div class="pwa-install-body">
+                <p>Install this app on your device for a better experience.</p>
+                <ul class="pwa-benefits">
+                    <li><i class="fas fa-check"></i> Works offline</li>
+                    <li><i class="fas fa-check"></i> Faster loading</li>
+                    <li><i class="fas fa-check"></i> Home screen icon</li>
+                </ul>
+            </div>
+            <div class="pwa-install-footer">
+                <button id="pwa-install" class="pwa-install-btn">Install Now</button>
+                <button id="pwa-later" class="pwa-later-btn">Maybe Later</button>
             </div>
         </div>
     </div>

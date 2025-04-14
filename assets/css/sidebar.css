@@ -42,6 +42,13 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.sidebar-header a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--sidebar-text-color);
+}
+
 .sidebar-logo {
   height: 32px;
   width: 32px;
@@ -143,6 +150,15 @@
 
 #sidebar.collapsed + #main-content {
   margin-left: var(--sidebar-width-collapsed);
+}
+
+/* Debug panel adjustment with sidebar */
+#sidebar.collapsed ~ #debug-panel-container {
+  left: var(--sidebar-width-collapsed);
+}
+
+#sidebar:not(.collapsed) ~ #debug-panel-container {
+  left: var(--sidebar-width-expanded);
 }
 
 /* Responsive Adjustments */

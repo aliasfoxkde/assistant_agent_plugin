@@ -352,16 +352,24 @@ function updateStatus(message, type = 'ready') {
 
 // Update stats function
 function updateStats() {
-    document.getElementById('stat-latency').textContent = stats.latency + ' ms';
-    document.getElementById('stat-duration').textContent = stats.duration.toFixed(1) + ' sec';
-    document.getElementById('stat-ttfw').textContent = stats.timeToFirstWord + ' ms';
-    document.getElementById('stat-session-count').textContent = stats.sessionCount;
-    document.getElementById('stat-user-messages').textContent = stats.userMessages;
-    document.getElementById('stat-assistant-messages').textContent = stats.assistantMessages;
-    document.getElementById('stat-tokens-sent').textContent = stats.tokensSent;
-    document.getElementById('stat-tokens-received').textContent = stats.tokensReceived;
-    document.getElementById('stat-assistant-id').textContent = ASSISTANT_ID;
-    document.getElementById('stat-mic-status').textContent = stats.microphoneAvailable ? 'Available' : 'Not Available';
+    // Check if elements exist before updating them
+    const updateElement = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        }
+    };
+
+    updateElement('stat-latency', stats.latency + ' ms');
+    updateElement('stat-duration', stats.duration.toFixed(1) + ' sec');
+    updateElement('stat-ttfw', stats.timeToFirstWord + ' ms');
+    updateElement('stat-session-count', stats.sessionCount);
+    updateElement('stat-user-messages', stats.userMessages);
+    updateElement('stat-assistant-messages', stats.assistantMessages);
+    updateElement('stat-tokens-sent', stats.tokensSent);
+    updateElement('stat-tokens-received', stats.tokensReceived);
+    updateElement('stat-assistant-id', ASSISTANT_ID);
+    updateElement('stat-mic-status', stats.microphoneAvailable ? 'Available' : 'Not Available');
 }
 
 // Update details tab
@@ -2067,6 +2075,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     chatBubble.addEventListener('mouseenter', () => {
         if (!chatBubble.classList.contains('expanded')) {
             toggleChatBubble();
+            logDebug('Chat bubble expanded on hover');
         }
     });
 
@@ -2078,6 +2087,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Check if the click target is not within the chat bubble
             if (!chatBubble.contains(e.target)) {
                 toggleChatBubble(true); // Force minimize
+                logDebug('Chat bubble minimized on click away');
             }
         }
     });

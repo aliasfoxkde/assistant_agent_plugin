@@ -737,14 +737,14 @@ h1 {
 /* Modern Search Bar */
 .search-bar {
     position: relative;
-    width: 300px;
+    width: 350px;
     margin-right: 20px;
 }
 
 .search-bar input {
     width: 100%;
     padding: 10px 15px 10px 40px;
-    border-radius: 30px;
+    border-radius: 8px;
     border: 1px solid var(--border-color, #e2e8f0);
     background-color: var(--input-bg, #fff);
     color: var(--text-color, #334155);
@@ -757,6 +757,7 @@ h1 {
     outline: none;
     border-color: var(--button-primary-bg, #4a6cf7);
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+    width: 400px; /* Expand on focus */
 }
 
 .search-icon {
@@ -772,6 +773,60 @@ h1 {
 .search-bar input:focus + .search-icon {
     color: var(--button-primary-bg, #4a6cf7);
     opacity: 1;
+}
+
+/* Search results dropdown */
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--card-bg, #fff);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.search-bar input:focus ~ .search-results {
+    display: block;
+}
+
+.search-result-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: var(--bg-color, #f8fafc);
+}
+
+.search-result-category {
+    font-size: 12px;
+    color: var(--text-muted, #64748b);
+    margin-bottom: 3px;
+}
+
+.search-result-title {
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.search-result-description {
+    font-size: 13px;
+    color: var(--text-muted, #64748b);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* PWA Install Prompt */

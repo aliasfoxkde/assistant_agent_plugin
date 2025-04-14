@@ -1,15 +1,19 @@
 /* Dashboard Styles */
 
 .dashboard-header {
-    text-align: center;
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .dashboard-header h1 {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 5px;
+    margin: 0;
 }
 
 /* Status Card */

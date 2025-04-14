@@ -2,17 +2,18 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Get sidebar elements
   const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
   const mainContent = document.getElementById('main-content');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = document.getElementById('theme-icon');
 
   // Initialize sidebar state from localStorage if available
-  const sidebarExpanded = localStorage.getItem('sidebarExpanded') === 'true';
-  if (sidebarExpanded) {
-    sidebar.classList.add('expanded');
-    mainContent.classList.add('sidebar-expanded');
+  const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') !== 'false'; // Default to collapsed
+  if (sidebarCollapsed) {
+    sidebar.classList.add('collapsed');
+  } else {
+    sidebar.classList.remove('collapsed');
   }
 
   // Initialize theme from localStorage if available
@@ -30,11 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Toggle sidebar function
   function toggleSidebar() {
-    sidebar.classList.toggle('expanded');
-    mainContent.classList.toggle('sidebar-expanded');
+    sidebar.classList.toggle('collapsed');
 
     // Save state to localStorage
-    localStorage.setItem('sidebarExpanded', sidebar.classList.contains('expanded'));
+    localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+
+    // Log the toggle action
+    console.log('Sidebar toggled, collapsed:', sidebar.classList.contains('collapsed'));
   }
 
   // Add click event to toggle button
@@ -83,11 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
           targetSection.classList.add('active');
         }
 
-        // On mobile, close sidebar after navigation
+        // On mobile, collapse sidebar after navigation
         if (window.innerWidth <= 768) {
-          sidebar.classList.remove('expanded');
-          mainContent.classList.remove('sidebar-expanded');
-          localStorage.setItem('sidebarExpanded', 'false');
+          sidebar.classList.add('collapsed');
+          localStorage.setItem('sidebarCollapsed', 'true');
         }
       }
     });

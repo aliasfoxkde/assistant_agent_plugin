@@ -86,15 +86,15 @@
 
 /* Settings Section */
 .settings-section {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .settings-section h3 {
-  margin: 0 0 15px;
-  font-size: 1.2rem;
+  margin: 0 0 10px;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--heading-color, #1e293b);
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
 }
 
@@ -103,8 +103,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
@@ -503,17 +503,17 @@ input:checked + .toggle-slider:before {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .settings-control {
     margin-top: 10px;
     width: 100%;
   }
-  
+
   .settings-popup-footer {
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .settings-reset, .settings-save {
     width: 100%;
   }

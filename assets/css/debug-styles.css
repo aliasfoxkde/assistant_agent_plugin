@@ -4,7 +4,7 @@
 #debug-panel-container {
   position: fixed;
   bottom: 0;
-  right: 0;
+  left: var(--sidebar-width-collapsed, 60px);
   width: 400px;
   height: 300px;
   background-color: rgba(0, 0, 0, 0.8);
@@ -13,8 +13,9 @@
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: left var(--sidebar-transition, 0.3s ease);
 }
 
 #debug-panel-header {
@@ -23,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 #debug-panel-controls button {
@@ -275,4 +276,28 @@ body.debug-mode * {
 
 body.debug-mode *:hover {
   outline: 1px solid rgba(255, 0, 0, 0.5);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  #debug-panel-container {
+    width: 100%;
+    height: 200px;
+    border-radius: 0;
+    left: 0 !important; /* Override sidebar positioning on mobile */
+  }
+
+  #debug-panel-header {
+    border-radius: 0;
+  }
+
+  /* Make debug panel more compact on mobile */
+  #debug-panel {
+    font-size: 10px;
+  }
+
+  /* Ensure debug panel is above sidebar on mobile */
+  #debug-panel-container {
+    z-index: 10000;
+  }
 }

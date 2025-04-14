@@ -104,12 +104,14 @@ function createDebugPanel() {
 
   const debugPanelContainer = document.createElement('div');
   debugPanelContainer.id = 'debug-panel-container';
+  debugPanelContainer.classList.add('debug-panel-collapsed'); // Start collapsed by default
   debugPanelContainer.innerHTML = `
     <div id="debug-panel-header">
       <span>Debug Panel</span>
       <div id="debug-panel-controls">
         <button id="debug-panel-clear">Clear</button>
-        <button id="debug-panel-toggle">_</button>
+        <button id="debug-panel-test" title="Run Tests"><i class="fas fa-vial"></i></button>
+        <button id="debug-panel-toggle">□</button>
       </div>
     </div>
     <div id="debug-panel"></div>
@@ -193,9 +195,40 @@ function createDebugPanel() {
     document.getElementById('debug-panel').innerHTML = '';
   });
 
+  document.getElementById('debug-panel-test').addEventListener('click', async () => {
+    logInfo('Running tests...', 'Test');
+    try {
+      // Import test module
+      const testModule = await import('./test-utils.js');
+      testModule.runAllTests();
+    } catch (error) {
+      logError('Failed to run tests: ' + error.message, 'Test');
+    }
+  });
+
+  // Toggle debug panel on header click
+  document.getElementById('debug-panel-header').addEventListener('click', (e) => {
+    // Don't toggle if clicking on buttons
+    if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+      return;
+    }
+
+    const container = document.getElementById('debug-panel-container');
+    const toggleButton = document.getElementById('debug-panel-toggle');
+
+    if (container.classList.contains('debug-panel-collapsed')) {
+      container.classList.remove('debug-panel-collapsed');
+      toggleButton.textContent = '_';
+    } else {
+      container.classList.add('debug-panel-collapsed');
+      toggleButton.textContent = '□';
+    }
+  });
+
+  // Also keep the toggle button functionality
   document.getElementById('debug-panel-toggle').addEventListener('click', (e) => {
     const container = document.getElementById('debug-panel-container');
-    const button = e.target;
+    const button = e.target.closest('button') || e.target;
 
     if (container.classList.contains('debug-panel-collapsed')) {
       container.classList.remove('debug-panel-collapsed');

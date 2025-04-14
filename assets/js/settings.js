@@ -30,7 +30,7 @@ let currentSettings = { ...defaultSettings };
  */
 function initSettings() {
   logInfo('Initializing settings', 'Settings');
-  
+
   // Load settings from localStorage
   const savedSettings = localStorage.getItem('mentor_settings');
   if (savedSettings) {
@@ -45,7 +45,7 @@ function initSettings() {
   } else {
     logDebug('No saved settings found, using defaults', 'Settings');
   }
-  
+
   // Apply settings
   applySettings();
 }
@@ -55,14 +55,14 @@ function initSettings() {
  */
 function applySettings() {
   logDebug('Applying settings', 'Settings');
-  
+
   // Apply theme
   if (currentSettings.theme === 'dark') {
     document.body.classList.add('dark-mode');
   } else {
     document.body.classList.remove('dark-mode');
   }
-  
+
   // Apply sidebar state
   const sidebar = document.getElementById('sidebar');
   if (sidebar) {
@@ -72,10 +72,10 @@ function applySettings() {
       sidebar.classList.remove('collapsed');
     }
   }
-  
+
   // Apply font size
   document.documentElement.setAttribute('data-font-size', currentSettings.interface.fontSize);
-  
+
   // Apply animations
   if (!currentSettings.interface.animations) {
     document.documentElement.setAttribute('data-reduce-motion', 'true');
@@ -99,24 +99,24 @@ function saveSettings() {
  */
 function updateSetting(key, value) {
   logDebug(`Updating setting: ${key} = ${value}`, 'Settings');
-  
+
   // Handle dot notation (e.g., 'voice.speed')
   if (key.includes('.')) {
     const parts = key.split('.');
     const mainKey = parts[0];
     const subKey = parts[1];
-    
+
     if (currentSettings[mainKey] && subKey in currentSettings[mainKey]) {
       currentSettings[mainKey][subKey] = value;
     }
   } else if (key in currentSettings) {
     currentSettings[key] = value;
   }
-  
+
   // Save and apply settings
   saveSettings();
   applySettings();
-  
+
   // Dispatch event
   window.dispatchEvent(new CustomEvent('settings-changed', { detail: { key, value } }));
 }
@@ -137,9 +137,15 @@ function resetSettings() {
   currentSettings = { ...defaultSettings };
   saveSettings();
   applySettings();
-  
+
   // Dispatch event
   window.dispatchEvent(new CustomEvent('settings-reset'));
+
+  // Show notification
+  showNotification('Settings reset to defaults', 'success');
+
+  // Hide settings popup if it's open
+  hideSettingsPopup();
 }
 
 /**
@@ -147,18 +153,18 @@ function resetSettings() {
  */
 function showSettingsPopup() {
   logInfo('Showing settings popup', 'Settings');
-  
+
   // Check if popup already exists
   if (document.getElementById('settings-popup')) {
     document.getElementById('settings-popup').classList.add('visible');
     return;
   }
-  
+
   // Create popup container
   const popup = document.createElement('div');
   popup.id = 'settings-popup';
   popup.className = 'settings-popup';
-  
+
   // Create popup content
   popup.innerHTML = `
     <div class="settings-popup-content">
@@ -207,7 +213,7 @@ function showSettingsPopup() {
             </div>
           </div>
         </div>
-        
+
         <div class="settings-section">
           <h3>Voice Assistant</h3>
           <div class="settings-option">
@@ -255,7 +261,7 @@ function showSettingsPopup() {
             </div>
           </div>
         </div>
-        
+
         <div class="settings-section">
           <h3>Notifications</h3>
           <div class="settings-option">
@@ -284,20 +290,20 @@ function showSettingsPopup() {
       </div>
     </div>
   `;
-  
+
   // Add to document
   document.body.appendChild(popup);
-  
+
   // Show popup
   setTimeout(() => {
     popup.classList.add('visible');
   }, 10);
-  
+
   // Add event listeners
   document.getElementById('settings-popup-close').addEventListener('click', hideSettingsPopup);
   document.getElementById('settings-reset').addEventListener('click', resetSettings);
   document.getElementById('settings-save').addEventListener('click', saveSettingsFromPopup);
-  
+
   // Add event listeners for range inputs
   document.querySelectorAll('input[type="range"]').forEach(input => {
     const valueDisplay = input.parentElement.querySelector('.range-value');
@@ -310,12 +316,12 @@ function showSettingsPopup() {
       }
     });
   });
-  
+
   // Prevent clicks inside the popup from closing it
   popup.querySelector('.settings-popup-content').addEventListener('click', (e) => {
     e.stopPropagation();
   });
-  
+
   // Close popup when clicking outside
   popup.addEventListener('click', (e) => {
     if (e.target === popup) {
@@ -331,7 +337,7 @@ function hideSettingsPopup() {
   const popup = document.getElementById('settings-popup');
   if (popup) {
     popup.classList.remove('visible');
-    
+
     // Remove after animation
     setTimeout(() => {
       if (popup.parentNode) {
@@ -346,33 +352,33 @@ function hideSettingsPopup() {
  */
 function saveSettingsFromPopup() {
   logInfo('Saving settings from popup', 'Settings');
-  
+
   // Theme
   currentSettings.theme = document.getElementById('theme-setting').value;
-  
+
   // Interface
   currentSettings.interface.fontSize = document.getElementById('font-size-setting').value;
   currentSettings.interface.animations = document.getElementById('animations-setting').checked;
   currentSettings.interface.sidebarCollapsed = document.getElementById('sidebar-collapsed-setting').checked;
-  
+
   // Voice
   currentSettings.voice.enabled = document.getElementById('voice-enabled-setting').checked;
   currentSettings.voice.language = document.getElementById('voice-language-setting').value;
   currentSettings.voice.gender = document.getElementById('voice-gender-setting').value;
   currentSettings.voice.speed = parseFloat(document.getElementById('voice-speed-setting').value);
   currentSettings.voice.pitch = parseFloat(document.getElementById('voice-pitch-setting').value);
-  
+
   // Notifications
   currentSettings.notifications.sound = document.getElementById('notification-sound-setting').checked;
   currentSettings.notifications.desktop = document.getElementById('notification-desktop-setting').checked;
-  
+
   // Save and apply settings
   saveSettings();
   applySettings();
-  
+
   // Hide popup
   hideSettingsPopup();
-  
+
   // Show success message
   showNotification('Settings saved successfully', 'success');
 }
@@ -395,15 +401,15 @@ function showNotification(message, type = 'info') {
     </div>
     <button class="notification-close">&times;</button>
   `;
-  
+
   // Add to document
   document.body.appendChild(notification);
-  
+
   // Show notification
   setTimeout(() => {
     notification.classList.add('visible');
   }, 10);
-  
+
   // Add event listener for close button
   notification.querySelector('.notification-close').addEventListener('click', () => {
     notification.classList.remove('visible');
@@ -413,7 +419,7 @@ function showNotification(message, type = 'info') {
       }
     }, 300);
   });
-  
+
   // Auto-hide after 5 seconds
   setTimeout(() => {
     notification.classList.remove('visible');
