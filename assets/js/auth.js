@@ -325,6 +325,43 @@ async function onAuthStateChange(callback) {
   });
 }
 
+// Check if user is authenticated
+async function isAuthenticated() {
+  try {
+    // Initialize Supabase if needed
+    if (!supabaseClient) {
+      await initSupabase();
+    }
+
+    if (!supabaseClient) {
+      logAuthDebug('No Supabase client available');
+      return false;
+    }
+
+    // Get current session
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const isLoggedIn = !!session;
+
+    logAuthDebug(`User is ${isLoggedIn ? 'authenticated' : 'not authenticated'}`);
+
+    // If we're on a page that requires authentication and user is not logged in,
+    // redirect to login page with the current URL as redirect parameter
+    if (!isLoggedIn && !window.location.pathname.includes('/login.html') &&
+        !window.location.pathname.includes('/signup.html') &&
+        !window.location.pathname.includes('/index.html')) {
+      logAuthDebug('User not authenticated, redirecting to login page');
+      const currentPath = window.location.pathname + window.location.search;
+      window.location.href = `login.html?redirect=${encodeURIComponent(currentPath.replace('/login.html', '/app.html'))}`;
+      return false;
+    }
+
+    return isLoggedIn;
+  } catch (error) {
+    logAuthDebug(`Error checking authentication status: ${error.message}`);
+    return false;
+  }
+}
+
 // Export authentication functions
 export {
   initSupabase,
@@ -336,4 +373,5 @@ export {
   resetPassword,
   updateProfile,
   onAuthStateChange,
+  isAuthenticated,
 };

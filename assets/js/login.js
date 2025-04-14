@@ -164,7 +164,19 @@ async function handleLogin(event) {
     if (result.success) {
       // Redirect to main app
       logDebug('Login successful, redirecting to main app...');
-      window.location.href = 'index.html';
+
+      // Get the redirect URL from query parameters or use app.html as default
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectUrl = urlParams.get('redirect') || 'app.html';
+
+      // Make sure we're not redirecting to login or signup to avoid loops
+      if (redirectUrl.includes('login.html') || redirectUrl.includes('signup.html')) {
+        logWarn('Avoiding redirect loop by redirecting to app.html instead', 'Login');
+        window.location.href = 'app.html';
+      } else {
+        logInfo(`Redirecting to: ${redirectUrl}`, 'Login');
+        window.location.href = redirectUrl;
+      }
     } else {
       // Show error message
       const errorMsg = result.error || 'Failed to login. Please check your credentials and try again.';

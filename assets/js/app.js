@@ -2041,8 +2041,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // User is authenticated, continue with app initialization
     } else {
         logDebug('Not logged in');
-        // Redirect to login page
-        window.location.href = 'login.html';
+        // Redirect to login page with the current URL as redirect parameter
+        const currentPath = window.location.pathname + window.location.search;
+        window.location.href = `login.html?redirect=${encodeURIComponent(currentPath)}`;
     }
 
     // Initialize speech recognition for voice trigger
