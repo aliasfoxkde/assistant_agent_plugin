@@ -257,7 +257,7 @@ let isTranscribing = false;
 let transcriptionHistory = [];
 
 // Import sound effects
-import { playSlideSound, playNotificationSound } from './sound-effects.js';
+import { playSlideSound, playNotificationSound, playStartSound, playMessageSound } from './sound-effects.js';
 
 // Duration timer
 let durationTimer = null;
@@ -598,6 +598,17 @@ function addMessage(text, isUser = false) {
     const role = isUser ? 'user' : 'assistant';
     const message = messageBuffer.addMessage(role, text, true);
 
+    // Play sound effect based on message type
+    if (isUser) {
+        // User message sound (subtle)
+        if (text.toLowerCase() !== 'start voice chat') {
+            playNotificationSound('info');
+        }
+    } else {
+        // Assistant message sound
+        playMessageSound();
+    }
+
     // Render messages
     renderMessages();
 
@@ -712,8 +723,10 @@ function setupSpeechRecognition() {
             recognition = new SpeechRecognition();
 
             // Configure recognition
-            recognition.continuous = false; // Changed to false to prevent continuous restarts
-            recognition.interimResults = false;
+            recognition.continuous = true; // Set to true for continuous listening
+            recognition.interimResults = true; // Get interim results for more responsive UI
+            recognition.maxAlternatives = 1;
+            recognition.lang = 'en-US';
 
             // Handle results
             recognition.onresult = function(event) {
@@ -751,13 +764,14 @@ function setupSpeechRecognition() {
 
                 // Check for trigger phrase
                 if (lowerTranscript.includes('start voice chat')) {
-                    logDebug('Voice trigger phrase detected');
+                    logDebug('Voice trigger phrase detected: "start voice chat"');
 
                     // Pause recognition
                     recognitionPaused = true;
 
                     // Expand chat bubble if minimized
-                    if (!document.getElementById('chat-bubble').classList.contains('expanded')) {
+                    const chatBubble = document.getElementById('chat-bubble');
+                    if (chatBubble && !chatBubble.classList.contains('expanded')) {
                         toggleChatBubble();
                     }
 
@@ -765,21 +779,30 @@ function setupSpeechRecognition() {
                     addMessage('Start Voice Chat', true);
 
                     // Start voice chat directly
-                    if (vapiInstance) {
-                        try {
-                            logDebug('Starting voice chat from voice command...');
-                            updateStatus('Starting voice chat...');
+                    try {
+                        logDebug('Starting voice chat from voice command...');
+                        updateStatus('Starting voice chat...');
+
+                        // Simulate clicking the start button if it exists
+                        const startButton = document.querySelector('.start-button');
+                        if (startButton) {
+                            logDebug('Clicking start button');
+                            startButton.click();
+                        } else if (vapiInstance) {
+                            // Direct API call if button not found
+                            logDebug('Using VAPI instance directly');
                             vapiInstance.start(ASSISTANT_ID);
-                            updateStatus('Voice chat started. Speak now.');
-                        } catch (error) {
-                            logDebug(`Error starting voice chat: ${error.message}`);
-                            updateStatus('Error starting voice chat');
-                            addMessage('Sorry, there was an error starting voice chat. Please try again.', false);
+                        } else {
+                            // Fallback message
+                            logDebug('No start button or VAPI instance found');
+                            addMessage('Sorry, I couldn\'t start voice chat. Please try clicking the start button manually.', false);
                         }
-                    } else {
-                        logDebug('VAPI instance not available');
-                        updateStatus('Voice chat not available');
-                        addMessage('Sorry, voice chat is not available at the moment.', false);
+
+                        updateStatus('Voice chat started. Speak now.');
+                    } catch (error) {
+                        logDebug(`Error starting voice chat: ${error.message}`);
+                        updateStatus('Error starting voice chat');
+                        addMessage('Sorry, there was an error starting voice chat. Please try again.', false);
                     }
                 }
             };
@@ -789,9 +812,40 @@ function setupSpeechRecognition() {
                 logDebug(`Speech recognition error: ${event.error}`);
                 recognitionActive = false;
 
-                // Only restart for non-critical errors and if not paused
-                if (event.error !== 'aborted' && event.error !== 'no-speech' && !recognitionPaused && !isCallActive) {
-                    startSpeechRecognition();
+                // Handle different error types
+                switch(event.error) {
+                    case 'aborted':
+                        // Intentional abort, don't restart immediately
+                        setTimeout(() => {
+                            if (!recognitionPaused && !isCallActive) {
+                                startSpeechRecognition();
+                            }
+                        }, 2000);
+                        break;
+
+                    case 'no-speech':
+                        // No speech detected, restart with a delay
+                        setTimeout(() => {
+                            if (!recognitionPaused && !isCallActive) {
+                                startSpeechRecognition();
+                            }
+                        }, 1000);
+                        break;
+
+                    case 'network':
+                        // Network error, retry with increasing backoff
+                        setTimeout(() => {
+                            if (!recognitionPaused && !isCallActive) {
+                                startSpeechRecognition();
+                            }
+                        }, 3000);
+                        break;
+
+                    default:
+                        // For other errors, restart if not paused and not in a call
+                        if (!recognitionPaused && !isCallActive) {
+                            setTimeout(() => startSpeechRecognition(), 1000);
+                        }
                 }
             };
 
@@ -800,9 +854,12 @@ function setupSpeechRecognition() {
                 logDebug('Speech recognition ended');
                 recognitionActive = false;
 
-                // Only restart if not paused and not in a call
+                // Only restart if not paused and not in a call, with a delay
                 if (!recognitionPaused && !isCallActive) {
-                    startSpeechRecognition();
+                    // Add a small delay to prevent rapid restarts
+                    setTimeout(() => {
+                        startSpeechRecognition();
+                    }, 500);
                 }
             };
 
@@ -826,29 +883,40 @@ let recognitionBackoff = 1000; // Start with 1 second
 const maxBackoff = 10000; // Max 10 seconds
 
 function startSpeechRecognition() {
-    if (recognitionActive || recognitionPaused || isCallActive) return;
+    // Don't start if already active, paused, or in a call
+    if (recognitionActive || recognitionPaused || isCallActive) {
+        logDebug('Speech recognition not started: already active, paused, or in call');
+        return;
+    }
 
+    // Use a small delay to prevent rapid restarts
     setTimeout(() => {
         try {
+            // Double-check conditions before starting
             if (recognition && !recognitionActive && !recognitionPaused && !isCallActive) {
+                // Start recognition
                 recognition.start();
                 recognitionActive = true;
                 logDebug(`Speech recognition started (backoff: ${recognitionBackoff}ms)`);
                 recognitionBackoff = 1000; // Reset backoff on successful start
+
+                // Update UI to show recognition is active
+                updateStatus('Listening...');
             }
         } catch (e) {
             logDebug(`Error starting speech recognition: ${e.message}`);
             recognitionActive = false;
+            updateStatus('Speech recognition error');
 
             // Increase backoff for next attempt (with max limit)
             recognitionBackoff = Math.min(recognitionBackoff * 1.5, maxBackoff);
 
-            // Try again with increased backoff
+            // Try again with increased backoff, but only if not paused or in a call
             if (!recognitionPaused && !isCallActive) {
-                startSpeechRecognition();
+                setTimeout(startSpeechRecognition, 2000); // Add a delay before retrying
             }
         }
-    }, recognitionBackoff);
+    }, 100); // Small delay to prevent rapid restarts
 }
 
 // Resume speech recognition
@@ -961,6 +1029,9 @@ function setupVapiEventListeners() {
         // Pause speech recognition during call
         recognitionPaused = true;
 
+        // Play start sound
+        playStartSound();
+
         // Update mic button
         const micButton = document.getElementById('mic-button');
         if (micButton) {
@@ -982,6 +1053,9 @@ function setupVapiEventListeners() {
             stats.duration = (Date.now() - stats.callStartTime) / 1000;
             updateStats();
         }
+
+        // Play notification sound
+        playNotificationSound('success');
 
         // Resume speech recognition after call
         setTimeout(() => {
@@ -1513,6 +1587,9 @@ function toggleChatBubble(forceMinimize = false) {
 
         // Reset any hover state that might be active
         chatBubble.blur();
+
+        // Play sound effect for minimizing
+        playSlideSound(200, 400, 200);
 
         // Make sure the chat icon is visible
         const chatIcon = document.querySelector('.chat-icon');
@@ -2172,6 +2249,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (clearHistoryButton) {
         clearHistoryButton.addEventListener('click', clearHistory);
     }
+
+
 
     // Set up chat bubble toggle
     const chatBubble = document.getElementById('chat-bubble');

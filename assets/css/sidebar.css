@@ -209,12 +209,16 @@
   padding: 15px 20px;
   display: flex;
   align-items: center;
+  justify-content: center; /* Center when collapsed */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 66px; /* Ensure consistent height */
 }
 
 .user-avatar {
   width: 36px;
   height: 36px;
+  min-width: 36px; /* Prevent shrinking */
+  min-height: 36px; /* Prevent shrinking */
   border-radius: 50% !important;
   background-color: var(--sidebar-active-color);
   display: flex;
@@ -225,6 +229,7 @@
   font-size: 16px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .user-avatar:hover {

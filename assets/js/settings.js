@@ -31,7 +31,14 @@ let currentSettings = { ...defaultSettings };
 function initSettings() {
   logInfo('Initializing settings', 'Settings');
 
-  // Load settings from localStorage
+  // Check for theme preference in localStorage first (for backward compatibility)
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    currentSettings.theme = savedTheme;
+    logDebug(`Theme preference found in localStorage: ${savedTheme}`, 'Settings');
+  }
+
+  // Load full settings from localStorage
   const savedSettings = localStorage.getItem('mentor_settings');
   if (savedSettings) {
     try {
@@ -41,13 +48,26 @@ function initSettings() {
     } catch (error) {
       logDebug('Error parsing settings, using defaults', 'Settings');
       currentSettings = { ...defaultSettings };
+
+      // Still apply theme if we have it
+      if (savedTheme) {
+        currentSettings.theme = savedTheme;
+      }
     }
   } else {
     logDebug('No saved settings found, using defaults', 'Settings');
+
+    // Still apply theme if we have it
+    if (savedTheme) {
+      currentSettings.theme = savedTheme;
+    }
   }
 
   // Apply settings
   applySettings();
+
+  // Log current theme for debugging
+  logDebug(`Current theme after initialization: ${currentSettings.theme}`, 'Settings');
 }
 
 /**
@@ -55,12 +75,49 @@ function initSettings() {
  */
 function applySettings() {
   logDebug('Applying settings', 'Settings');
+  logDebug(`Current theme: ${currentSettings.theme}`, 'Settings');
 
   // Apply theme
   if (currentSettings.theme === 'dark') {
+    // Add dark mode class to body
     document.body.classList.add('dark-mode');
+    document.documentElement.setAttribute('data-theme', 'dark');
+
+    // Force update CSS variables
+    document.documentElement.style.setProperty('--bg-color', '#0f172a');
+    document.documentElement.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)');
+    document.documentElement.style.setProperty('--text-color', '#e2e8f0');
+    document.documentElement.style.setProperty('--heading-color', '#f8fafc');
+    document.documentElement.style.setProperty('--card-bg', '#1e293b');
+    document.documentElement.style.setProperty('--card-shadow', '0 4px 12px rgba(0, 0, 0, 0.3)');
+    document.documentElement.style.setProperty('--border-color', '#334155');
+    document.documentElement.style.setProperty('--input-bg', '#334155');
+    document.documentElement.style.setProperty('--input-border', '#475569');
+
+    // Store theme in localStorage for persistence
+    localStorage.setItem('theme', 'dark');
+
+    logDebug('Dark mode applied', 'Settings');
   } else {
+    // Remove dark mode class from body
     document.body.classList.remove('dark-mode');
+    document.documentElement.setAttribute('data-theme', 'light');
+
+    // Reset CSS variables to light mode
+    document.documentElement.style.setProperty('--bg-color', '#f8fafc');
+    document.documentElement.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #f8fafc 0%, #e9f2ff 100%)');
+    document.documentElement.style.setProperty('--text-color', '#334155');
+    document.documentElement.style.setProperty('--heading-color', '#1e293b');
+    document.documentElement.style.setProperty('--card-bg', '#ffffff');
+    document.documentElement.style.setProperty('--card-shadow', '0 4px 12px rgba(0, 0, 0, 0.1)');
+    document.documentElement.style.setProperty('--border-color', '#e2e8f0');
+    document.documentElement.style.setProperty('--input-bg', '#ffffff');
+    document.documentElement.style.setProperty('--input-border', '#cbd5e1');
+
+    // Store theme in localStorage for persistence
+    localStorage.setItem('theme', 'light');
+
+    logDebug('Light mode applied', 'Settings');
   }
 
   // Apply sidebar state
@@ -354,7 +411,13 @@ function saveSettingsFromPopup() {
   logInfo('Saving settings from popup', 'Settings');
 
   // Theme
-  currentSettings.theme = document.getElementById('theme-setting').value;
+  const themeSetting = document.getElementById('theme-setting');
+  if (themeSetting) {
+    currentSettings.theme = themeSetting.value;
+    logDebug(`Theme setting changed to: ${currentSettings.theme}`, 'Settings');
+  } else {
+    logDebug('Theme setting element not found', 'Settings');
+  }
 
   // Interface
   currentSettings.interface.fontSize = document.getElementById('font-size-setting').value;

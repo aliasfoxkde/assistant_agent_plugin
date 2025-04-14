@@ -56,7 +56,27 @@ function showLogoutConfirmation() {
   document.getElementById('logout-confirm').addEventListener('click', performLogout);
   document.getElementById('logout-close-window').addEventListener('click', (e) => {
     e.preventDefault();
-    window.close();
+    // Try multiple methods to close the window/tab
+    try {
+      // Method 1: Standard close
+      window.close();
+
+      // Method 2: For Firefox and other browsers that might block window.close()
+      setTimeout(() => {
+        // If we're still here, try alternative methods
+        // Method 2a: Simulate browser close button click
+        window.open('', '_self', '');
+        window.close();
+
+        // Method 2b: Redirect to a blank page
+        if (window.location.href !== 'about:blank') {
+          window.location.href = 'about:blank';
+        }
+      }, 100);
+    } catch (err) {
+      logDebug(`Error closing window: ${err.message}`, 'Logout');
+      showNotification('Unable to close window. Please close it manually.', 'info');
+    }
   });
 
   // Prevent clicks inside the confirmation from closing it
