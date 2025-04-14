@@ -319,21 +319,20 @@ section {
     padding: 100px 0;
     position: relative;
     overflow: hidden;
+    background-color: var(--bg-color);
 }
 
-.hero::before {
-    content: '';
+/* Knowledge Graph Canvas */
+.knowledge-graph {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../images/hero-pattern.svg');
-    background-repeat: no-repeat;
-    background-position: right top;
-    background-size: 50%;
-    opacity: 0.1;
-    z-index: -1;
+    z-index: 0;
+    opacity: 0.8;
+    pointer-events: auto; /* Enable interaction with the canvas */
+    cursor: pointer; /* Show pointer cursor to indicate interactivity */
 }
 
 .hero .container {
@@ -341,6 +340,8 @@ section {
     grid-template-columns: 1fr 1fr;
     gap: 50px;
     align-items: center;
+    position: relative;
+    z-index: 1; /* Ensure content is above the canvas */
 }
 
 .hero-content h1 {
@@ -975,11 +976,11 @@ input:checked + .slider:before {
     .hero-content h1 {
         font-size: 2.8rem;
     }
-    
+
     .pricing-cards {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .pricing-card.popular {
         grid-column: span 2;
         margin-bottom: 30px;
@@ -990,50 +991,50 @@ input:checked + .slider:before {
     section {
         padding: 60px 0;
     }
-    
+
     .hero .container {
         grid-template-columns: 1fr;
         text-align: center;
     }
-    
+
     .hero-content {
         order: 2;
     }
-    
+
     .hero-image {
         order: 1;
         margin-bottom: 30px;
     }
-    
+
     .hero-buttons {
         justify-content: center;
     }
-    
+
     .hero-stats {
         justify-content: center;
     }
-    
+
     .main-nav {
         display: none;
     }
-    
+
     .mobile-menu-toggle {
         display: block;
     }
-    
+
     .pricing-cards {
         grid-template-columns: 1fr;
     }
-    
+
     .pricing-card.popular {
         grid-column: auto;
         transform: scale(1);
     }
-    
+
     .pricing-card.popular:hover {
         transform: translateY(-10px);
     }
-    
+
     .footer-top {
         grid-template-columns: 1fr;
     }
@@ -1043,37 +1044,37 @@ input:checked + .slider:before {
     .hero-content h1 {
         font-size: 2.2rem;
     }
-    
+
     .section-header h2 {
         font-size: 2rem;
     }
-    
+
     .hero-buttons {
         flex-direction: column;
     }
-    
+
     .hero-stats {
         flex-direction: column;
         gap: 20px;
         align-items: center;
     }
-    
+
     .course-filters {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .filter-btn {
         width: 100%;
         text-align: center;
     }
-    
+
     .footer-bottom {
         flex-direction: column;
         gap: 15px;
         text-align: center;
     }
-    
+
     .footer-bottom-links {
         justify-content: center;
     }
