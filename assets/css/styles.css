@@ -399,7 +399,7 @@ h1 {
     right: 20px;
     width: 60px;
     height: 60px;
-    background-color: var(--button-primary-bg, #4a6cf7);
+    background-color: #4a6cf7; /* Always blue in both light and dark mode */
     border-radius: 50%;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;

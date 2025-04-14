@@ -553,37 +553,7 @@ async function initTestUtils() {
     originalConsoleError.apply(console, args);
   };
 
-  // Add test button to page
-  const testButton = document.createElement('button');
-  testButton.id = 'run-tests-button';
-  testButton.innerHTML = '<i class="fas fa-vial"></i>';
-  testButton.title = 'Run Tests';
-  testButton.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    left: 80px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #4a6cf7;
-    color: white;
-    border: none;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-  `;
-
-  document.body.appendChild(testButton);
-
-  // Add event listener
-  testButton.addEventListener('click', async () => {
-    const results = await runAllTests();
-    createTestReport(results);
-  });
+  // We're not adding a floating test button anymore - using the debug panel button instead
 
   // Run tests automatically if URL parameter is present
   const urlParams = new URLSearchParams(window.location.search);

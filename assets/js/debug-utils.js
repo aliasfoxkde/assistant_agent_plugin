@@ -200,7 +200,8 @@ function createDebugPanel() {
     try {
       // Import test module
       const testModule = await import('./test-utils.js');
-      testModule.runAllTests();
+      const results = await testModule.runAllTests();
+      testModule.createTestReport(results);
     } catch (error) {
       logError('Failed to run tests: ' + error.message, 'Test');
     }

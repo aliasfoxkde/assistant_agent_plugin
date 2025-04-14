@@ -309,7 +309,13 @@
                 <div class="details-card">
                     <h3>Voice Transcription</h3>
                     <div class="transcription-container" id="transcription-container">
-                        <div class="transcription-placeholder">Voice transcription will appear here when you speak.</div>
+                        <div class="transcription-controls">
+                            <button id="clear-transcription-button" class="transcription-button">Clear</button>
+                            <button id="test-voice-button" class="transcription-button">Test Voice</button>
+                        </div>
+                        <div id="transcription-content" class="transcription-content">
+                            <div class="transcription-placeholder">Voice transcription will appear here when you speak.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -345,7 +351,7 @@
 
             <!-- Chat Input -->
             <div class="chat-input-container">
-                <input type="text" class="chat-input" id="message-input" name="message" placeholder="Type your message here..." autocomplete="off">
+                <input type="text" class="chat-input" id="message-input" name="message" placeholder="Type your message here..." autocomplete="off" spellcheck="true">
                 <div class="action-buttons">
                     <button class="send-button" id="send-button">
                         <svg class="send-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -374,105 +374,115 @@ function updateStats() {
 
 // Update details tab
 function updateDetailsTab() {
+    // Helper function to safely update element content
+    const updateElement = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        } else {
+            logDebug(`Element not found: ${id}`, 'Details');
+        }
+    };
+
     // Assistant Information
-    document.getElementById('details-name').textContent = assistantDetails.name || 'Unknown';
-    document.getElementById('details-assistant-id').textContent = assistantDetails.id || 'Unknown';
+    updateElement('details-name', assistantDetails.name || 'Unknown');
+    updateElement('details-assistant-id', assistantDetails.id || 'Unknown');
+    updateElement('stat-assistant-id', ASSISTANT_ID); // Update in stats section too
 
     // Format created date
     if (assistantDetails.createdAt) {
         try {
             const createdDate = new Date(assistantDetails.createdAt);
-            document.getElementById('details-created').textContent =
-                createdDate.toLocaleString(undefined, {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
+            const formattedDate = createdDate.toLocaleString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
                     minute: '2-digit'
                 });
+                updateElement('details-created', formattedDate);
         } catch (e) {
-            document.getElementById('details-created').textContent = assistantDetails.createdAt;
+            updateElement('details-created', 'Unknown');
         }
     } else {
-        document.getElementById('details-created').textContent = 'Not available';
+        updateElement('details-created', 'Not available');
     }
 
     // Format updated date
     if (assistantDetails.updatedAt) {
         try {
             const updatedDate = new Date(assistantDetails.updatedAt);
-            document.getElementById('details-updated').textContent =
-                updatedDate.toLocaleString(undefined, {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+            const formattedDate = updatedDate.toLocaleString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            updateElement('details-updated', formattedDate);
         } catch (e) {
-            document.getElementById('details-updated').textContent = assistantDetails.updatedAt;
+            updateElement('details-updated', 'Unknown');
         }
     } else {
-        document.getElementById('details-updated').textContent = 'Not available';
+        updateElement('details-updated', 'Not available');
     }
 
     // AI Model Information
-    document.getElementById('details-model').textContent = assistantDetails.model || 'Unknown';
-    document.getElementById('details-model-provider').textContent = assistantDetails.modelProvider || 'Unknown';
-    document.getElementById('details-temperature').textContent =
-        typeof assistantDetails.temperature === 'number' ?
+    updateElement('details-model', assistantDetails.model || 'Unknown');
+    updateElement('details-model-provider', assistantDetails.modelProvider || 'Unknown');
+    const temperature = typeof assistantDetails.temperature === 'number' ?
         assistantDetails.temperature.toFixed(2) : 'Default';
+    updateElement('details-temperature', temperature);
 
     // Voice Configuration
-    document.getElementById('details-voice').textContent = assistantDetails.voice || 'Unknown';
-    document.getElementById('details-voice-model').textContent = assistantDetails.voiceModel || 'Unknown';
-    document.getElementById('details-voice-provider').textContent = assistantDetails.voiceProvider || 'Unknown';
+    updateElement('details-voice', assistantDetails.voice || 'Unknown');
+    updateElement('details-voice-model', assistantDetails.voiceModel || 'Unknown');
+    updateElement('details-voice-provider', assistantDetails.voiceProvider || 'Unknown');
 
     // Format voice settings for better readability
     const voiceSettingsElement = document.getElementById('details-voice-settings');
-    if (assistantDetails.voiceSettings && Object.keys(assistantDetails.voiceSettings).length > 0) {
-        try {
-            // Format as pretty JSON with indentation
-            const formattedSettings = JSON.stringify(assistantDetails.voiceSettings, null, 2);
-            voiceSettingsElement.textContent = formattedSettings;
-        } catch (error) {
-            voiceSettingsElement.textContent = 'Custom settings (unable to display)';
+    if (voiceSettingsElement) {
+        if (assistantDetails.voiceSettings && Object.keys(assistantDetails.voiceSettings).length > 0) {
+            try {
+                // Format as pretty JSON with indentation
+                const formattedSettings = JSON.stringify(assistantDetails.voiceSettings, null, 2);
+                voiceSettingsElement.textContent = formattedSettings;
+            } catch (error) {
+                voiceSettingsElement.textContent = 'Custom settings (unable to display)';
+            }
+        } else {
+            voiceSettingsElement.textContent = 'Default settings';
         }
-    } else {
-        voiceSettingsElement.textContent = 'Default settings';
     }
 
     // Speech Recognition Information
-    document.getElementById('details-transcriber-model').textContent =
-        assistantDetails.transcriberModel || 'Unknown';
-    document.getElementById('details-transcriber-provider').textContent =
-        assistantDetails.transcriberProvider || 'Unknown';
-    document.getElementById('details-transcriber-language').textContent =
-        assistantDetails.transcriberLanguage || 'Unknown';
+    updateElement('details-transcriber-model', assistantDetails.transcriberModel || 'Unknown');
+    updateElement('details-transcriber-provider', assistantDetails.transcriberProvider || 'Unknown');
+    updateElement('details-transcriber-language', assistantDetails.transcriberLanguage || 'Unknown');
 
     // Conversation Features
-    document.getElementById('details-backchanneling').textContent =
-        assistantDetails.backchannelingEnabled !== undefined ?
+    const backchanneling = assistantDetails.backchannelingEnabled !== undefined ?
         (assistantDetails.backchannelingEnabled ? 'Enabled' : 'Disabled') : 'Unknown';
+    updateElement('details-backchanneling', backchanneling);
 
-    document.getElementById('details-denoising').textContent =
-        assistantDetails.backgroundDenoisingEnabled !== undefined ?
+    const denoising = assistantDetails.backgroundDenoisingEnabled !== undefined ?
         (assistantDetails.backgroundDenoisingEnabled ? 'Enabled' : 'Disabled') : 'Unknown';
+    updateElement('details-denoising', denoising);
 
     // Silence timeout
-    document.getElementById('details-silence-timeout').textContent =
-        assistantDetails.silenceTimeout !== undefined ?
+    const silenceTimeout = assistantDetails.silenceTimeout !== undefined ?
         `${assistantDetails.silenceTimeout} seconds` : 'Default';
+    updateElement('details-silence-timeout', silenceTimeout);
 
     // Max duration
-    document.getElementById('details-max-duration').textContent =
-        assistantDetails.maxDuration !== undefined ?
+    const maxDuration = assistantDetails.maxDuration !== undefined ?
         formatDuration(assistantDetails.maxDuration) : 'Default';
+    updateElement('details-max-duration', maxDuration);
 
     // Recording enabled
-    document.getElementById('details-recording').textContent =
-        assistantDetails.recordingEnabled !== undefined ?
+    const recording = assistantDetails.recordingEnabled !== undefined ?
         (assistantDetails.recordingEnabled ? 'Enabled' : 'Disabled') : 'Unknown';
+    updateElement('details-recording', recording);
 
     // Log that details have been updated
     logDebug('Assistant details updated in UI with specific information');
@@ -1567,13 +1577,56 @@ function addTranscription(text, isSystem = false) {
 function clearTranscription() {
     const transcriptionContent = document.getElementById('transcription-content');
     if (transcriptionContent) {
-        transcriptionContent.innerHTML = '';
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('transcription-message', 'system-message');
-        messageDiv.textContent = 'Transcription cleared';
-        transcriptionContent.appendChild(messageDiv);
+        transcriptionContent.innerHTML = '<div class="transcription-placeholder">Voice transcription will appear here when you speak.</div>';
+        logDebug('Transcription cleared');
     }
     transcriptionHistory = [];
+}
+
+// Test voice recognition
+function testVoiceRecognition() {
+    // Add a test message to the transcription
+    const transcriptionContent = document.getElementById('transcription-content');
+    if (transcriptionContent) {
+        // Clear any placeholder
+        if (transcriptionContent.querySelector('.transcription-placeholder')) {
+            transcriptionContent.innerHTML = '';
+        }
+
+        const testMessage = document.createElement('div');
+        testMessage.classList.add('transcription-message');
+        testMessage.textContent = 'This is a test of the voice recognition system. Say "Start Voice Chat" to begin a voice conversation.';
+        transcriptionContent.appendChild(testMessage);
+        transcriptionContent.scrollTop = transcriptionContent.scrollHeight;
+
+        logDebug('Voice recognition test message added');
+
+        // Simulate the voice trigger after a delay
+        setTimeout(() => {
+            const messageInput = document.getElementById('message-input');
+            if (messageInput) {
+                messageInput.value = 'Start Voice Chat';
+
+                // Expand chat bubble if minimized
+                const chatBubble = document.getElementById('chat-bubble');
+                if (chatBubble && !chatBubble.classList.contains('expanded')) {
+                    toggleChatBubble();
+                }
+
+                // Add a message to the transcription
+                const triggerMessage = document.createElement('div');
+                triggerMessage.classList.add('transcription-message');
+                triggerMessage.textContent = 'Start Voice Chat';
+                transcriptionContent.appendChild(triggerMessage);
+                transcriptionContent.scrollTop = transcriptionContent.scrollHeight;
+
+                // Send the message after a short delay
+                setTimeout(() => {
+                    document.getElementById('send-button').click();
+                }, 500);
+            }
+        }, 1500);
+    }
 }
 
 // Get the last user message in the chat
@@ -2023,6 +2076,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         clearTranscriptionButton.addEventListener('click', clearTranscription);
     }
 
+    // Set up test voice button
+    const testVoiceButton = document.getElementById('test-voice-button');
+    if (testVoiceButton) {
+        testVoiceButton.addEventListener('click', testVoiceRecognition);
+    }
+
     // Set up history controls
     const clearHistoryButton = document.getElementById('clear-history-button');
     if (clearHistoryButton) {
@@ -2032,9 +2091,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set up chat bubble toggle
     const chatBubble = document.getElementById('chat-bubble');
     chatBubble.addEventListener('click', (e) => {
-        // Only toggle if clicking on the bubble itself, not its children
-        if (e.target === chatBubble || e.target.classList.contains('chat-icon')) {
+        // Only toggle if clicking on the bubble itself or the chat icon or its SVG children
+        if (e.target === chatBubble ||
+            e.target.classList.contains('chat-icon') ||
+            e.target.closest('.chat-icon') ||
+            e.target.tagName === 'svg' ||
+            e.target.tagName === 'path') {
             toggleChatBubble();
+            logDebug('Chat bubble toggled by click');
         }
     });
 
@@ -2071,13 +2135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateStats();
     updateDetailsTab();
 
-    // Set up hover behavior for chat bubble
-    chatBubble.addEventListener('mouseenter', () => {
-        if (!chatBubble.classList.contains('expanded')) {
-            toggleChatBubble();
-            logDebug('Chat bubble expanded on hover');
-        }
-    });
+    // Remove hover behavior for chat bubble - it should only expand on click
 
     // Set up document click handler to collapse chat when clicking away
     document.addEventListener('click', (e) => {

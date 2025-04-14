@@ -76,6 +76,12 @@ async function getSupabaseCredentials() {
 
 // Initialize Supabase with environment variables or Cloudflare Variables
 async function initSupabase() {
+  // If client already exists, return it immediately
+  if (supabaseClient) {
+    logAuthDebug('Supabase client already exists, reusing');
+    return supabaseClient;
+  }
+
   // Set initialization flag to prevent multiple simultaneous initializations
   isInitializing = true;
 
@@ -94,11 +100,12 @@ async function initSupabase() {
     logAuthDebug(`Using Supabase URL: ${supabaseUrl}`);
     logAuthDebug(`Using Supabase Anon Key: ${supabaseAnonKey.substring(0, 10)}...`);
 
-    // Create Supabase client
+    // Create Supabase client with a unique storage key
     logAuthDebug('Creating Supabase client...');
+    const storageKey = `mentor-auth-${Date.now()}`; // Use a unique storage key
     supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
-        storageKey: 'vapi-supabase-auth', // Use a unique storage key to avoid conflicts
+        storageKey: storageKey,
         autoRefreshToken: true,
         persistSession: true
       }
