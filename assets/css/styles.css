@@ -426,20 +426,15 @@ h1 {
     border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
 }
 
+/* Chat bubble hover effects */
 .chat-bubble:hover:not(.expanded) {
     transform: scale(1.1);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     animation: none;
-}
-
-/* Add hover to expand functionality */
-.chat-bubble:hover {
     width: min-content;
     height: auto;
     border-radius: 20px;
     background-color: var(--chat-bubble-bg, #fff);
-    animation: none;
-    box-shadow: var(--chat-bubble-shadow, 0 10px 40px rgba(0, 0, 0, 0.2));
     border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
 }
 

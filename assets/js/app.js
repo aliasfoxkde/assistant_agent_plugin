@@ -756,17 +756,31 @@ function setupSpeechRecognition() {
                     // Pause recognition
                     recognitionPaused = true;
 
-                    // Simulate typing the trigger phrase
-                    const messageInput = document.getElementById('message-input');
-                    messageInput.value = 'Start Voice Chat';
-
                     // Expand chat bubble if minimized
                     if (!document.getElementById('chat-bubble').classList.contains('expanded')) {
                         toggleChatBubble();
                     }
 
-                    // Send the message
-                    document.getElementById('send-button').click();
+                    // Add user message to chat
+                    addMessage('Start Voice Chat', true);
+
+                    // Start voice chat directly
+                    if (vapiInstance) {
+                        try {
+                            logDebug('Starting voice chat from voice command...');
+                            updateStatus('Starting voice chat...');
+                            vapiInstance.start(ASSISTANT_ID);
+                            updateStatus('Voice chat started. Speak now.');
+                        } catch (error) {
+                            logDebug(`Error starting voice chat: ${error.message}`);
+                            updateStatus('Error starting voice chat');
+                            addMessage('Sorry, there was an error starting voice chat. Please try again.', false);
+                        }
+                    } else {
+                        logDebug('VAPI instance not available');
+                        updateStatus('Voice chat not available');
+                        addMessage('Sorry, voice chat is not available at the moment.', false);
+                    }
                 }
             };
 
@@ -1496,6 +1510,22 @@ function toggleChatBubble(forceMinimize = false) {
     if (chatBubble.classList.contains('expanded') || forceMinimize) {
         // Minimize
         chatBubble.classList.remove('expanded');
+
+        // Reset any hover state that might be active
+        chatBubble.blur();
+
+        // Make sure the chat icon is visible
+        const chatIcon = document.querySelector('.chat-icon');
+        if (chatIcon) {
+            chatIcon.style.opacity = '1';
+            chatIcon.style.pointerEvents = 'auto';
+        }
+
+        // Hide the chat content
+        const chatContent = document.querySelector('.chat-content');
+        if (chatContent) {
+            chatContent.style.display = 'none';
+        }
     } else {
         // Expand
         chatBubble.classList.add('expanded');
@@ -1503,9 +1533,25 @@ function toggleChatBubble(forceMinimize = false) {
         // Play slide sound
         playSlideSound();
 
+        // Hide the chat icon
+        const chatIcon = document.querySelector('.chat-icon');
+        if (chatIcon) {
+            chatIcon.style.opacity = '0';
+            chatIcon.style.pointerEvents = 'none';
+        }
+
+        // Show the chat content
+        const chatContent = document.querySelector('.chat-content');
+        if (chatContent) {
+            chatContent.style.display = 'flex';
+        }
+
         // Focus input field
         setTimeout(() => {
-            document.getElementById('message-input').focus();
+            const messageInput = document.getElementById('message-input');
+            if (messageInput) {
+                messageInput.focus();
+            }
         }, 300);
     }
 }
@@ -2129,6 +2175,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Set up chat bubble toggle
     const chatBubble = document.getElementById('chat-bubble');
+
+    // Add click handler to expand the chat bubble
     chatBubble.addEventListener('click', (e) => {
         // Only toggle if clicking on the bubble itself or the chat icon or its SVG children
         if (e.target === chatBubble ||
@@ -2138,6 +2186,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.target.tagName === 'path') {
             toggleChatBubble();
             logDebug('Chat bubble toggled by click');
+        }
+    });
+
+    // Add mouseleave handler to collapse the chat bubble when not expanded
+    document.addEventListener('click', (e) => {
+        // If the chat bubble is not expanded and the click is outside the chat bubble
+        if (!chatBubble.classList.contains('expanded') && !chatBubble.contains(e.target)) {
+            // Reset any hover effects
+            chatBubble.blur();
+
+            // Make sure the chat icon is visible
+            const chatIcon = document.querySelector('.chat-icon');
+            if (chatIcon) {
+                chatIcon.style.opacity = '1';
+                chatIcon.style.pointerEvents = 'auto';
+            }
+
+            // Hide the chat content
+            const chatContent = document.querySelector('.chat-content');
+            if (chatContent) {
+                chatContent.style.display = 'none';
+            }
         }
     });
 

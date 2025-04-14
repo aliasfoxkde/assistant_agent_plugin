@@ -196,20 +196,16 @@ async function handleLogin(event) {
       // Redirect to main app
       logDebug('Login successful, redirecting to main app...');
 
-      // Show success message and button instead of automatic redirect
-      errorElement.textContent = 'Login successful!';
+      // Show success message and automatically redirect
+      errorElement.textContent = 'Login successful! Redirecting...';
       errorElement.style.color = 'green';
 
       // Get the redirect URL from query parameters or use app.html as default
       const urlParams = new URLSearchParams(window.location.search);
       const redirectUrl = urlParams.get('redirect') || 'app.html';
 
-      // Create a button to manually navigate
-      const continueButton = document.createElement('button');
-      continueButton.type = 'button';
-      continueButton.className = 'auth-button continue-button';
-      continueButton.textContent = 'Continue to App';
-      continueButton.onclick = () => {
+      // Automatically redirect after a short delay
+      setTimeout(() => {
         // Make sure we're not redirecting to login or signup to avoid loops
         if (redirectUrl.includes('login.html') || redirectUrl.includes('signup.html')) {
           logWarn('Avoiding redirect loop by redirecting to app.html instead', 'Login');
@@ -218,10 +214,7 @@ async function handleLogin(event) {
           logInfo(`Redirecting to: ${redirectUrl}`, 'Login');
           window.location.href = redirectUrl;
         }
-      };
-
-      // Add the button to the form
-      form.appendChild(continueButton);
+      }, 1000); // 1 second delay for user to see the success message
     } else {
       // Show error message
       const errorMsg = result.error || 'Failed to login. Please check your credentials and try again.';

@@ -5,7 +5,14 @@ mkdir -p dist
 mkdir -p dist/functions
 
 # Copy all necessary files to dist
-cp -r index.html app.html login.html signup.html config.html manifest.json _redirects dist/
+cp -r index.html app.html login.html signup.html config.html manifest.json _redirects sw.js dist/
+
+# Create a _headers file to set the correct MIME type for sw.js
+cat > dist/_headers << EOL
+/sw.js
+  Content-Type: application/javascript
+  Cache-Control: max-age=0
+EOL
 
 # Remove old index.html.old file if it exists
 rm -f dist/index.html.old
