@@ -950,7 +950,7 @@ input:checked + .slider:before {
     background-color: var(--button-primary-bg);
     color: white;
     border: none;
-    border-radius: 50%;
+    border-radius: 12px; /* Rounded corners instead of circle */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -959,6 +959,7 @@ input:checked + .slider:before {
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 99;
+    box-shadow: 0 4px 15px rgba(74, 108, 247, 0.3); /* Add a subtle shadow */
 }
 
 #back-to-top.visible {
@@ -969,6 +970,8 @@ input:checked + .slider:before {
 #back-to-top:hover {
     background-color: var(--button-primary-hover);
     transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(74, 108, 247, 0.5); /* Enhanced shadow on hover */
+    border-radius: 8px; /* Slightly sharper corners on hover for a dynamic effect */
 }
 
 /* Responsive Styles */
