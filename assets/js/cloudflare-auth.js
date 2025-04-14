@@ -14,9 +14,17 @@ async function getCloudflareSupabaseCredentials() {
 
     // Use mock credentials for development
     console.log('Using mock Supabase credentials for development');
+
+    // Store these values in sessionStorage to ensure consistency across page loads
+    // This helps prevent redirect loops caused by changing credentials
+    if (!sessionStorage.getItem('mock-supabase-url')) {
+      sessionStorage.setItem('mock-supabase-url', 'https://mock-supabase-project.supabase.co');
+      sessionStorage.setItem('mock-supabase-anon-key', 'mock-anon-key-for-development-only');
+    }
+
     return {
-      supabaseUrl: 'https://mock-supabase-project.supabase.co',
-      supabaseAnonKey: 'mock-anon-key-for-development-only'
+      supabaseUrl: sessionStorage.getItem('mock-supabase-url'),
+      supabaseAnonKey: sessionStorage.getItem('mock-supabase-anon-key')
     };
 
     // NOTE: In production, this would fetch from Cloudflare Function

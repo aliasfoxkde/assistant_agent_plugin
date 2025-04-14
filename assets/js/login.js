@@ -2,28 +2,53 @@
 import { signUp, signIn, resetPassword, getSession } from './auth.js';
 import { logDebug, logError, logInfo, logWarn, initDebugTools } from './debug-utils.js';
 
-// Check if user is already logged in
+// SIMPLIFIED: No redirects from login page to prevent loops
 async function checkAuthStatus() {
   logDebug('Checking authentication status', 'Login');
   try {
     const { success, user } = await getSession();
 
+    // If user is logged in, show a message instead of redirecting
     if (success && user) {
       logInfo(`User is already logged in: ${user.email}`, 'Login');
 
-      // Get the redirect URL from query parameters or use app.html as default
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirectUrl = urlParams.get('redirect') || 'app.html';
+      // Show a message in the login form
+      const loginForm = document.getElementById('login-form');
+      const loginError = document.getElementById('login-error');
 
-      // Make sure we're not redirecting to login or signup to avoid loops
-      if (redirectUrl.includes('login.html') || redirectUrl.includes('signup.html')) {
-        logWarn('Avoiding redirect loop by redirecting to app.html instead', 'Login');
-        window.location.href = 'app.html';
-      } else {
-        logInfo(`Redirecting to: ${redirectUrl}`, 'Login');
-        window.location.href = redirectUrl;
+      if (loginForm && loginError) {
+        // Clear the form
+        loginForm.innerHTML = '';
+
+        // Add a message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'auth-message success';
+        messageDiv.innerHTML = `
+          <h3>You are already logged in</h3>
+          <p>You are currently logged in as ${user.email}.</p>
+          <button type="button" class="auth-button" id="go-to-app-button">Go to App</button>
+          <button type="button" class="auth-button secondary" id="logout-button">Logout</button>
+        `;
+
+        loginForm.appendChild(messageDiv);
+
+        // Add event listeners to buttons
+        document.getElementById('go-to-app-button').addEventListener('click', () => {
+          window.location.href = 'app.html';
+        });
+
+        document.getElementById('logout-button').addEventListener('click', async () => {
+          try {
+            const { signOut } = await import('./auth.js');
+            await signOut();
+            window.location.reload();
+          } catch (error) {
+            console.error('Error signing out:', error);
+          }
+        });
       }
     } else {
+      // Clear indication that user is not logged in
       logInfo('User is not logged in', 'Login');
     }
   } catch (error) {
@@ -44,10 +69,16 @@ function initLoginPage() {
 
   authTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      // If signup tab is clicked, redirect to signup page
+      // If signup tab is clicked, show a link instead of redirecting
       if (tab.dataset.tab === 'signup') {
-        logInfo('Redirecting to signup page', 'Login');
-        window.location.href = 'signup.html';
+        logInfo('Showing signup link', 'Login');
+        const loginForm = document.getElementById('login-form');
+        if (loginForm) {
+          const signupLink = document.createElement('div');
+          signupLink.className = 'signup-link';
+          signupLink.innerHTML = '<p>Please go to the <a href="signup.html" class="manual-link">signup page</a> to create a new account.</p>';
+          loginForm.appendChild(signupLink);
+        }
         return;
       }
 
@@ -165,18 +196,32 @@ async function handleLogin(event) {
       // Redirect to main app
       logDebug('Login successful, redirecting to main app...');
 
+      // Show success message and button instead of automatic redirect
+      errorElement.textContent = 'Login successful!';
+      errorElement.style.color = 'green';
+
       // Get the redirect URL from query parameters or use app.html as default
       const urlParams = new URLSearchParams(window.location.search);
       const redirectUrl = urlParams.get('redirect') || 'app.html';
 
-      // Make sure we're not redirecting to login or signup to avoid loops
-      if (redirectUrl.includes('login.html') || redirectUrl.includes('signup.html')) {
-        logWarn('Avoiding redirect loop by redirecting to app.html instead', 'Login');
-        window.location.href = 'app.html';
-      } else {
-        logInfo(`Redirecting to: ${redirectUrl}`, 'Login');
-        window.location.href = redirectUrl;
-      }
+      // Create a button to manually navigate
+      const continueButton = document.createElement('button');
+      continueButton.type = 'button';
+      continueButton.className = 'auth-button continue-button';
+      continueButton.textContent = 'Continue to App';
+      continueButton.onclick = () => {
+        // Make sure we're not redirecting to login or signup to avoid loops
+        if (redirectUrl.includes('login.html') || redirectUrl.includes('signup.html')) {
+          logWarn('Avoiding redirect loop by redirecting to app.html instead', 'Login');
+          window.location.href = 'app.html';
+        } else {
+          logInfo(`Redirecting to: ${redirectUrl}`, 'Login');
+          window.location.href = redirectUrl;
+        }
+      };
+
+      // Add the button to the form
+      form.appendChild(continueButton);
     } else {
       // Show error message
       const errorMsg = result.error || 'Failed to login. Please check your credentials and try again.';

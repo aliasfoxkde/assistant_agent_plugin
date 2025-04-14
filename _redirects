@@ -1,18 +1,14 @@
-# Specific routes first
-/login /login.html 200
-/signup /signup.html 200
-/app /app.html 200
-/dashboard /app.html 200
-/courses /app.html 200
-/learning /app.html 200
-/achievements /app.html 200
-/settings /app.html 200
-/test /test.html 200
+# EXTREMELY SIMPLE REDIRECTS - NO LOOPS
 
-# Exclude existing files and directories from the catch-all rule
-/*.*  /:splat 200
-/assets/*  /assets/:splat 200
-/functions/*  /functions/:splat 200
+# Asset paths - direct pass through
+/assets/* /assets/:splat 200
+/functions/* /functions/:splat 200
 
-# Fallback for everything else
-/*    /index.html 200
+# Direct HTML access - no redirects
+/*.html /:splat 200
+
+# Root path goes to index
+/ /index.html 200
+
+# Everything else is 404
+/* /index.html 404

@@ -373,7 +373,10 @@ async function getSession() {
           return { success: false, error: 'Invalid session data' };
         }
       } else {
-        return { success: false, error: 'No active session' };
+        // For development/testing, return a clear not-logged-in state
+        // This prevents redirect loops by making the auth state clear
+        console.log('No mock user found in localStorage - clearly not logged in');
+        return { success: false, error: 'No active session', notLoggedIn: true };
       }
     }
 

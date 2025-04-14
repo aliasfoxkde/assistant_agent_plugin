@@ -2039,11 +2039,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (currentUser) {
         logDebug(`Logged in as: ${currentUser.email}`);
         // User is authenticated, continue with app initialization
+
+        // Update user info in the UI
+        const userNameElement = document.getElementById('user-name');
+        const userRoleElement = document.getElementById('user-role');
+        const userAvatarElement = document.getElementById('user-avatar');
+
+        if (userNameElement) {
+            userNameElement.textContent = currentUser.email.split('@')[0];
+        }
+
+        if (userRoleElement) {
+            userRoleElement.textContent = currentUser.user_metadata?.isInstructor ? 'Instructor' : 'Student';
+        }
+
+        if (userAvatarElement) {
+            userAvatarElement.textContent = currentUser.email.charAt(0).toUpperCase();
+        }
     } else {
         logDebug('Not logged in');
-        // Redirect to login page with the current URL as redirect parameter
-        const currentPath = window.location.pathname + window.location.search;
-        window.location.href = `login.html?redirect=${encodeURIComponent(currentPath)}`;
+
+        // Instead of redirecting, show a login prompt
+        const mainContent = document.querySelector('main');
+        if (mainContent) {
+            mainContent.innerHTML = `
+                <div class="auth-required-message">
+                    <h2>Authentication Required</h2>
+                    <p>You need to log in to access this page.</p>
+                    <a href="login.html" class="btn btn-primary">Go to Login</a>
+                </div>
+            `;
+        }
+
+        // Hide sidebar and other app elements
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.style.display = 'none';
+        }
+
+        // Hide chat bubble
+        const chatBubble = document.getElementById('chat-bubble');
+        if (chatBubble) {
+            chatBubble.style.display = 'none';
+        }
     }
 
     // Initialize speech recognition for voice trigger

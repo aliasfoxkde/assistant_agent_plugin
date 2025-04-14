@@ -408,6 +408,7 @@ h1 {
     display: flex;
     flex-direction: column;
     animation: bobbing 2s ease-in-out infinite;
+    cursor: pointer; /* Make it clear this is clickable */
 }
 
 @keyframes bobbing {
@@ -429,6 +430,26 @@ h1 {
     transform: scale(1.1);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     animation: none;
+}
+
+/* Add hover to expand functionality */
+.chat-bubble:hover {
+    width: min-content;
+    height: auto;
+    border-radius: 20px;
+    background-color: var(--chat-bubble-bg, #fff);
+    animation: none;
+    box-shadow: var(--chat-bubble-shadow, 0 10px 40px rgba(0, 0, 0, 0.2));
+    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+}
+
+.chat-bubble:hover .chat-icon {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.chat-bubble:hover .chat-content {
+    display: flex;
 }
 
 .chat-icon {

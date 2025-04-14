@@ -25,8 +25,8 @@
 /* Settings Popup Content */
 .settings-popup-content {
   width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
+  max-width: 450px; /* Reduced from 600px for more compact appearance */
+  max-height: 85vh;
   background-color: var(--card-bg, #fff);
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -43,11 +43,12 @@
 
 /* Settings Popup Header */
 .settings-popup-header {
-  padding: 20px;
+  padding: 15px 20px; /* Reduced vertical padding */
   border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--header-bg, #f8fafc);
 }
 
 .settings-popup-header h2 {
@@ -79,22 +80,26 @@
 
 /* Settings Popup Body */
 .settings-popup-body {
-  padding: 20px;
+  padding: 15px;
   overflow-y: auto;
   flex: 1;
 }
 
 /* Settings Section */
 .settings-section {
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced from 20px */
+  background-color: var(--card-bg, #ffffff);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .settings-section h3 {
-  margin: 0 0 10px;
-  font-size: 1.1rem;
+  margin: 0 0 8px; /* Reduced from 10px */
+  font-size: 0.95rem; /* Reduced from 1.1rem */
   font-weight: 600;
   color: var(--heading-color, #1e293b);
-  padding-bottom: 8px;
+  padding-bottom: 6px; /* Reduced from 8px */
   border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
 }
 
@@ -103,8 +108,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+  margin-bottom: 8px; /* Reduced from 10px */
+  padding-bottom: 8px; /* Reduced from 10px */
   border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
@@ -117,18 +122,22 @@
 .settings-option label {
   font-weight: 500;
   color: var(--text-color, #334155);
+  font-size: 0.9rem; /* Smaller font size */
 }
 
 .settings-control {
-  min-width: 120px;
+  min-width: 100px; /* Reduced from 120px */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 /* Toggle Switch */
 .toggle-switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 24px;
+  width: 44px; /* Reduced from 50px */
+  height: 22px; /* Reduced from 24px */
 }
 
 .toggle-switch input {
@@ -145,19 +154,19 @@
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: .4s;
-  border-radius: 24px;
+  transition: .3s; /* Faster transition */
+  border-radius: 22px; /* Match height */
 }
 
 .toggle-slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 16px; /* Reduced from 18px */
+  width: 16px; /* Reduced from 18px */
   left: 3px;
   bottom: 3px;
   background-color: white;
-  transition: .4s;
+  transition: .3s; /* Faster transition */
   border-radius: 50%;
 }
 
@@ -170,24 +179,24 @@ input:focus + .toggle-slider {
 }
 
 input:checked + .toggle-slider:before {
-  transform: translateX(26px);
+  transform: translateX(22px); /* Adjusted for smaller width */
 }
 
 /* Select Input */
 .settings-control select {
   width: 100%;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 6px 10px; /* Reduced padding */
+  border-radius: 4px; /* Smaller radius */
   border: 1px solid var(--input-border, #cbd5e1);
   background-color: var(--input-bg, #fff);
   color: var(--text-color, #334155);
-  font-size: 14px;
+  font-size: 13px; /* Smaller font */
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 16px;
-  padding-right: 30px;
+  background-position: right 8px center; /* Adjusted position */
+  background-size: 14px; /* Smaller icon */
+  padding-right: 26px; /* Reduced padding */
 }
 
 .settings-control select:focus {
@@ -245,21 +254,22 @@ input:checked + .toggle-slider:before {
 
 /* Settings Popup Footer */
 .settings-popup-footer {
-  padding: 15px 20px;
+  padding: 12px 15px; /* Reduced padding */
   border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--header-bg, #f8fafc); /* Match header background */
 }
 
 .settings-reset {
   background: none;
   border: none;
   color: #ef4444;
-  font-size: 14px;
+  font-size: 13px; /* Smaller font */
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 6px 10px; /* Reduced padding */
+  border-radius: 4px; /* Smaller radius */
   transition: background-color 0.2s ease;
 }
 
@@ -271,9 +281,10 @@ input:checked + .toggle-slider:before {
   background-color: var(--button-primary-bg, #4a6cf7);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 6px 12px; /* Reduced padding */
+  border-radius: 4px; /* Smaller radius */
   font-weight: 500;
+  font-size: 13px; /* Smaller font */
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }

@@ -39,12 +39,10 @@ const urlsToCache = [
 const navigationUrls = [
   '/',
   '/index.html',
-  '/login',
   '/login.html',
-  '/signup',
   '/signup.html',
   '/config.html',
-  '/app'
+  '/app.html'
 ];
 
 // Install service worker
