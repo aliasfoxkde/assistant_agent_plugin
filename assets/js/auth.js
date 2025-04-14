@@ -154,9 +154,48 @@ async function getSupabaseClient() {
 
 // Sign up a new user
 async function signUp(email, password, metadata = {}) {
-  const supabase = await getSupabaseClient();
-
   try {
+    // Check if we're using mock credentials
+    const { supabaseUrl } = await getSupabaseCredentials();
+    if (supabaseUrl && supabaseUrl.includes('mock-supabase-project')) {
+      logAuthDebug('Using mock signUp for development');
+
+      // Add signup timestamp to metadata
+      const userMetadata = {
+        ...metadata,
+        signupTimestamp: new Date().toISOString(),
+      };
+
+      // If user is an instructor, add pending verification status
+      if (userMetadata.isInstructor) {
+        userMetadata.instructorVerificationStatus = 'pending';
+      }
+
+      // Create a mock user
+      const mockUser = {
+        id: 'mock-user-id-' + Date.now(),
+        email: email,
+        user_metadata: userMetadata,
+        created_at: new Date().toISOString()
+      };
+
+      // In a real app, this would create a new user in Supabase
+      // For development, we'll just return success
+      return {
+        success: true,
+        data: {
+          user: mockUser,
+          session: null // No session on signup until email confirmation
+        }
+      };
+    }
+
+    // Real Supabase signup
+    const supabase = await getSupabaseClient();
+    if (!supabase) {
+      return { success: false, error: 'Authentication service unavailable' };
+    }
+
     // Add signup timestamp to metadata
     const userMetadata = {
       ...metadata,
@@ -198,6 +237,41 @@ async function signIn(email, password) {
       return { success: false, error: 'Authentication service unavailable' };
     }
 
+    // Check if we're using mock credentials
+    const { supabaseUrl } = await getSupabaseCredentials();
+    if (supabaseUrl && supabaseUrl.includes('mock-supabase-project')) {
+      logAuthDebug('Using mock authentication for development');
+
+      // For development/testing, accept any credentials
+      // In a real app, this would validate against Supabase
+      if (email && password) {
+        // Create a mock user object
+        const mockUser = {
+          id: 'mock-user-id',
+          email: email,
+          user_metadata: {
+            name: 'Test User',
+            isInstructor: email.includes('instructor')
+          },
+          created_at: new Date().toISOString()
+        };
+
+        // Store in localStorage to maintain the session
+        localStorage.setItem('mentor-mock-user', JSON.stringify(mockUser));
+
+        return {
+          success: true,
+          data: {
+            user: mockUser,
+            session: { user: mockUser }
+          }
+        };
+      } else {
+        return { success: false, error: 'Invalid email or password' };
+      }
+    }
+
+    // Real Supabase authentication
     logAuthDebug('Calling Supabase auth.signInWithPassword...');
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -221,6 +295,18 @@ async function signIn(email, password) {
 // Sign out the current user
 async function signOut() {
   try {
+    // Check if we're using mock credentials
+    const { supabaseUrl } = await getSupabaseCredentials();
+    if (supabaseUrl && supabaseUrl.includes('mock-supabase-project')) {
+      logAuthDebug('Using mock signOut for development');
+
+      // Remove the mock user from localStorage
+      localStorage.removeItem('mentor-mock-user');
+      console.log('Mock user removed from localStorage');
+
+      return { success: true };
+    }
+
     // Clear all auth-related localStorage items regardless of API call success
     console.log('Clearing local storage auth data');
     localStorage.removeItem('supabase.auth.token');
@@ -266,9 +352,37 @@ async function signOut() {
 
 // Get the current user session
 async function getSession() {
-  const supabase = await getSupabaseClient();
-
   try {
+    // Check if we're using mock credentials
+    const { supabaseUrl } = await getSupabaseCredentials();
+    if (supabaseUrl && supabaseUrl.includes('mock-supabase-project')) {
+      logAuthDebug('Using mock session for development');
+
+      // Check if we have a mock user in localStorage
+      const mockUserJson = localStorage.getItem('mentor-mock-user');
+      if (mockUserJson) {
+        try {
+          const mockUser = JSON.parse(mockUserJson);
+          return {
+            success: true,
+            session: { user: mockUser },
+            user: mockUser
+          };
+        } catch (e) {
+          console.error('Error parsing mock user:', e);
+          return { success: false, error: 'Invalid session data' };
+        }
+      } else {
+        return { success: false, error: 'No active session' };
+      }
+    }
+
+    // Real Supabase session check
+    const supabase = await getSupabaseClient();
+    if (!supabase) {
+      return { success: false, error: 'Authentication service unavailable' };
+    }
+
     const { data, error } = await supabase.auth.getSession();
 
     if (error) throw error;

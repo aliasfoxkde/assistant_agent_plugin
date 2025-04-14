@@ -1,3 +1,4 @@
+# Specific routes first
 /login /login.html 200
 /signup /signup.html 200
 /app /app.html 200
@@ -7,4 +8,11 @@
 /achievements /app.html 200
 /settings /app.html 200
 /test /test.html 200
-/* /index.html 200
+
+# Exclude existing files and directories from the catch-all rule
+/*.*  /:splat 200
+/assets/*  /assets/:splat 200
+/functions/*  /functions/:splat 200
+
+# Fallback for everything else
+/*    /index.html 200

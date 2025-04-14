@@ -2,7 +2,7 @@
 export async function onRequest(context) {
   // Get environment variables
   const env = context.env;
-  
+
   // Check if Supabase credentials are available
   if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
     return new Response(JSON.stringify({
@@ -14,7 +14,7 @@ export async function onRequest(context) {
       }
     });
   }
-  
+
   // Return Supabase credentials
   return new Response(JSON.stringify({
     supabaseUrl: env.SUPABASE_URL,
@@ -22,7 +22,11 @@ export async function onRequest(context) {
   }), {
     status: 200,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store, max-age=0',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
     }
   });
 }

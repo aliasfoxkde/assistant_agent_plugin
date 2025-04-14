@@ -5,7 +5,10 @@ mkdir -p dist
 mkdir -p dist/functions
 
 # Copy all necessary files to dist
-cp -r index.html index.html.old login.html signup.html config.html manifest.json _redirects dist/
+cp -r index.html app.html login.html signup.html config.html manifest.json _redirects dist/
+
+# Remove old index.html.old file if it exists
+rm -f dist/index.html.old
 
 # Copy pages directory
 mkdir -p dist/pages
@@ -78,7 +81,10 @@ cat > dist/package.json << EOL
   "name": "mentor-learning-platform",
   "version": "1.0.0",
   "description": "MENTOR Learning Platform Distribution",
-  "main": "index.html"
+  "main": "index.html",
+  "engines": {
+    "node": ">=18.19.0"
+  }
 }
 EOL
 
