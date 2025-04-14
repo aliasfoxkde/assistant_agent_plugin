@@ -1,23 +1,35 @@
 // Login Page JavaScript
 import { signUp, signIn, resetPassword, getSession } from './auth.js';
+import { logDebug, logError, logInfo, logWarn, initDebugTools } from './debug-utils.js';
 
 // Check if user is already logged in
 async function checkAuthStatus() {
+  logDebug('Checking authentication status', 'Login');
   try {
     const { success, user } = await getSession();
 
     if (success && user) {
-      // User is already logged in, redirect to main app
-      window.location.href = 'index.html';
+      logInfo(`User is already logged in: ${user.email}`, 'Login');
+
+      // Get the redirect URL from query parameters or use app.html as default
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectUrl = urlParams.get('redirect') || 'app.html';
+
+      // Make sure we're not redirecting to login or signup to avoid loops
+      if (redirectUrl.includes('login.html') || redirectUrl.includes('signup.html')) {
+        logWarn('Avoiding redirect loop by redirecting to app.html instead', 'Login');
+        window.location.href = 'app.html';
+      } else {
+        logInfo(`Redirecting to: ${redirectUrl}`, 'Login');
+        window.location.href = redirectUrl;
+      }
+    } else {
+      logInfo('User is not logged in', 'Login');
     }
   } catch (error) {
+    logError(`Error checking auth status: ${error.message}`, 'Login');
     console.error('Error checking auth status:', error);
   }
-}
-
-// Debug logging function
-function logDebug(message) {
-  console.log(`[Login] ${message}`);
 }
 
 // Initialize login page
@@ -32,6 +44,13 @@ function initLoginPage() {
 
   authTabs.forEach(tab => {
     tab.addEventListener('click', () => {
+      // If signup tab is clicked, redirect to signup page
+      if (tab.dataset.tab === 'signup') {
+        logInfo('Redirecting to signup page', 'Login');
+        window.location.href = 'signup.html';
+        return;
+      }
+
       // Remove active class from all tabs and forms
       authTabs.forEach(t => t.classList.remove('active'));
       authForms.forEach(f => f.classList.remove('active'));
@@ -43,9 +62,9 @@ function initLoginPage() {
 
       if (form) {
         form.classList.add('active');
-        logDebug(`Switched to ${tab.dataset.tab} tab`);
+        logDebug(`Switched to ${tab.dataset.tab} tab`, 'Login');
       } else {
-        logDebug(`Error: Form with ID ${formId} not found`);
+        logDebug(`Error: Form with ID ${formId} not found`, 'Login');
       }
     });
   });
@@ -306,6 +325,11 @@ function hideForgotPasswordModal() {
 
 // Initialize when the page loads
 document.addEventListener('DOMContentLoaded', async () => {
+  // Initialize debug tools
+  initDebugTools();
+
+  logInfo('Login page loaded', 'Login');
+
   // Check if user is already logged in
   await checkAuthStatus();
 

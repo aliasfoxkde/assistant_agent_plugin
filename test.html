@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENTOR - Testing Page</title>
+    <meta name="description" content="Testing page for MENTOR Learning Platform">
+    <meta name="theme-color" content="#4a6cf7">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/debug-styles.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+</head>
+<body>
+    <div class="test-container">
+        <header class="test-header">
+            <h1>MENTOR Testing Page</h1>
+            <p>This page is used for testing and debugging the MENTOR Learning Platform.</p>
+        </header>
+
+        <div class="test-content">
+            <div class="test-section">
+                <h2>Navigation Tests</h2>
+                <div class="test-links">
+                    <a href="index.html" class="test-link">Home Page</a>
+                    <a href="login.html" class="test-link">Login Page</a>
+                    <a href="signup.html" class="test-link">Signup Page</a>
+                    <a href="app.html" class="test-link">App Page</a>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h2>Authentication Tests</h2>
+                <div class="test-buttons">
+                    <button id="test-auth-status" class="test-button">Check Auth Status</button>
+                    <button id="test-auth-logout" class="test-button">Logout</button>
+                </div>
+                <div id="auth-test-results" class="test-results"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>Environment Tests</h2>
+                <div class="test-buttons">
+                    <button id="test-env-vars" class="test-button">Check Environment Variables</button>
+                    <button id="test-supabase" class="test-button">Test Supabase Connection</button>
+                </div>
+                <div id="env-test-results" class="test-results"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>Redirect Tests</h2>
+                <div class="test-buttons">
+                    <button id="test-redirect-login" class="test-button">Test Login Redirect</button>
+                    <button id="test-redirect-signup" class="test-button">Test Signup Redirect</button>
+                    <button id="test-redirect-app" class="test-button">Test App Redirect</button>
+                </div>
+                <div id="redirect-test-results" class="test-results"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>Run All Tests</h2>
+                <div class="test-buttons">
+                    <button id="run-all-tests" class="test-button primary">Run All Tests</button>
+                </div>
+                <div id="all-test-results" class="test-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .test-header h1 {
+            color: #4a6cf7;
+            margin-bottom: 10px;
+        }
+
+        .test-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-section h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .test-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .test-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4a6cf7;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .test-link:hover {
+            background-color: #3a5bd7;
+        }
+
+        .test-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .test-button {
+            padding: 8px 16px;
+            background-color: #e9ecef;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .test-button:hover {
+            background-color: #dee2e6;
+        }
+
+        .test-button.primary {
+            background-color: #4a6cf7;
+            color: white;
+        }
+
+        .test-button.primary:hover {
+            background-color: #3a5bd7;
+        }
+
+        .test-results {
+            background-color: #f1f3f5;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+
+        .test-result-item {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        .test-result-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .test-result-failure {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .test-result-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+
+    <!-- Scripts -->
+    <script type="module" src="assets/js/debug-utils.js"></script>
+    <script type="module" src="assets/js/test-utils.js"></script>
+    <script type="module">
+        import { logDebug, logInfo, logWarn, logError, initDebugTools } from './assets/js/debug-utils.js';
+        import { testAuthFlow, testNavigationFlow, runAllTests } from './assets/js/test-utils.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize debug tools
+            initDebugTools();
+            
+            logInfo('Test page loaded', 'Test');
+            
+            // Authentication Tests
+            document.getElementById('test-auth-status').addEventListener('click', async () => {
+                logInfo('Running authentication status test', 'Test');
+                const resultsElement = document.getElementById('auth-test-results');
+                resultsElement.innerHTML = 'Running authentication test...';
+                
+                try {
+                    const authModule = await import('./assets/js/auth.js');
+                    const { success, user } = await authModule.getSession();
+                    
+                    let resultHTML = '';
+                    if (success && user) {
+                        resultHTML += `<div class="test-result-item test-result-success">✓ User is authenticated</div>`;
+                        resultHTML += `<div class="test-result-item test-result-info">User: ${user.email}</div>`;
+                        resultHTML += `<div class="test-result-item test-result-info">User ID: ${user.id}</div>`;
+                        resultHTML += `<div class="test-result-item test-result-info">Role: ${user.user_metadata?.role || 'Not set'}</div>`;
+                    } else {
+                        resultHTML += `<div class="test-result-item test-result-failure">✗ User is not authenticated</div>`;
+                    }
+                    
+                    resultsElement.innerHTML = resultHTML;
+                } catch (error) {
+                    resultsElement.innerHTML = `<div class="test-result-item test-result-failure">✗ Error: ${error.message}</div>`;
+                    logError(`Authentication test failed: ${error.message}`, 'Test');
+                }
+            });
+            
+            document.getElementById('test-auth-logout').addEventListener('click', async () => {
+                logInfo('Running logout test', 'Test');
+                const resultsElement = document.getElementById('auth-test-results');
+                resultsElement.innerHTML = 'Logging out...';
+                
+                try {
+                    const authModule = await import('./assets/js/auth.js');
+                    const { success } = await authModule.signOut();
+                    
+                    if (success) {
+                        resultsElement.innerHTML = `<div class="test-result-item test-result-success">✓ Logout successful</div>`;
+                    } else {
+                        resultsElement.innerHTML = `<div class="test-result-item test-result-failure">✗ Logout failed</div>`;
+                    }
+                } catch (error) {
+                    resultsElement.innerHTML = `<div class="test-result-item test-result-failure">✗ Error: ${error.message}</div>`;
+                    logError(`Logout test failed: ${error.message}`, 'Test');
+                }
+            });
+            
+            // Environment Tests
+            document.getElementById('test-env-vars').addEventListener('click', async () => {
+                logInfo('Running environment variables test', 'Test');
+                const resultsElement = document.getElementById('env-test-results');
+                resultsElement.innerHTML = 'Checking environment variables...';
+                
+                try {
+                    const authModule = await import('./assets/js/auth.js');
+                    const credentials = await authModule.getSupabaseCredentials();
+                    
+                    let resultHTML = '';
+                    if (credentials && credentials.supabaseUrl && credentials.supabaseAnonKey) {
+                        resultHTML += `<div class="test-result-item test-result-success">✓ Supabase credentials found</div>`;
+                        resultHTML += `<div class="test-result-item test-result-info">URL: ${credentials.supabaseUrl}</div>`;
+                        resultHTML += `<div class="test-result-item test-result-info">Key: ${credentials.supabaseAnonKey.substring(0, 10)}...</div>`;
+                    } else {
+                        resultHTML += `<div class="test-result-item test-result-failure">✗ Supabase credentials not found</div>`;
+                    }
+                    
+                    resultsElement.innerHTML = resultHTML;
+                } catch (error) {
+                    resultsElement.innerHTML = `<div class="test-result-item test-result-failure">✗ Error: ${error.message}</div>`;
+                    logError(`Environment test failed: ${error.message}`, 'Test');
+                }
+            });
+            
+            document.getElementById('test-supabase').addEventListener('click', async () => {
+                logInfo('Running Supabase connection test', 'Test');
+                const resultsElement = document.getElementById('env-test-results');
+                resultsElement.innerHTML = 'Testing Supabase connection...';
+                
+                try {
+                    const authModule = await import('./assets/js/auth.js');
+                    const client = await authModule.getSupabaseClient();
+                    
+                    if (client) {
+                        // Try a simple query to test the connection
+                        const { data, error } = await client.from('_dummy_query').select('*').limit(1).catch(() => ({ data: null, error: { message: 'Query failed, but connection established' } }));
+                        
+                        let resultHTML = `<div class="test-result-item test-result-success">✓ Supabase client initialized</div>`;
+                        
+                        if (error) {
+                            // This is expected since we're querying a non-existent table
+                            resultHTML += `<div class="test-result-item test-result-info">Query result: ${error.message}</div>`;
+                        } else if (data) {
+                            resultHTML += `<div class="test-result-item test-result-success">✓ Query successful</div>`;
+                        }
+                        
+                        resultsElement.innerHTML = resultHTML;
+                    } else {
+                        resultsElement.innerHTML = `<div class="test-result-item test-result-failure">✗ Failed to initialize Supabase client</div>`;
+                    }
+                } catch (error) {
+                    resultsElement.innerHTML = `<div class="test-result-item test-result-failure">✗ Error: ${error.message}</div>`;
+                    logError(`Supabase test failed: ${error.message}`, 'Test');
+                }
+            });
+            
+            // Redirect Tests
+            document.getElementById('test-redirect-login').addEventListener('click', () => {
+                logInfo('Testing login redirect', 'Test');
+                const resultsElement = document.getElementById('redirect-test-results');
+                resultsElement.innerHTML = 'Testing login redirect...';
+                
+                // Add a test parameter to the URL
+                window.location.href = 'login.html?test=true&redirect=' + encodeURIComponent(window.location.href);
+            });
+            
+            document.getElementById('test-redirect-signup').addEventListener('click', () => {
+                logInfo('Testing signup redirect', 'Test');
+                const resultsElement = document.getElementById('redirect-test-results');
+                resultsElement.innerHTML = 'Testing signup redirect...';
+                
+                // Add a test parameter to the URL
+                window.location.href = 'signup.html?test=true';
+            });
+            
+            document.getElementById('test-redirect-app').addEventListener('click', () => {
+                logInfo('Testing app redirect', 'Test');
+                const resultsElement = document.getElementById('redirect-test-results');
+                resultsElement.innerHTML = 'Testing app redirect...';
+                
+                // Add a test parameter to the URL
+                window.location.href = 'app.html?test=true';
+            });
+            
+            // Run All Tests
+            document.getElementById('run-all-tests').addEventListener('click', async () => {
+                logInfo('Running all tests', 'Test');
+                const resultsElement = document.getElementById('all-test-results');
+                resultsElement.innerHTML = 'Running all tests...';
+                
+                try {
+                    const results = await runAllTests();
+                    
+                    let resultHTML = '';
+                    if (results.success) {
+                        resultHTML += `<div class="test-result-item test-result-success">✓ All tests passed</div>`;
+                    } else {
+                        resultHTML += `<div class="test-result-item test-result-failure">✗ Some tests failed</div>`;
+                    }
+                    
+                    // Auth Flow Results
+                    resultHTML += `<div class="test-result-item test-result-info">Authentication Flow:</div>`;
+                    results.authFlow.tests.forEach(test => {
+                        resultHTML += `<div class="test-result-item ${test.success ? 'test-result-success' : 'test-result-failure'}">
+                            ${test.success ? '✓' : '✗'} ${test.name}
+                        </div>`;
+                    });
+                    
+                    // Navigation Flow Results
+                    resultHTML += `<div class="test-result-item test-result-info">Navigation Flow:</div>`;
+                    results.navigationFlow.tests.forEach(test => {
+                        resultHTML += `<div class="test-result-item ${test.success ? 'test-result-success' : 'test-result-failure'}">
+                            ${test.success ? '✓' : '✗'} ${test.name}
+                        </div>`;
+                    });
+                    
+                    // Page Rendering Results
+                    resultHTML += `<div class="test-result-item test-result-info">Page Rendering:</div>`;
+                    results.pageRendering.tests.forEach(test => {
+                        resultHTML += `<div class="test-result-item ${test.success ? 'test-result-success' : 'test-result-failure'}">
+                            ${test.success ? '✓' : '✗'} ${test.name}
+                        </div>`;
+                    });
+                    
+                    resultsElement.innerHTML = resultHTML;
+                } catch (error) {
+                    resultsElement.innerHTML = `<div class="test-result-item test-result-failure">✗ Error: ${error.message}</div>`;
+                    logError(`All tests failed: ${error.message}`, 'Test');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

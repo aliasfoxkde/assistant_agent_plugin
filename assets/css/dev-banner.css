@@ -1,0 +1,111 @@
+/* Development Banner Styles */
+.dev-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #f59e0b;
+  color: #7c2d12;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  z-index: 9999;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dev-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dev-banner-icon {
+  font-size: 16px;
+}
+
+.dev-banner-text {
+  flex: 1;
+}
+
+.dev-banner-version {
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-right: 8px;
+}
+
+.dev-banner-link {
+  color: #7c2d12;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.dev-banner-link:hover {
+  color: #92400e;
+}
+
+.dev-banner-close {
+  background: none;
+  border: none;
+  color: #7c2d12;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+  opacity: 0.7;
+}
+
+.dev-banner-close:hover {
+  opacity: 1;
+}
+
+/* Adjust content when banner is visible */
+body.has-dev-banner {
+  padding-top: 36px;
+}
+
+body.has-dev-banner #sidebar {
+  top: 36px;
+  height: calc(100vh - 36px);
+}
+
+body.has-dev-banner .main-content {
+  padding-top: 36px;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .dev-banner {
+  background-color: #854d0e;
+  color: #fef3c7;
+}
+
+body.dark-mode .dev-banner-link {
+  color: #fef3c7;
+}
+
+body.dark-mode .dev-banner-close {
+  color: #fef3c7;
+}
+
+body.dark-mode .dev-banner-version {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dev-banner {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .dev-banner-version {
+    padding: 1px 6px;
+  }
+}

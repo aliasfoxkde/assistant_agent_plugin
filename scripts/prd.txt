@@ -1,0 +1,114 @@
+# MENTOR Learning Platform - Product Requirements Document
+
+## Project Overview
+
+MENTOR is a standalone education and learning platform with AI Tutor and assistance, built from the ground up. The platform aims to provide an interactive, personalized learning experience that adapts to each user's needs and learning style.
+
+## Core Features
+
+### AI Tutor
+- AI with user, history, and general knowledge base context
+- Can add to own context and "learn" in simple terms
+- Voice and text interaction options
+- Personalized learning assistance
+- Interactive trivia and quizzes
+
+### Course Management
+- Basic demo courses (search, enroll, create)
+- Interactive cards with clear name, description, objective
+- Instruction read by AI tutor as it guides you through learning
+- Quiz handling, step-by-step course material, guidelines for passing
+- Simple proof of concept Course Builder Tool
+- Progress tracking
+
+### User Management
+- Authentication with Supabase
+- User profiles with learning preferences
+- Role-based access control (Administrator, Instructor, Student)
+- Tier-based access for premium features
+- Signup process with learning style questionnaire
+
+### Gamification
+- Progress tracking
+- Milestones and achievements
+- Score system and leaderboards
+- Badges and rewards
+- Streak tracking
+
+### Platform Features
+- Easy installation with first-run Wizard
+- Configuration for API keys and settings
+- Responsive design for all devices
+- Dark/light mode
+- PWA capabilities for offline access and installation
+
+## User Roles
+
+### Student
+- Browse and search courses
+- Enroll in courses
+- Track progress
+- Interact with AI tutor
+- Earn achievements and rewards
+
+### Instructor
+- Create and manage courses
+- Monitor student progress
+- Create assessments and quizzes
+- Manage course content
+- View analytics
+
+### Administrator
+- Manage users and roles
+- Configure platform settings
+- Monitor platform usage
+- Approve instructor accounts
+- Manage content moderation
+
+## Technical Requirements
+
+- HTML/CSS/JavaScript frontend
+- Supabase for authentication and database
+- VAPI for AI voice capabilities
+- Cloudflare for hosting and CDN
+- Progressive Web App (PWA) implementation
+- Responsive design for all devices
+
+## Development Phases
+
+### Phase 1: Foundation
+- Project setup and infrastructure
+- Authentication system
+- Basic UI components
+- AI tutor integration
+- Course data model and basic functionality
+
+### Phase 2: Core Features
+- Enhanced course management
+- Learning experience improvements
+- Basic gamification
+- User dashboard and profiles
+- Advanced AI tutor capabilities
+
+### Phase 3: Enhancement
+- Advanced course features
+- Social learning capabilities
+- Enhanced gamification
+- Analytics and reporting
+- Performance optimization
+
+### Phase 4: Refinement
+- Accessibility improvements
+- Internationalization
+- Advanced testing
+- Documentation
+- Final deployment preparation
+
+## Success Criteria
+
+- Functional AI tutor that helps users learn interactively
+- Basic course management system (create, search, enroll)
+- User role management with appropriate permissions
+- Gamification elements that enhance engagement
+- Responsive, accessible interface
+- Easy installation and configuration

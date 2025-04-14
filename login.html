@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/auth-styles.css">
     <link rel="stylesheet" href="assets/css/login-styles.css">
+    <link rel="stylesheet" href="assets/css/debug-styles.css">
+    <link rel="stylesheet" href="assets/css/dev-banner.css">
 
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -118,7 +120,21 @@
     </div>
 
     <!-- Authentication Scripts -->
+    <script type="module" src="assets/js/debug-utils.js"></script>
+    <script type="module" src="assets/js/test-utils.js"></script>
+    <script type="module" src="assets/js/dev-banner.js"></script>
     <script type="module" src="assets/js/auth.js"></script>
     <script type="module" src="assets/js/login.js"></script>
+
+    <!-- Initialize Test Utilities -->
+    <script type="module">
+        import { initTestUtils } from './assets/js/test-utils.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize test utilities after a short delay to ensure page is loaded
+            setTimeout(() => {
+                initTestUtils();
+            }, 1000);
+        });
+    </script>
 </body>
 </html>

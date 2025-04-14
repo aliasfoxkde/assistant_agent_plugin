@@ -1,5 +1,10 @@
 /login /login.html 200
 /signup /signup.html 200
-/app /login.html 200
-/app/* /login.html 200
+/app /app.html 200
+/dashboard /app.html 200
+/courses /app.html 200
+/learning /app.html 200
+/achievements /app.html 200
+/settings /app.html 200
+/test /test.html 200
 /* /index.html 200

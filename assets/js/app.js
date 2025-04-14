@@ -256,8 +256,8 @@ let isCallActive = false;
 let isTranscribing = false;
 let transcriptionHistory = [];
 
-// Sound effects
-const slideSound = new Audio('sounds/slide.mp3');
+// Import sound effects
+import { playSlideSound, playNotificationSound } from './sound-effects.js';
 
 // Duration timer
 let durationTimer = null;
@@ -1483,10 +1483,7 @@ function toggleChatBubble(forceMinimize = false) {
         chatBubble.classList.add('expanded');
 
         // Play slide sound
-        slideSound.play().catch(err => {
-            // Handle any errors with sound playback silently
-            console.log('Sound playback error:', err);
-        });
+        playSlideSound();
 
         // Focus input field
         setTimeout(() => {
@@ -1962,6 +1959,10 @@ async function getCurrentUser() {
     }
 }
 
+// Import settings and logout modules
+import { initSettings, showSettingsPopup } from './settings.js';
+import { showLogoutConfirmation } from './logout.js';
+
 // Initialize when the page loads
 document.addEventListener('DOMContentLoaded', async () => {
     logDebug('Page loaded');
@@ -2036,6 +2037,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set up collapse button
     const collapseButton = document.getElementById('collapse-button');
     collapseButton.addEventListener('click', handleCollapseButtonClick);
+
+    // Set up settings link
+    const settingsLink = document.getElementById('settings-link');
+    if (settingsLink) {
+        settingsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSettingsPopup();
+        });
+    }
+
+    // Set up logout link
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLogoutConfirmation();
+        });
+    }
+
+    // Initialize settings
+    initSettings();
 
     // Update stats and details initially
     updateStats();

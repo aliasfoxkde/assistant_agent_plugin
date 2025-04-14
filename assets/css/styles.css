@@ -8,7 +8,7 @@ html, body {
     height: 100%;
     background-color: #f8fafc;
     background-image: linear-gradient(135deg, #f8fafc 0%, #e9f2ff 100%);
-    overflow: auto;
+    overflow: hidden;
     color: #334155;
 }
 
@@ -399,7 +399,7 @@ h1 {
     right: 20px;
     width: 60px;
     height: 60px;
-    background-color: var(--chat-icon-color, #4a6cf7);
+    background-color: var(--button-primary-bg, #4a6cf7);
     border-radius: 50%;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -630,9 +630,9 @@ h1 {
     gap: 12px;
 }
 
-/* Updated: Changed mic button color to green */
+/* Mic button styling */
 .mic-button {
-    background-color: var(--mic-button-bg, #10b981); /* Changed from red to green */
+    background-color: var(--button-primary-bg, #4a6cf7); /* Blue color */
     color: var(--button-primary-text, white);
     border: none;
     border-radius: 50%;
@@ -643,13 +643,13 @@ h1 {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); /* Updated shadow color */
+    box-shadow: 0 4px 10px rgba(74, 108, 247, 0.3); /* Blue shadow */
 }
 
 .mic-button:hover {
-    background-color: #059669; /* Darker green on hover */
+    background-color: #3a5ce5; /* Darker blue on hover */
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4); /* Updated shadow color */
+    box-shadow: 0 6px 15px rgba(74, 108, 247, 0.4); /* Blue shadow */
 }
 
 .mic-button:active {
@@ -732,6 +732,46 @@ h1 {
 
 .chat-bubble.expanded {
     animation: slideIn 0.3s ease forwards;
+}
+
+/* Modern Search Bar */
+.search-bar {
+    position: relative;
+    width: 300px;
+    margin-right: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 30px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    background-color: var(--input-bg, #fff);
+    color: var(--text-color, #334155);
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--button-primary-bg, #4a6cf7);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color, #334155);
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+.search-bar input:focus + .search-icon {
+    color: var(--button-primary-bg, #4a6cf7);
+    opacity: 1;
 }
 
 /* PWA Install Prompt */

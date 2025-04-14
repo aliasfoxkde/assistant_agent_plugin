@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Continue to Dashboard Button
     if (continueBtn) {
         continueBtn.addEventListener('click', function() {
-            window.location.href = '/index.html.old';
+            window.location.href = '/app.html';
         });
     }
 

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENTOR - AI-Powered Learning Platform</title>
+    <meta name="description" content="MENTOR is your AI-Powered Learning Companion">
+    <meta name="theme-color" content="#4a6cf7">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/auth-styles.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <link rel="stylesheet" href="assets/css/debug-styles.css">
+    <link rel="stylesheet" href="assets/css/dev-banner.css">
+    <link rel="stylesheet" href="assets/css/dashboard-styles.css">
+    <link rel="stylesheet" href="assets/css/settings-styles.css">
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MENTOR">
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div id="sidebar" class="collapsed">
+        <div class="sidebar-header">
+            <img src="assets/icons/icon.svg" alt="MENTOR Logo" class="sidebar-logo">
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="sidebar-link active" data-tab="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#courses" class="sidebar-link" data-tab="courses">
+                <i class="fas fa-book"></i>
+                <span>Courses</span>
+            </a>
+            <a href="#learning" class="sidebar-link" data-tab="learning">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Learning</span>
+            </a>
+            <a href="#messages" class="sidebar-link" data-tab="messages">
+                <i class="fas fa-comments"></i>
+                <span>Messages</span>
+            </a>
+            <a href="#profile" class="sidebar-link" data-tab="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" id="settings-link" class="sidebar-link">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="#" id="logout-link" class="sidebar-link">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-left">
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="header-actions">
+                    <button id="notifications-btn" class="icon-button">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button id="pwa-install-btn" class="icon-button">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tab Content -->
+        <div class="tab-content active" id="dashboard">
+            <div class="dashboard-header">
+                <h1>Voice & Chat Assistant</h1>
+            </div>
+
+            <div class="status-card">
+                <div class="status-indicator">
+                    <span class="status-dot ready"></span>
+                    <span class="status-text">Current Status: Ready</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <!-- First Row -->
+                <div class="stat-card">
+                    <div class="stat-label">LATENCY</div>
+                    <div class="stat-value">0 ms</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">DURATION</div>
+                    <div class="stat-value">0.0 sec</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">TIME TO FIRST WORD</div>
+                    <div class="stat-value">0 ms</div>
+                </div>
+
+                <!-- Second Row -->
+                <div class="stat-card">
+                    <div class="stat-label">SESSION COUNT</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">USER MESSAGES</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">ASSISTANT MESSAGES</div>
+                    <div class="stat-value">0</div>
+                </div>
+
+                <!-- Third Row -->
+                <div class="stat-card">
+                    <div class="stat-label">TOKENS SENT</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">TOKENS RECEIVED</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">MICROPHONE STATUS</div>
+                    <div class="stat-value">Available</div>
+                </div>
+            </div>
+
+            <div class="assistant-id-card">
+                <div class="assistant-id-label">ASSISTANT ID</div>
+                <div class="assistant-id-value">007c44a8-8465-4539-b579-dd6d6f471b72</div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="courses">
+            <h2>Course Catalog</h2>
+            <p>Browse and discover courses to enhance your skills.</p>
+
+            <!-- Course content will be loaded here -->
+            <div class="placeholder-message">
+                <i class="fas fa-book-open"></i>
+                <p>Course catalog will be implemented in the next phase.</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="learning">
+            <h2>My Learning</h2>
+            <p>Track your progress and continue your learning journey.</p>
+
+            <!-- Learning content will be loaded here -->
+            <div class="placeholder-message">
+                <i class="fas fa-graduation-cap"></i>
+                <p>Learning dashboard will be implemented in the next phase.</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="achievements">
+            <h2>Achievements</h2>
+            <p>View your earned badges and accomplishments.</p>
+
+            <!-- Achievements content will be loaded here -->
+            <div class="placeholder-message">
+                <i class="fas fa-trophy"></i>
+                <p>Achievements system will be implemented in the next phase.</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="settings">
+            <h2>Settings</h2>
+            <p>Manage your account and preferences.</p>
+
+            <!-- Settings content will be loaded here -->
+            <div class="placeholder-message">
+                <i class="fas fa-cog"></i>
+                <p>Settings page will be implemented in the next phase.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Bubble -->
+    <div class="chat-bubble" id="chat-bubble">
+        <!-- Chat Icon (visible when minimized) -->
+        <div class="chat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- Collapse Button (visible when expanded) -->
+        <button class="collapse-button" id="collapse-button">_</button>
+
+        <!-- Chat Content (visible when expanded) -->
+        <div class="chat-content">
+            <!-- Status Indicator -->
+            <div class="status-indicator">
+                <div class="status-dot ready" id="status-dot"></div>
+                <span id="status">Ready</span>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chat-messages">
+                <div class="message system-message">
+                    Type a message below or say "Start Voice Chat" to begin a voice conversation
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="message-input" placeholder="Type your message here...">
+                <div class="action-buttons">
+                    <button class="send-button" id="send-button">
+                        <svg class="send-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="mic-button" id="mic-button">
+                        <svg class="mic-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1C11.2044 1 10.4413 1.31607 9.87868 1.87868C9.31607 2.44129 9 3.20435 9 4V12C9 12.7956 9.31607 13.5587 9.87868 14.1213C10.4413 14.6839 11.2044 15 12 15C12.7956 15 13.5587 14.6839 14.1213 14.1213C14.6839 13.5587 15 12.7956 15 12V4C15 3.20435 14.6839 2.44129 14.1213 1.87868C13.5587 1.31607 12.7956 1 12 1Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 10V12C19 13.8565 18.2625 15.637 16.9497 16.9497C15.637 18.2625 13.8565 19 12 19C10.1435 19 8.36301 18.2625 7.05025 16.9497C5.7375 15.637 5 13.8565 5 12V10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="assets/js/debug-utils.js"></script>
+    <script type="module" src="assets/js/test-utils.js"></script>
+    <script type="module" src="assets/js/dev-banner.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script type="module" src="assets/js/sidebar.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
+    <script type="text/javascript" src="assets/js/register-sw.js"></script>
+    <script type="text/javascript" src="assets/js/pwa.js"></script>
+
+    <!-- Initialize Test Utilities -->
+    <script type="module">
+        import { initTestUtils } from './assets/js/test-utils.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize test utilities after a short delay to ensure page is loaded
+            setTimeout(() => {
+                initTestUtils();
+            }, 1000);
+        });
+    </script>
+
+    <!-- Authentication Check Script -->
+    <script type="module">
+        // Import authentication functions and debug utilities
+        import { getSession } from './assets/js/auth.js';
+        import { logDebug, logError, logInfo, logWarn, initDebugTools } from './assets/js/debug-utils.js';
+
+        // Initialize debug tools
+        initDebugTools();
+
+        // Check if user is authenticated
+        async function checkAuth() {
+            logInfo('Checking authentication status', 'App');
+            try {
+                const { success, user } = await getSession();
+
+                if (!success || !user) {
+                    // User is not authenticated, redirect to login page
+                    logWarn('User is not authenticated, redirecting to login page', 'App');
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+                } else {
+                    logInfo(`User authenticated: ${user.email}`, 'App');
+
+                    // Check if user is an instructor
+                    const isInstructor = user.user_metadata?.isInstructor || false;
+                    const instructorStatus = user.user_metadata?.instructorVerificationStatus || 'none';
+
+                    if (isInstructor) {
+                        logInfo(`User is an instructor (Status: ${instructorStatus})`, 'App');
+                    }
+                }
+            } catch (error) {
+                logError(`Authentication check failed: ${error.message}`, 'App');
+                console.error('Authentication check failed:', error);
+
+                // Redirect to login page on error
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+            }
+        }
+
+        // Run auth check when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            logInfo('App page loaded', 'App');
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

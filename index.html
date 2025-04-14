@@ -8,6 +8,8 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/landing-styles.css">
     <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <link rel="stylesheet" href="assets/css/debug-styles.css">
+    <link rel="stylesheet" href="assets/css/dev-banner.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -51,8 +53,8 @@
                 <button id="theme-toggle" class="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </button>
-                <a href="/login" class="btn btn-outline">Log In</a>
-                <a href="/signup" class="btn btn-primary">Sign Up</a>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
                 <button class="mobile-menu-toggle">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -67,7 +69,7 @@
                 <h1>Transform Your Learning Experience with AI</h1>
                 <p>MENTOR is an AI-powered learning platform that adapts to your needs, providing personalized education for students and powerful tools for instructors.</p>
                 <div class="hero-buttons">
-                    <a href="/signup" class="btn btn-primary btn-lg">Get Started for Free</a>
+                    <a href="signup.html" class="btn btn-primary btn-lg">Get Started for Free</a>
                     <a href="#courses" class="btn btn-outline btn-lg">Explore Courses</a>
                 </div>
                 <div class="hero-stats">
@@ -536,8 +538,22 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script type="module" src="assets/js/debug-utils.js"></script>
+    <script type="module" src="assets/js/test-utils.js"></script>
+    <script type="module" src="assets/js/dev-banner.js"></script>
     <script src="assets/js/landing.js"></script>
     <script type="text/javascript" src="assets/js/register-sw.js"></script>
     <script type="text/javascript" src="assets/js/pwa.js"></script>
+
+    <!-- Initialize Test Utilities -->
+    <script type="module">
+        import { initTestUtils } from './assets/js/test-utils.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize test utilities after a short delay to ensure page is loaded
+            setTimeout(() => {
+                initTestUtils();
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
