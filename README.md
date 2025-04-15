@@ -86,3 +86,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - VAPI for AI voice capabilities
 - Supabase for authentication and database services
 - All the learning platforms that inspired this project: Coursera, Skillshare, Udemy, edX, Codecademy, Khan Academy, MasterClass, etc.
+
